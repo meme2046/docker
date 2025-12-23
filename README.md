@@ -23,3 +23,7 @@
 ## mongodb
 
 `nu run.nu mongo`
+
+## etcd
+
+`nu run.nu etcd-install`
