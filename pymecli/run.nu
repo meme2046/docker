@@ -1,6 +1,3 @@
-# 启动pymecli FastAPI
-docker compose -p fast up -d
-
 # certbot-cloudflare 证书生成
 (docker run -it --rm
 --name certbot-cloudflare
@@ -16,8 +13,7 @@ certonly --dns-cloudflare
 -v $"(pwd)/certbot/conf:/etc/letsencrypt"
 -e CF_API_TOKEN=$"($env.CF_TOKEN)"
 certbot/dns-cloudflare:latest
-renew --dns-cloudflare)
-# --force-renewal
+renew --force-renewal --dns-cloudflare)
 
 # 直接启动pymecli FastAPI
 (docker run -d
