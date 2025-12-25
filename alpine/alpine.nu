@@ -16,3 +16,7 @@ def "main debug" [] {
     --name=debug-alpine
     $IMAGE /bin/sh)
 }
+
+def "main push" [] {
+    docker push $IMAGE
+}

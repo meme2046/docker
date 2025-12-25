@@ -8,14 +8,14 @@ RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
 
 RUN apk add --no-cache curl git
 
-RUN apk del tzdata \  
-	&& apk cache clean \  
-	&& rm -rf /var/cache/apk/* /tmp/* /var/tmp/*
+RUN apk add --no-cache uv
+RUN apk add --no-cache nodejs npm
+
+RUN apk del tzdata && apk cache clean && rm -rf /var/cache/apk/* /tmp/* /var/tmp/*
 
 COPY files/endpoint.sh /files/endpoint.sh
 COPY files/sig /files/sig
 
-RUN chmod +x /files/endpoint.sh
 RUN chmod +x /files/sig
 
 ENTRYPOINT ["/files/endpoint.sh"]

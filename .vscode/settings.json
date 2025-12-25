@@ -123,6 +123,7 @@
 		"**/src/components/ui/**/*"
 	],
 	"files.associations": {
-		"*.txt": "markdown"
+		"*.txt": "markdown",
+		"*.nu": "plaintext"
 	}
 }

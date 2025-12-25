@@ -1,0 +1,12 @@
+version: "3.8"
+
+networks:
+  app-network:
+    driver: bridge
+
+services:
+  cron-worker:
+    image: registry.cn-chengdu.aliyuncs.com/jusu/cron-worker:latest
+    container_name: cron-worker
+    networks:
+      - app-network
