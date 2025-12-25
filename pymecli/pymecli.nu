@@ -38,17 +38,22 @@ def "main compose" [] {
     docker compose -p fast -f $"(pwd)/docker-compose.yml" up -d
 }
 # 生成证书
-def "main certbot-gen" [--force] {
-    mut args = ["certonly", "--dns-cloudflare", "--email memeking2046@gmail.com","--agree-tos","--no-eff-email","-d meme.us.kg"] 
+def "main certbot_gen" [--force] {
+    mut args = [
+        "certonly",
+        "--dns-cloudflare",
+        "--email memeking2046@gmail.com",
+        "--agree-tos",
+        "--no-eff-email",
+        "-d meme.us.kg",
+    ];
     if $force { $args = ($args | append "--force-renewal") }
     (docker run -it --rm
     --name certbot-cloudflare
     -v $"(pwd)/certbot/conf:/etc/letsencrypt"
     -e CF_API_TOKEN=$"($env.CF_TOKEN)"
     $CERTBOT_CLOUDFLARE_IMAGE
-    certonly --dns-cloudflare
-    --email memeking2046@gmail.com --agree-tos --no-eff-email --force-renewal
-    -d meme.us.kg)
+    ...$args)
 }
 
 def "main certbot_renew" [--force] {
