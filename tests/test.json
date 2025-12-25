@@ -1,0 +1,19 @@
+{
+	"environment": "test",
+	"credentials": {
+		"username": "test_user",
+		"password": "test_pass"
+	},
+	"services": [
+		{
+			"name": "auth",
+			"port": 8080,
+			"status": "active"
+		},
+		{
+			"name": "db",
+			"port": 3306,
+			"status": "inactive"
+		}
+	]
+}

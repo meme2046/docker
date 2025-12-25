@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<TestConfig>
+    <Environment>
+        <BaseUrl>https://staging.example.com</BaseUrl>
+        <Timeout>30</Timeout>
+    </Environment>
+    
+    <TestCases>
+        <TestCase>
+            <ID>TC001</ID>
+            <Title>首页加载测试</Title>
+            <Priority>High</Priority>
+            <Steps>
+                <Step action="navigate" target="homepage" />
+                <Step
+					action="verify_element"
+					expected="visible"
+					target="logo"
+				/>
+            </Steps>
+        </TestCase>
+    </TestCases>
+</TestConfig>
