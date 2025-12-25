@@ -1,13 +1,5 @@
 # docker containers
 
-## pymecli FastAPI
-
-`nu run.nu pymecli-fastapi`
-
-## ub24 container
-
-`nu run.nu ub24`
-
 ## cron-api
 
 `nu run.nu cron-api`
