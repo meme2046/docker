@@ -1,12 +1,21 @@
-version: "3.8"
-
 networks:
   app-network:
     driver: bridge
 
 services:
-  cron-worker:
+  worker:
     image: registry.cn-chengdu.aliyuncs.com/jusu/cron-worker:latest
-    container_name: cron-worker
+    deploy:
+      replicas: 3
     networks:
       - app-network
+    restart: unless-stopped
+
+  api:
+    image: registry.cn-chengdu.aliyuncs.com/jusu/cron-api:latest
+    container_name: api
+    ports:
+      - "8000:80"
+    networks:
+      - app-network
+    restart: unless-stopped

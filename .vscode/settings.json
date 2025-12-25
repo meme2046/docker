@@ -58,6 +58,7 @@
 	"editor.formatOnSave": true, // 保存时格式化
 	"prettier.documentSelectors": ["text.plain", "nginx.nginx"],
 	"prettier.configPath": ".vscode/.prettierrc",
+	"prettier.ignorePath": ".vscode/.prettierignore",
 	"[javascript]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
@@ -123,7 +124,6 @@
 		"**/src/components/ui/**/*"
 	],
 	"files.associations": {
-		"*.txt": "markdown",
-		"*.nu": "plaintext"
+		"*.txt": "markdown"
 	}
 }

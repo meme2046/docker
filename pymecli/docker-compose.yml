@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   certbot-renew:
     image: certbot/dns-cloudflare:latest

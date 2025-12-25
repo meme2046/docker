@@ -1,12 +1,10 @@
 from alpine:latest
 
 SHELL ["/bin/sh", "-c"]
-RUN apk add --no-cache tzdata
+RUN apk add --no-cache tzdata curl git bash
 
 RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
 	&& echo "Asia/Shanghai" > /etc/timezone
-
-RUN apk add --no-cache curl git
 
 RUN apk add --no-cache uv
 RUN apk add --no-cache nodejs npm

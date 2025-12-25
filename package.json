@@ -1,5 +1,4 @@
 {
-	"name": "docker",
 	"type": "module",
 	"scripts": {
 		"prettier": "prettier"
