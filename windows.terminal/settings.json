@@ -53,7 +53,7 @@
 	],
 	"profiles": {
 		"defaults": {
-			"backgroundImage": "d:/github/meme2046/docker/images/pokemon/025.jpg",
+			"backgroundImage": "d:/quark/dev/curated-images/025.jpg",
 			"backgroundImageOpacity": 0.2,
 			"font": {
 				"face": "MesloLGM Nerd Font",
@@ -70,7 +70,7 @@
 				"commandline": "nu",
 				"hidden": false,
 				"colorScheme": "CGA",
-				"backgroundImage": "d:/github/meme2046/docker/images/pokemon/002.jpg",
+				"backgroundImage": "d:/quark/dev/curated-images/002.jpg",
 				"backgroundImageOpacity": 0.2
 			},
 			{
@@ -79,7 +79,7 @@
 				"commandline": "C:\\scoop\\shims\\pwsh.exe",
 				"hidden": false,
 				"colorScheme": "Campbell Powershell",
-				"backgroundImage": "d:/github/meme2046/docker/images/pokemon/138.jpg",
+				"backgroundImage": "d:/quark/dev/curated-images/138.jpg",
 				"backgroundImageOpacity": 0.2
 			}
 		]
