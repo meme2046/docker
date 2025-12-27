@@ -14,21 +14,19 @@ services:
   fastapi:
     image: registry.cn-chengdu.aliyuncs.com/jusu/pymecli:latest
     container_name: fastapi
-    ports:
-      - "8877:8000"
     expose:
       - "8000"
     volumes:
       - ./certbot/conf:/etc/letsencrypt
     environment:
-      - PROXY=socks5://192.168.123.7:7890
+      - CLASH_PROXY=socks5://192.168.123.7:7890
     command: >
       fast 0.0.0.0 --port 8000
       --rule https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release
       --my-rule https://raw.githubusercontent.com/meme2046/data/refs/heads/main/clash
       --proxy socks5://192.168.123.7:7890
-    depends_on:
-      - certbot-renew
+    # depends_on:
+    #   - certbot-renew
     networks:
       - app-network
     restart: unless-stopped
@@ -43,6 +41,7 @@ services:
       - ./files/.nginx:/etc/nginx/nginx.conf:ro
       - ./certbot/conf:/etc/letsencrypt
     depends_on:
+      - certbot-renew # 添加这个依赖
       - fastapi
     networks:
       - app-network

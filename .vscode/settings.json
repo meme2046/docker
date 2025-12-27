@@ -58,7 +58,6 @@
 		"notebook.source.organizeImports": "explicit" // notebook 保存时自动排序 import 语句
 	},
 	"editor.formatOnSave": true, // 保存时格式化
-	"prettier.documentSelectors": ["text.plain", "nginx.nginx"],
 	"prettier.configPath": ".vscode/.prettierrc",
 	"prettier.ignorePath": ".vscode/.prettierignore",
 	"[javascript]": {
@@ -100,7 +99,26 @@
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 	// 📝彩虹缩进 indent-rainbow 配置
-	"indentRainbow.ignoreErrorLanguages": ["python", "typescriptreact"],
+	"indentRainbow.ignoreErrorLanguages": [],
+	"indentRainbow.includedLanguages": [
+		"plaintext",
+		"javascript",
+		"typescript",
+		"typescriptreact",
+		"json",
+		"yaml",
+		"xml",
+		"dockerfile",
+		"shellscript",
+		"markdown",
+		"python",
+		"html",
+		"css",
+		"toml",
+		"sql",
+		"go"
+	],
+	"indentRainbow.excludedLanguages": [],
 	// 📝code-runner
 	"code-runner.clearPreviousOutput": true,
 	"code-runner.executorMap": {

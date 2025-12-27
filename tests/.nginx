@@ -18,6 +18,18 @@ http {
 			root /var/www/certbot;
 		}
 
+		#  ACME验证
+		# location ^~ /.well-known/acme-challenge/ {
+		# 	root      /var/www/certbot;
+		# 	try_files $uri =404;
+		# }
+		location /ping {
+			return     200 "pong from nginx\n";
+			add_header Content-Type text/plain;
+			add_header Access-Control-Allow-Origin "*";
+			access_log off;
+		}
+
 		# 将其他请求重定向到 HTTPS
 		location / {
 			return 301 https://$host$request_uri;

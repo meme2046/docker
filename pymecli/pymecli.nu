@@ -25,15 +25,6 @@ def "main run" [] {
     )
 }
 
-def "main debug" [] {
-    (docker run -it --rm
-    --name=debug-pymecli
-    -v $"(pwd)/certbot/conf:/etc/letsencrypt"
-    -e PROXY=socks5://192.168.123.7:7890
-    -p 8888:80
-    $IMAGE /bin/bash)
-}
-
 def "main compose" [] {
     docker compose -p fast -f $"(pwd)/docker-compose.yml" up -d
 }
@@ -66,3 +57,23 @@ def "main certbot_renew" [--force] {
     $CERTBOT_CLOUDFLARE_IMAGE
     ...$args)
 }
+
+def "main debug" [] {
+    (docker run -d
+    --name=debug-pymecli
+    -v $"(pwd)/certbot/conf:/etc/letsencrypt"
+    -e CLASH_PROXY=socks5://192.168.123.7:7890
+    -p 8888:80
+    $IMAGE)
+}
+
+def "main nginx_debug" [] {
+    (docker run -d
+    --name=nginx-debug
+    -p 8888:80
+    -p 443:443
+    -v $"(pwd)/certbot/conf:/etc/letsencrypt"
+    -v $"(pwd)/files/debug.nginx:/etc/nginx/nginx.conf:ro"
+    nginx:alpine)
+}
+

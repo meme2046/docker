@@ -1,5 +1,6 @@
+worker_processes auto;
+
 events {
-	# 每个 worker 进程可以同时处理的最大连接数
 	worker_connections 1024;
 }
 
@@ -8,54 +9,53 @@ http {
 		server fastapi:8000;
 	}
 
-	# 用于Let's Encrypt 验证
-	# HTTP 强制跳转 HTTPS
 	server {
 		listen      80;
 		server_name meme.us.kg;
 
-		location /ping {
-			return     200 "pong\n";
-			add_header Content-Type text/plain;
-			add_header Access-Control-Allow-Origin "*";
-			access_log off;
-		}
-
-		# 将其他请求重定向到 HTTPS
 		location / {
 			return 301 https://$host$request_uri;
 		}
 	}
 
-	# HTTPS 服务：代理到 FastAPI
 	server {
-		listen                    443 ssl;
+		listen                    443 ssl http2;
 		server_name               meme.us.kg;
-		# SSL 证书路径（由 Certbot 自动生成）
+		# 证书路径（符号链接需确保权限）
 		ssl_certificate           /etc/letsencrypt/live/meme.us.kg/fullchain.pem;
 		ssl_certificate_key       /etc/letsencrypt/live/meme.us.kg/privkey.pem;
-		# SSL 协议优化(参考 Let's Encrypt 推荐配置)
+		# 优化后的SSL配置
 		ssl_protocols             TLSv1.2 TLSv1.3;
-		ssl_ciphers               ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES128-GCM-SHA256;
-		ssl_prefer_server_ciphers off;
+		ssl_prefer_server_ciphers on;
+		ssl_ciphers               'ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384';
 		ssl_session_cache         shared:SSL:10m;
-		ssl_session_timeout       10m;
+		ssl_session_timeout       1d;
+		ssl_stapling              on;
+		ssl_stapling_verify       on;
+		# 安全头
+		add_header                X-Content-Type-Options nosniff;
+		add_header                X-Frame-Options DENY;
+
+		# 健康检查端点
+		location = /nginx {
+			return     200
+			  "Hello there! 🚀 Your secure connection is up and running! Stay cozy ~ (HTTPS)\n";
+			add_header Content-Type text/plain;
+			add_header Access-Control-Allow-Origin "*";
+			access_log off;
+		}
 
 		# 反向代理配置
 		location / {
-			proxy_pass            http://fastapi_backend; # 内部访问 FastAPI 容器
+			proxy_pass            http://fastapi_backend;
 			proxy_set_header      Host $host;
 			proxy_set_header      X-Real-IP $remote_addr;
 			proxy_set_header      X-Forwarded-For $proxy_add_x_forwarded_for;
 			proxy_set_header      X-Forwarded-Proto $scheme;
-			proxy_set_header      X-Forwarded-Host $host;
-			proxy_set_header      X-Forwarded-Port $server_port;
-			# 超时设置
 			proxy_connect_timeout 60s;
 			proxy_send_timeout    60s;
 			proxy_read_timeout    60s;
-			# 大文件上传支持
-			client_max_body_size  10M;
+			client_max_body_size  10M; # 根据需求调整大小
 		}
 	}
 }
