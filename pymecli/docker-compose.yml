@@ -35,8 +35,8 @@ services:
     image: nginx:alpine
     container_name: nginx
     ports:
-      - "8888:80"
-      - "443:443"
+      - "8889:80"
+      - "8888:443"
     volumes:
       - ./files/.nginx:/etc/nginx/nginx.conf:ro
       - ./certbot/conf:/etc/letsencrypt

@@ -15,23 +15,23 @@
 # 添加代理参数支持
 PROXY_ARG=""
 if [ -n "$CLASH_PROXY" ]; then # -n: non-empty
-	PROXY_ARG="--proxy $CLASH_PROXY"
+  PROXY_ARG="--proxy $CLASH_PROXY"
 fi
 
 SSL_KEY=""
 if [ -f "/etc/letsencrypt/live/meme.us.kg/privkey.pem" ]; then
-	SSL_KEY="--ssl-keyfile /etc/letsencrypt/live/meme.us.kg/privkey.pem"
+  SSL_KEY="--ssl-keyfile /etc/letsencrypt/live/meme.us.kg/privkey.pem"
 fi
 
 SSL_CERT=""
 if [ -f "/etc/letsencrypt/live/meme.us.kg/fullchain.pem" ]; then
-	SSL_CERT="--ssl-certfile /etc/letsencrypt/live/meme.us.kg/fullchain.pem"
+  SSL_CERT="--ssl-certfile /etc/letsencrypt/live/meme.us.kg/fullchain.pem"
 fi
 
 # 启动 FastAPI 服务
 fast 0.0.0.0 --port 80 \
-	--rule https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release \
-	--my-rule https://raw.githubusercontent.com/meme2046/data/refs/heads/main/clash \
-	$SSL_KEY \
-	$SSL_CERT \
-	$PROXY_ARG
+  --rule https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release \
+  --my-rule https://raw.githubusercontent.com/meme2046/data/refs/heads/main/clash \
+  $SSL_KEY \
+  $SSL_CERT \
+  $PROXY_ARG
