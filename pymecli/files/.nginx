@@ -14,8 +14,11 @@ http {
 		listen      80;
 		server_name meme.us.kg;
 
-		location /.well-known/acme-challenge/ {
-			root /var/www/certbot;
+		location /ping {
+			return     200 "pong\n";
+			add_header Content-Type text/plain;
+			add_header Access-Control-Allow-Origin "*";
+			access_log off;
 		}
 
 		# 将其他请求重定向到 HTTPS

@@ -1,4 +1,6 @@
 #!/bin/bash
-echo "ENDPOINT"
-echo "CMD,\$1:\"$1\""
-$1
+# $1 只获取第一个参数
+# "$@" 获取所有传入的参数
+# exec 会用新命令替换当前 shell 进程，保持 PID 1 的特性（这对于容器正常工作很重要）
+echo "CMD: $@"
+exec "$@"

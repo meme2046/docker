@@ -1,0 +1,15 @@
+services:
+  debug:
+    image: registry.cn-chengdu.aliyuncs.com/jusu/alpine:latest
+    container_name: debug
+    privileged: true
+    tty: true # 相当于 -t
+    stdin_open: true # 相当于 -i
+    networks:
+      - app-network
+    command: >
+      echo "hello world"
+
+networks:
+  app-network:
+    driver: bridge

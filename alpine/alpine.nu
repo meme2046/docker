@@ -14,9 +14,13 @@ def "main build" [] {
 def "main debug" [] {
     (docker run -it --rm --privileged
     --name=debug-alpine
-    $IMAGE /bin/sh)
+    $IMAGE uv --version)
 }
 
 def "main push" [] {
     docker push $IMAGE
+}
+
+def "main compose-debug" [] {
+    docker compose -f $"(pwd)/docker-compose.yml" run debug
 }
