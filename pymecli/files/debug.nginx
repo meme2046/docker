@@ -27,6 +27,14 @@ http {
     root                      /var/www/html;
     index                     index.html index.htm;
 
+    location = /nginx {
+      return     200
+        "Hello there! Your secure connection is up and running! Stay cozy ~ (HTTPS)\n";
+      add_header Content-Type text/plain;
+      add_header Access-Control-Allow-Origin "*";
+      access_log off;
+    }
+
     # 健康检查端点
     location = /ping {
       return     200 "pong from nginx (HTTPS)\n";

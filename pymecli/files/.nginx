@@ -36,11 +36,10 @@ http {
 
     # 健康检查端点
     location = /nginx {
-      return     200
-        "Hello there! Your secure connection is up and running! Stay cozy ~ (HTTPS)\n";
-      add_header Content-Type text/plain;
-      add_header Access-Control-Allow-Origin "*";
-      access_log off;
+      content_by_lua_block {
+          ngx.log(ngx.DEBUG, "Hello from Nginx! Host: ", ngx.var.host)
+          ngx.say("Hello there! Your secure connection is up and running! Stay cozy ~ (HTTPS)")
+      }
     }
 
     location = /echo {
@@ -49,15 +48,6 @@ http {
       echo "request_uri = $request_uri";
       echo "http_user_agent = $http_user_agent";
       echo "http_accept = $http_accept";
-    }
-
-    location = /openresty {
-      content_by_lua_block {
-          ngx.log(ngx.DEBUG, "Hello from Lua! Host: ", ngx.var.host)
-
-          -- 返回 HTTP 响应（可选）
-          ngx.say("The message from openresty npx.say")
-      }
     }
 
     location ~* ^/proxy/(?<target_host>[^/]+)(?<target_path>.*)$ {
