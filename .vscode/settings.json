@@ -98,9 +98,6 @@
   "[markdown]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "[nginx]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
   // 📝彩虹缩进 indent-rainbow 配置
   "editor.tabSize": 2,
   "indentRainbow.ignoreErrorLanguages": ["plaintext"],
@@ -121,7 +118,8 @@
     "toml",
     "sql",
     "go",
-    "lua"
+    "lua",
+    "nginx"
   ],
   "indentRainbow.excludedLanguages": [],
   // 📝code-runner

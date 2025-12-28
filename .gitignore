@@ -15,3 +15,4 @@ tmp.json
 tmp.yaml
 cloudflare.ini
 *.pem
+logs/

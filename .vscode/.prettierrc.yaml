@@ -25,7 +25,7 @@ plugins:
   - prettier-plugin-toml
   - prettier-plugin-sh
   - prettier-plugin-properties
-  - "@prettier/plugin-lua"
+  - prettier-plugin-nginx
 # xml
 xmlWhitespaceSensitivity: strict # Options are `strict`, `preserve`, and `ignore`. You may want `ignore` or `preserve`,default `strict`,default `strict`
 xmlSortAttributesByKey: true
@@ -39,7 +39,3 @@ overrides:
       - "*.txt"
     options:
       parser: markdown
-  - files:
-      - "*.nginx"
-    options:
-      parser: lua
