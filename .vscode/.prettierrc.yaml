@@ -33,6 +33,9 @@ xmlSelfClosingSpace: true # 在自动关闭标记之前添加空格, default `tr
 # toml
 indentEntries: true # 缩进表下的条目, default `false`
 reorderKeys: true # 按字母顺序重新排列未用空行分隔的键, default `false`
+# nginx
+wrapParameters: false # 将参数换行以适应打印宽度. default `true`
+continuationIndent: 2 # default `2`
 # override
 overrides:
   - files:

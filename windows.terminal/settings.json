@@ -1,89 +1,90 @@
 {
-	"$help": "https://aka.ms/terminal-documentation",
-	"$schema": "https://aka.ms/terminal-profiles-schema",
-	"actions": [
-		{
-			"command": {
-				"action": "copy",
-				"singleLine": false
-			},
-			"id": "User.copy.644BA8F2"
-		},
-		{
-			"command": "paste",
-			"id": "User.paste"
-		},
-		{
-			"command": {
-				"action": "splitPane",
-				"split": "auto",
-				"splitMode": "duplicate"
-			},
-			"id": "User.splitPane.A6751878"
-		},
-		{
-			"command": "find",
-			"id": "User.find"
-		}
-	],
-	"copyFormatting": "none",
-	"centerOnLaunch": true,
-	"copyOnSelect": true,
-	"defaultInputScope": "alphanumericHalfWidth",
-	"defaultProfile": "{9ca42ef8-1e00-4cf4-9fdd-4f4338378a67}",
-	"initialCols": 160,
-	"initialRows": 46,
-	"keybindings": [
-		{
-			"id": "User.copy.644BA8F2",
-			"keys": "ctrl+c"
-		},
-		{
-			"id": "User.find",
-			"keys": "ctrl+shift+f"
-		},
-		{
-			"id": "User.paste",
-			"keys": "ctrl+v"
-		},
-		{
-			"id": "User.splitPane.A6751878",
-			"keys": "alt+shift+d"
-		}
-	],
-	"profiles": {
-		"defaults": {
-			"backgroundImage": "d:/quark/dev/curated-images/025.jpg",
-			"backgroundImageOpacity": 0.2,
-			"font": {
-				"face": "MesloLGM Nerd Font",
-				"size": 10
-			},
-			"opacity": 90,
-			"startingDirectory": "d:/tmp",
-			"useAcrylic": true
-		},
-		"list": [
-			{
-				"guid": "{9ca42ef8-1e00-4cf4-9fdd-4f4338378a67}",
-				"name": "Nushell",
-				"commandline": "nu",
-				"hidden": false,
-				"colorScheme": "CGA",
-				"backgroundImage": "d:/quark/dev/curated-images/wallhaven-004.png",
-				"backgroundImageOpacity": 0.2
-			},
-			{
-				"guid": "{526c65f7-7ad4-4028-a9b7-ed0127d6e051}",
-				"name": "Pwsh",
-				"commandline": "C:\\scoop\\shims\\pwsh.exe",
-				"hidden": false,
-				"colorScheme": "Campbell Powershell",
-				"backgroundImage": "d:/quark/dev/curated-images/138.jpg",
-				"backgroundImageOpacity": 0.2
-			}
-		]
-	},
-	"schemes": [],
-	"themes": []
+  "$help": "https://aka.ms/terminal-documentation",
+  "$schema": "https://aka.ms/terminal-profiles-schema",
+  "actions": [
+    {
+      "command": {
+        "action": "copy",
+        "singleLine": false
+      },
+      "id": "User.copy.644BA8F2"
+    },
+    {
+      "command": "paste",
+      "id": "User.paste"
+    },
+    {
+      "command": {
+        "action": "splitPane",
+        "split": "auto",
+        "splitMode": "duplicate"
+      },
+      "id": "User.splitPane.A6751878"
+    },
+    {
+      "command": "find",
+      "id": "User.find"
+    }
+  ],
+  "copyFormatting": "none",
+  "centerOnLaunch": true,
+  "copyOnSelect": true,
+  "defaultInputScope": "alphanumericHalfWidth",
+  "defaultProfile": "{9ca42ef8-1e00-4cf4-9fdd-4f4338378a67}",
+  "initialCols": 160,
+  "initialRows": 46,
+  "keybindings": [
+    {
+      "id": "User.copy.644BA8F2",
+      "keys": "ctrl+c"
+    },
+    {
+      "id": "User.find",
+      "keys": "ctrl+shift+f"
+    },
+    {
+      "id": "User.paste",
+      "keys": "ctrl+v"
+    },
+    {
+      "id": "User.splitPane.A6751878",
+      "keys": "alt+shift+d"
+    }
+  ],
+  "profiles": {
+    "defaults": {
+      "backgroundImage": "d:/quark/dev/curated-images/025.jpg",
+      "backgroundImageOpacity": 0.2,
+      "elevate": true,
+      "font": {
+        "face": "MesloLGM Nerd Font",
+        "size": 10
+      },
+      "opacity": 90,
+      "startingDirectory": "d:/tmp",
+      "useAcrylic": true
+    },
+    "list": [
+      {
+        "guid": "{9ca42ef8-1e00-4cf4-9fdd-4f4338378a67}",
+        "name": "Nushell",
+        "commandline": "nu",
+        "hidden": false,
+        "colorScheme": "CGA",
+        "backgroundImage": "d:/quark/dev/curated-images/wallhaven-004.png",
+        "backgroundImageOpacity": 0.2
+      },
+      {
+        "guid": "{526c65f7-7ad4-4028-a9b7-ed0127d6e051}",
+        "name": "Pwsh",
+        "commandline": "C:\\scoop\\shims\\pwsh.exe",
+        "hidden": false,
+        "colorScheme": "Campbell Powershell",
+        "backgroundImage": "d:/quark/dev/curated-images/138.jpg",
+        "backgroundImageOpacity": 0.2
+      }
+    ]
+  },
+  "schemes": [],
+  "themes": []
 }
