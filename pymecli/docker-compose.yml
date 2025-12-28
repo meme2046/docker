@@ -32,13 +32,17 @@ services:
     restart: unless-stopped
 
   nginx:
-    image: nginx:alpine
+    # image: nginx:alpine
+    image: openresty/openresty:alpine
     container_name: nginx
     ports:
       - "8889:80"
       - "8888:443"
     volumes:
-      - ./files/.nginx:/etc/nginx/nginx.conf:ro
+      # - ./files/.nginx:/etc/nginx/nginx.conf:ro
+      - ./files/.nginx:/usr/local/openresty/nginx/conf/nginx.conf:ro
+      # - ./files/lua-scripts:/usr/local/openresty/nginx/lua-scripts \ # 挂载Lua脚本
+      # - ./files/logs:/usr/local/openresty/nginx/logs \ # 挂载日志目录
       - ./certbot/conf:/etc/letsencrypt
     depends_on:
       - certbot-renew # 添加这个依赖

@@ -5,6 +5,9 @@ events {
 }
 
 http {
+  # resolver 8.8.8.8 1.1.1.1 valid=30s; # Google + Cloudflare DNS
+  resolver 223.5.5.5 114.114.114.114 valid=30s; # 国内
+
   upstream fastapi_backend {
     server fastapi:8000;
   }
@@ -32,11 +35,48 @@ http {
 
     # 健康检查端点
     location = /nginx {
-      return     200
-        "Hello there! Your secure connection is up and running! Stay cozy ~ (HTTPS)\n";
+      return     200 "Hello there! Your secure connection is up and running! Stay cozy ~ (HTTPS)\n";
       add_header Content-Type text/plain;
       add_header Access-Control-Allow-Origin "*";
       access_log off;
+    }
+
+    location = /echo {
+      echo "Hello from nginx!";
+      echo "host = $host";
+      echo "request_uri = $request_uri";
+      echo "http_user_agent = $http_user_agent";
+      echo "http_accept = $http_accept";
+    }
+
+    location ~* ^/proxy/(?<target_host>[^/]+)(?<target_path>.*)$ {
+      echo_debug if ($target_host !~* "^(finance\.pae\.baidu\.com|stock\.pae\.baidu\.com)$") {
+        return 403 "Proxy denied";
+      }
+
+      if ($request_method = 'OPTIONS') {
+        add_header 'Access-Control-Max-Age' 1728000;
+        add_header 'Content-Type' 'text/plain; charset=utf-8';
+        add_header 'Content-Length' 0;
+        return     204;
+      }
+
+      add_header            'Access-Control-Allow-Origin' '*' always;
+      add_header            'Access-Control-Allow-Methods' 'GET, POST, OPTIONS' always;
+      add_header            'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range' always;
+      # 构造完整的目标 URL
+      set                   $target_url "https://$target_host$target_path";
+      # 代理到动态目标
+      proxy_pass            $target_url;
+      # 请求头
+      proxy_set_header      Host $target_host;
+      proxy_set_header      User-Agent $http_user_agent;
+      proxy_set_header      Accept $http_accept;
+      proxy_ssl_server_name on;
+      # 超时设置(可选)
+      proxy_connect_timeout 10s;
+      proxy_send_timeout    30s;
+      proxy_read_timeout    30s;
     }
 
     # 反向代理配置
