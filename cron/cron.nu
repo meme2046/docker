@@ -1,5 +1,22 @@
+const IMAGE = "registry.cn-chengdu.aliyuncs.com/jusu/cron-worker:latest"
+const TEST_IMAGE = "cron-test:latest"
+
 def main [] {
     print 'cron script'
+}
+
+def "main build" [] {
+    mkdir go-job
+    let items = [comm, domain, jobs, lib, sdk, utils, go.mod, go.sum]
+    for item in $items {
+        cp -rv $"d:/codeup/cron/go-job/($item)" ./go-job
+    }
+
+    (DOCKER_BUILDKIT=0 docker build --no-cache
+    -t $TEST_IMAGE
+    -f build.Dockerfile .)
+
+    rm -rp ./go-job
 }
 
 def "main mysql" [] {
