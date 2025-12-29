@@ -23,9 +23,7 @@ embeddedLanguageFormatting: auto
 plugins:
   - "@prettier/plugin-xml"
   - prettier-plugin-toml
-  - prettier-plugin-sh
   - prettier-plugin-properties
-  - prettier-plugin-nginx
 # xml
 xmlWhitespaceSensitivity: strict # Options are `strict`, `preserve`, and `ignore`. You may want `ignore` or `preserve`,default `strict`,default `strict`
 xmlSortAttributesByKey: true
@@ -34,8 +32,8 @@ xmlSelfClosingSpace: true # 在自动关闭标记之前添加空格, default `tr
 indentEntries: true # 缩进表下的条目, default `false`
 reorderKeys: true # 按字母顺序重新排列未用空行分隔的键, default `false`
 # nginx
-wrapParameters: false # 将参数换行以适应打印宽度. default `true`
-continuationIndent: 2 # default `2`
+# wrapParameters: false # 将参数换行以适应打印宽度. default `true`
+# continuationIndent: 2 # default `2`
 # override
 overrides:
   - files:

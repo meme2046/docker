@@ -89,14 +89,14 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": false
   },
-  "[dockerfile]": {
+  "[markdown]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[shellscript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "lumirelle.shell-format-rev"
   },
-  "[markdown]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "[dockerfile]": {
+    "editor.defaultFormatter": "lumirelle.shell-format-rev"
   },
   // 📝彩虹缩进 indent-rainbow 配置
   "editor.tabSize": 2,
@@ -147,7 +147,11 @@
     "**/src/components/ui/**/*"
   ],
   "files.associations": {
+    ".prettierrc": "json",
     "*.txt": "markdown",
-    ".nginx": "nginx"
+    ".nginx": "nginx",
+    "*.svg": "xml",
+    "*.sh": "shellscript",
+    "*.conf": "ini"
   }
 }

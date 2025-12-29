@@ -24,6 +24,7 @@
     "adamhartford.vscode-base64",
     "formulahendry.code-runner",
     "ahmadalli.vscode-nginx-conf",
+    "lumirelle.shell-format-rev",
     // react
     "bradlc.vscode-tailwindcss",
     "dbaeumer.vscode-eslint",
