@@ -1,4 +1,1 @@
 *.nu
-.nginx
-openresty.nginx
-*.Dockerfile
