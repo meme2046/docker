@@ -10,8 +10,8 @@ curl \
 	trzsz \
 	mkcert
 
-RUN RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
-	&& echo "Asia/Shanghai" > /etc/timezone
+RUN RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime &&
+	echo "Asia/Shanghai" >/etc/timezone
 
 # https://pypi.org/simple
 # https://mirrors.cloud.tencent.com/pypi/simple

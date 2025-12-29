@@ -101,6 +101,9 @@
   "[ignore]": {
     "editor.defaultFormatter": "lumirelle.shell-format-rev"
   },
+  "[dotenv]": {
+    "editor.defaultFormatter": "lumirelle.shell-format-rev"
+  },
   // 📝彩虹缩进 indent-rainbow 配置
   "editor.tabSize": 2,
   "indentRainbow.ignoreErrorLanguages": ["plaintext"],
