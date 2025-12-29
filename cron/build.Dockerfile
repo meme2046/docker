@@ -1,37 +1,52 @@
 FROM golang:1.25-alpine AS builder
 
-WORKDIR /go-job
+ENV JOB_DIR=/go-job
+ENV JOB_OUTPUT_DIR=/go-job-ouput
+ENV WORKER_DIR=/cron-worker
+ENV WORKER_OUTPUT_DIR=/cron-worker-output
+RUN mkdir -p $JOB_OUTPUT_DIR
+RUN mkdir -p $WORKER_OUTPUT_DIR
+
+WORKDIR $JOB_DIR
 COPY ./go-job .
+
 
 RUN go env -w GO111MODULE=on
 RUN go env -w GOPROXY=https://goproxy.cn,direct
-# 💯🚀🎯🗂️📌📜
-RUN echo "📁" && pwd && ls
+
 RUN printf "🎯GO111MODULE: %s" "$(go env GO111MODULE)"
 RUN echo "🎯GOPROXY: $(go env GOPROXY)"
 RUN echo "🎯go version: $(go version)"
 
-WORKDIR /go-job/jobs
-RUN mkdir -p /build
+WORKDIR $JOB_DIR/jobs
 
 RUN for item in *; do \
       if [ -d "$item" ]; then \
         echo "Building $item..."; \
-        CGO_ENABLED=0 GOOS=linux go build -o "/build/$item" "./$item/."; \
+        CGO_ENABLED=0 GOOS=linux go build -o "$JOB_OUTPUT_DIR/$item" "./$item/."; \
       fi; \
     done
 
-RUN echo "🗂️/build" && ls /build
+WORKDIR $WORKER_DIR
+COPY ./cron-worker .
+
+
+RUN CGO_ENABLED=0 GOOS=linux go build -a -o "$WORKER_OUTPUT_DIR" main.go
+
+RUN echo "📁$WORKER_OUTPUT_DIR" && ls $WORKER_OUTPUT_DIR
+RUN echo "📁$JOB_OUTPUT_DIR" && ls $JOB_OUTPUT_DIR
 
 FROM alpine:latest
-WORKDIR /bin/go/
 
-COPY --from=builder /build .
-
+WORKDIR /worker/go/
+COPY --from=builder /go-job-ouput .
 RUN chmod +x *
-
 RUN echo "📁" && pwd && ls
 
-WORKDIR /bin
+WORKDIR /worker
+COPY --from=builder /cron-worker-output .
+RUN chmod +x *
+COPY ./cron-worker/conf/ ./conf
+RUN mkdir -p /worker/log
+RUN echo "📁" && pwd && ls
 
-# CMD ["main"]
