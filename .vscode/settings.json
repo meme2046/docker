@@ -104,6 +104,9 @@
   "[dotenv]": {
     "editor.defaultFormatter": "lumirelle.shell-format-rev"
   },
+  "[nushell]": {
+    "editor.defaultFormatter": "TheNuProjectContributors.vscode-nushell-lang"
+  },
   // 📝彩虹缩进 indent-rainbow 配置
   "editor.tabSize": 2,
   "indentRainbow.ignoreErrorLanguages": ["plaintext"],
@@ -125,7 +128,8 @@
     "sql",
     "go",
     "lua",
-    "nginx"
+    "nginx",
+    "nushell"
   ],
   "indentRainbow.excludedLanguages": [],
   // 📝code-runner
@@ -158,6 +162,7 @@
     ".nginx": "nginx",
     "*.svg": "xml",
     "*.sh": "shellscript",
-    "*.conf": "ini"
+    "*.conf": "ini",
+    "*.nu": "nushell"
   }
 }

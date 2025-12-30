@@ -1,5 +1,8 @@
 FROM golang:1.25-alpine AS builder
 
+RUN apk add --no-cache nushell
+RUN apk cache clean && rm -rf /var/cache/apk/* /tmp/* /var/tmp/*
+
 ENV JOB_DIR=/go-job
 ENV JOB_OUTPUT_DIR=/go-job-output
 ENV WORKER_DIR=/cron-worker
@@ -18,9 +21,9 @@ RUN echo "🎯GOPROXY: $(go env GOPROXY)"
 RUN echo "🎯go version: $(go version)"
 
 WORKDIR $JOB_DIR/jobs
-COPY build_jobs.sh .
-RUN chmod +x build_jobs.sh
-RUN ./build_jobs.sh
+COPY build.nu .
+RUN chmod +x build.nu
+RUN nu build.nu jobs
 
 WORKDIR $WORKER_DIR
 COPY ./cron-worker .
