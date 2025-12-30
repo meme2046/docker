@@ -14,3 +14,7 @@ def "main list" [dir_path:string = "."] {
     ls $dir_path | where type == dir | each {echo $in.name}
     
 }
+
+def "main ts2date" [ts: string] {
+    $ts | str substring 0..9 | into datetime -f "%s" | date to-timezone local | format date "%Y-%m-%d %H:%M:%S"
+}
