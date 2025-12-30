@@ -105,7 +105,7 @@
     "editor.defaultFormatter": "lumirelle.shell-format-rev"
   },
   "[nushell]": {
-    "editor.defaultFormatter": "TheNuProjectContributors.vscode-nushell-lang"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   // 📝彩虹缩进 indent-rainbow 配置
   "editor.tabSize": 2,
