@@ -9,6 +9,8 @@ def "main list" [dir_path:string = "."] {
     print "----------------------------------------"
     ls $dir_path | where type == dir | each {print $in.name} | ignore
     print "----------------------------------------"
+    echo hello | print $"($in) world!"
+    print "----------------------------------------"
     ls $dir_path | where type == dir | each {echo $in.name}
-    echo hello | echo $"($in) world!"
+    
 }
