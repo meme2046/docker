@@ -22,7 +22,7 @@ def "main build" [] {
     }
     # --no-cache
     (DOCKER_BUILDKIT=0 docker build
-    -t $TEST_IMAGE
+    -t $IMAGE
     -f build.Dockerfile .)
 
     rm -rp $job_dir $worker_dir

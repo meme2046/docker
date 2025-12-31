@@ -1,8 +1,8 @@
 FROM registry.cn-chengdu.aliyuncs.com/jusu/ub24:latest
 
-RUN apt update
-RUN apt install -y libopencv-dev
-RUN apt clean && rm -rf /var/lib/apt/lists/*
+# RUN apt update
+# RUN apt install -y libopencv-dev
+# RUN apt clean && rm -rf /var/lib/apt/lists/*
 
 # https://pypi.org/simple
 # https://mirrors.cloud.tencent.com/pypi/simple

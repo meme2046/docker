@@ -46,3 +46,5 @@ RUN chmod +x *
 COPY ./cron-worker/conf/ ./conf
 RUN mkdir -p /worker/log
 RUN echo "📁" && pwd && ls
+
+CMD ["./main"]
