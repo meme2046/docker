@@ -58,7 +58,7 @@ http {
         -- 可加白名单检查（Lua 更灵活）
         local allowed_hosts = {
             ["finance.pae.baidu.com"] = true,
-            ["stock.pae.baidu.com"] = true
+            ["gushitong.baidu.com"] = true,
         }
         if not allowed_hosts[ngx.var.target_host] then
             ngx.log(ngx.WARN, "Blocked proxy request to unauthorized host: ", ngx.var.target_host)
@@ -66,12 +66,12 @@ http {
         end
       }
 
-      if ($request_method = 'OPTIONS') {
-        add_header 'Access-Control-Max-Age' 1728000;
-        add_header 'Content-Type' 'text/plain; charset=utf-8';
-        add_header 'Content-Length' 0;
-        return     204;
-      }
+      # if ($request_method = 'OPTIONS') {
+      #   add_header 'Access-Control-Max-Age' 1728000;
+      #   add_header 'Content-Type' 'text/plain; charset=utf-8';
+      #   add_header 'Content-Length' 0;
+      #   return     204;
+      # }
 
       add_header            'Access-Control-Allow-Origin' '*' always;
       add_header            'Access-Control-Allow-Methods' 'GET, POST, OPTIONS'
@@ -81,6 +81,15 @@ http {
         always;
       # 构造完整的目标 URL
       set                   $target_url "https://$target_host$target_path";
+      # 检查是否有查询参数，如果有则附加
+      if ($is_args) {
+        set $target_url "$target_url?$args";
+      }
+
+      header_filter_by_lua_block {
+        ngx.log(ngx.DEBUG, "to URL: ", ngx.var.target_url)
+      }
+      
       # 代理到动态目标
       proxy_pass            $target_url;
       # 请求头

@@ -129,7 +129,8 @@
     "go",
     "lua",
     "nginx",
-    "nushell"
+    "nushell",
+    "dotenv"
   ],
   "indentRainbow.excludedLanguages": [],
   // 📝code-runner

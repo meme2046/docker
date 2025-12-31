@@ -26,7 +26,7 @@ def "main run" [] {
 }
 
 def "main compose" [] {
-    docker compose -p fast -f $"(pwd)/docker-compose.yml" up -d
+    docker compose -p fast -f $"(pwd)/docker.compose.yml" up -d
 }
 # 生成证书
 def "main certbot_gen" [--force] {

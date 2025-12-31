@@ -21,7 +21,7 @@ RUN echo "🎯GOPROXY: $(go env GOPROXY)"
 RUN echo "🎯go version: $(go version)"
 
 WORKDIR $JOB_DIR/jobs
-COPY build.nu .
+COPY ./files/build.nu .
 RUN chmod +x build.nu
 RUN nu build.nu jobs
 

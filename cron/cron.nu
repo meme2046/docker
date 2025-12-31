@@ -98,5 +98,10 @@ def "main cron-worker" [] {
 }
 
 def "main compose" [] {
-    docker compose -p cron -f $"(pwd)/docker-compose.yml" up -d
+    docker compose -p cron -f $"(pwd)/docker.compose.yml" up -d
+}
+
+def "main db" [] {
+    # docker compose -f $"(pwd)/db.docker.compose.yml" run --rm redis
+    docker compose -p db -f $"(pwd)/db.docker.compose.yml" up -d
 }

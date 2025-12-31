@@ -18,3 +18,11 @@ def "main list" [dir_path:string = "."] {
 def "main ts2date" [ts: string] {
     $ts | str substring 0..9 | into datetime -f "%s" | date to-timezone local | format date "%Y-%m-%d %H:%M:%S"
 }
+# git test
+def "main git" [] {
+    git ls-remote https://github.com/github/gitignore.git HEAD
+}
+
+# ipv6 测试
+# ping -6 ipv6.baidu.com
+# ping -6 www.tsinghua.edu.cn
