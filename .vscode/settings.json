@@ -104,6 +104,9 @@
   "[dotenv]": {
     "editor.defaultFormatter": "lumirelle.shell-format-rev"
   },
+  "[go]": {
+    "editor.defaultFormatter": "golang.go"
+  },
   "[nushell]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
