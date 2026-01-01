@@ -14,7 +14,7 @@ def "main build" [] {
 def "main debug" [] {
     (docker run -it --rm --privileged
     --name=debug-alpine
-    $IMAGE uv --version)
+    $IMAGE /bin/sh)
 }
 
 def "main push" [] {

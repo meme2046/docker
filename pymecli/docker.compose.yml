@@ -39,6 +39,8 @@ services:
     ports:
       - "8889:80"
       - "8888:443"
+    environment:
+      - TZ=Asia/Shanghai
     volumes:
       # - ./files/.nginx:/etc/nginx/nginx.conf:ro
       - ./files/.nginx:/usr/local/openresty/nginx/conf/nginx.conf:ro

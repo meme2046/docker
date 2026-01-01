@@ -1,16 +1,13 @@
-from alpine:latest
+from ghcr.io/astral-sh/uv:bookworm-slim
 
 SHELL ["/bin/sh", "-c"]
-RUN apk add --no-cache tzdata curl git gcc g++
-# musl-dev linux-headers
+RUN apt update
+RUN apt install -y tzdata curl git
 
 RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 RUN echo "Asia/Shanghai" >/etc/timezone
 
-RUN apk add --no-cache uv
-RUN apk add --no-cache nodejs npm
-
-RUN apk del tzdata && apk cache clean && rm -rf /var/cache/apk/* /tmp/* /var/tmp/*
+RUN apt clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ENV PATH=${PATH}:root/.local/bin
 

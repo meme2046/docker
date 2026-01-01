@@ -59,12 +59,13 @@ def "main certbot_renew" [--force] {
 }
 
 def "main debug" [] {
-    (docker run -d
+    (docker run -it --rm
     --name=debug-pymecli
     -v $"(pwd)/certbot/conf:/etc/letsencrypt"
+    -e REDIS_PASSWORD=$env.REDIS_PASSWORD
     -e CLASH_PROXY=socks5://192.168.123.7:7890
-    -p 8888:80
-    $IMAGE)
+    -p 9911:80
+    $IMAGE /bin/sh)
 }
 
 def "main nginx_debug" [] {

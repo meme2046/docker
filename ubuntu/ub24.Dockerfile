@@ -1,19 +1,20 @@
 FROM ubuntu:latest
 
 SHELL ["/bin/bash", "-c"]
-RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-RUN echo "Asia/Shanghai" > /etc/timezone
 RUN apt update
-
 RUN apt install -y \
+	tzdata \
 	curl \
 	git \
 	build-essential
 
+RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+RUN echo "Asia/Shanghai" >/etc/timezone
+
 RUN apt clean && rm -rf /var/lib/apt/lists/*
 
 #  安装brew
-RUN eval "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" < /dev/null
+RUN eval "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" </dev/null
 ENV PATH=${PATH}:root/.local/bin:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin
 
 RUN brew install \

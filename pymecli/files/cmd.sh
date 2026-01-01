@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # if [ ! -f "/etc/mkcert/key.pem" ] || [ ! -f "/etc/mkcert/cert.pem" ]; then
 #     rm -rf /etc/mkcert/*
