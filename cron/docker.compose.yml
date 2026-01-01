@@ -4,6 +4,8 @@ networks:
 
 services:
   worker:
+    environment:
+      - TZ=Asia/Shanghai
     image: registry.cn-chengdu.aliyuncs.com/jusu/cron-worker:latest
     deploy:
       replicas: 3
@@ -12,6 +14,8 @@ services:
     restart: unless-stopped
 
   api:
+    environment:
+      - TZ=Asia/Shanghai
     image: registry.cn-chengdu.aliyuncs.com/jusu/cron-api:latest
     container_name: api
     ports:

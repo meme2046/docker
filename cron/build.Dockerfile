@@ -35,6 +35,11 @@ RUN echo "📁$JOB_OUTPUT_DIR" && ls $JOB_OUTPUT_DIR
 
 FROM alpine:latest
 
+RUN apk add --no-cache tzdata
+RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+RUN echo "Asia/Shanghai" >/etc/timezone
+RUN apk del tzdata && apk cache clean && rm -rf /var/cache/apk/* /tmp/* /var/tmp/*
+
 WORKDIR /worker/go/
 COPY --from=builder /go-job-output .
 RUN chmod +x *

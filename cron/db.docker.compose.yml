@@ -8,6 +8,7 @@ services:
     container_name: redis
     environment:
       - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - TZ=Asia/Shanghai
     ports:
       - "6379:6379"
     volumes:

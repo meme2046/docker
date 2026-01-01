@@ -35,7 +35,7 @@ def "main mysql" [] {
     -v d:/mysql/data:/var/lib/mysql
     -e MYSQL_ROOT_HOST=%
     -e MYSQL_ROOT_PASSWORD=your_password
-    -e TZ=Asia/Chongqing
+    -e TZ=Asia/Shanghai
     --restart=always
     mysql:5.7
     --skip-grant-tables
@@ -48,7 +48,7 @@ def "main mongo" [] {
     --name mongo 
     -p 27017:27017
     -v c:/mongodbdata:/data/db
-    -e TZ=Asia/Chongqing
+    -e TZ=Asia/Shanghai
     --restart=always
     mongo:latest)
 }
