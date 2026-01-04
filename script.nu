@@ -26,3 +26,18 @@ def "main git" [] {
 # ipv6 测试
 # ping -6 ipv6.baidu.com
 # ping -6 www.tsinghua.edu.cn
+
+def "main killport" [num:int] {
+    let matches = (netstat -ano | decode utf-8 | lines | where $it =~ $':($num)')
+    if ($matches | is-empty) {
+        print $"No process found listening on port ($num)"
+        return
+    }
+    let pid = ($matches | first | split row --regex '\s+' | last | str trim)
+    if ($pid | is-empty) {
+        print $"No process found listening on port ($num)"
+    } else {
+        print $"Killing process ID: ($pid) listening on port ($num)"
+        ^taskkill /F /PID $pid
+    }
+}

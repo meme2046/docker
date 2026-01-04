@@ -4,13 +4,12 @@ SHELL ["/bin/sh", "-c"]
 RUN apk add --no-cache tzdata curl git gcc g++
 # musl-dev linux-headers
 
-RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-RUN echo "Asia/Shanghai" >/etc/timezone
+RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo "Asia/Shanghai" >/etc/timezone
 
 RUN apk add --no-cache uv
 RUN apk add --no-cache nodejs npm
 
-RUN apk del tzdata && apk cache clean && rm -rf /var/cache/apk/* /tmp/* /var/tmp/*
+RUN apk cache clean && rm -rf /var/cache/apk/* /tmp/* /var/tmp/*
 
 ENV PATH=${PATH}:root/.local/bin
 
