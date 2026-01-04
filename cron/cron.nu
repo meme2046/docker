@@ -11,7 +11,7 @@ def "main build" [] {
     let worker_dir = "./cron-worker"
     mkdir $job_dir $worker_dir
 
-    let job_items = [comm, domain, jobs, lib, sdk, utils, go.mod, go.sum]
+    let job_items = [comm, domain, jobs, lib, sdk, utils, types, go.mod, go.sum]
     for item in $job_items {
         cp -rv $"d:/codeup/cron/go-job/($item)" $job_dir
     }
