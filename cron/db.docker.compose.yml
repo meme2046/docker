@@ -12,7 +12,7 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - d:/redis/data:/data
+      - d:/.db/redis:/data
     command: >
       redis-server
       --bind 0.0.0.0
@@ -20,6 +20,38 @@ services:
       --appendonly no
       --requirepass ${REDIS_PASSWORD}
       --port 6379
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    environment:
+      - TZ=Asia/Shanghai
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD} # ↩如果挂载初始化过的数据,<MYSQL_ROOT_PASSWORD>会被忽略
+    volumes:
+      - d:/.db/mysql:/var/lib/mysql
+    ports:
+      - "3366:3306"
+    # ⤵︎设置服务器默认字符集为:<utf8mb4>, 设置默认排序规则:<ci>表示<case insensitive>(大小写不敏感)
+    command: >
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    environment:
+      - TZ=Asia/Shanghai
+    ports:
+      - "27017:27017"
+    volumes:
+      - c:/mongodbdata:/data/db
     networks:
       - app-network
     restart: unless-stopped

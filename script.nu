@@ -27,7 +27,7 @@ def "main git" [] {
 # ping -6 ipv6.baidu.com
 # ping -6 www.tsinghua.edu.cn
 
-def "main killport" [num:int] {
+def "main killport" [num:int=5173] {
     let matches = (netstat -ano | decode utf-8 | lines | where $it =~ $':($num)')
     if ($matches | is-empty) {
         print $"No process found listening on port ($num)"
