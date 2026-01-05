@@ -115,15 +115,16 @@ def "main mysqldebug" [] {
     -p 3366:3306
     mysql:5.7)
 }
-
-def "main mysqlbk" [db:string="bot_tx"] {
+# nu cron.nu mysqlbk bot_tx --cn mysql57
+def "main mysqlbk" [db:string="bot_tx", --cn="mysql"] {
     # --all-databases: 备份所有库(含 mysql 系统库)
     # --databases db1: 指定数据库
     # --single-transaction: InnoDB 一致性快照(避免锁表)
     # --routines --triggers --events: 包含存储过程、触发器、事件
-    let fp = $"d:/mysql/backups/($db)_(date now | format date '%Y-%m-%d_%H_%M_%S').sql"
+    let fp = $"d:/.db/backups/mysql/($db)_(date now | format date '%Y-%m-%d_%H_%M_%S').sql"
+    let container_name = $cn
     let pwd = $env.MYSQL_PASSWORD
-    (docker exec mysql57 mysqldump
+    (docker exec $container_name mysqldump
     -u root $"-p($pwd)"
     --databases $db
     --single-transaction
@@ -131,8 +132,8 @@ def "main mysqlbk" [db:string="bot_tx"] {
 
     print $"mysqldump to ($fp)"
 }
-
-def "main mysqlrestore" [fp:string="d:/mysql/backups/full_backup.sql",--cn="mysql"] {
+# nu cron.nu mysqlrestore d:/.db/backups/mysql/bot_tx_2026-01-05_08_46_52.sql --cn mysql
+def "main mysqlrestore" [fp:string="d:/.db/backups/mysql/full_backup.sql",--cn="mysql"] {
     let pwd = $env.MYSQL_PASSWORD
     let container_name = $cn
     open $fp | docker exec -i $container_name mysql -u root $"-p($pwd)"
