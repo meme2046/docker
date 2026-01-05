@@ -115,7 +115,7 @@ def "main mysqldebug" [] {
     -p 3366:3306
     mysql:5.7)
 }
-# nu cron.nu mysqlbk bot_tx --cn mysql57
+# nu cron.nu mysqlbk bot_tx --cn mysql
 def "main mysqlbk" [db:string="bot_tx", --cn="mysql"] {
     # --all-databases: 备份所有库(含 mysql 系统库)
     # --databases db1: 指定数据库
@@ -129,6 +129,8 @@ def "main mysqlbk" [db:string="bot_tx", --cn="mysql"] {
     --databases $db
     --single-transaction
     --routines --triggers --events | save $fp)
+    # 复制到另外的磁盘,避免丢失
+    cp $fp c:/.db/backups/mysql
 
     print $"mysqldump to ($fp)"
 }
