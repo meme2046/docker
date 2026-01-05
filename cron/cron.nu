@@ -121,7 +121,7 @@ def "main mysqlbk" [db:string="bot_tx", --cn="mysql"] {
     # --databases db1: 指定数据库
     # --single-transaction: InnoDB 一致性快照(避免锁表)
     # --routines --triggers --events: 包含存储过程、触发器、事件
-    let fp = $"d:/.db/backups/mysql/($db)_(date now | format date '%Y-%m-%d_%H_%M_%S').sql"
+    let fp = $"d:/.backups/mysql/($db)_(date now | format date '%Y-%m-%d_%H_%M_%S').sql"
     let container_name = $cn
     let pwd = $env.MYSQL_PASSWORD
     (docker exec $container_name mysqldump
@@ -130,7 +130,7 @@ def "main mysqlbk" [db:string="bot_tx", --cn="mysql"] {
     --single-transaction
     --routines --triggers --events | save $fp)
     # 复制到另外的磁盘,避免丢失
-    cp $fp c:/.db/backups/mysql
+    cp $fp c:/.backups/mysql
 
     print $"mysqldump to ($fp)"
 }

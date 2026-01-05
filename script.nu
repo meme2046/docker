@@ -41,3 +41,8 @@ def "main killport" [num:int=5173] {
         ^taskkill /F /PID $pid
     }
 }
+# 复制备份文件到c盘,避免d盘损坏
+def "main bkcp" [] {
+    cp --progress --force d:/.backups/mysql/*.sql c:/.backups/mysql
+    cp --progress --force d:/.backups/bruno/*.json c:/.backups/bruno
+}
