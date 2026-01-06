@@ -16,3 +16,6 @@ tmp*.yaml
 cloudflare.ini
 *.pem
 logs/
+.env.local
+.env.development.local
+private.env
