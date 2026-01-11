@@ -1,22 +1,22 @@
 def main [] {
     print 'setting script'
 }
-
-def "main nu" [--theme = "atomic"] {
+# oh-my-posh init nu --config 'atomic'
+def "main nu" [] {
     let fp = $nu.config-path
     print $fp
-    let new_line = $"oh-my-posh init nu --config '($theme)'"
+    let new_line = [
+        'mkdir ($nu.data-dir | path join "vendor/autoload")',
+        'starship init nu | save -f ($nu.data-dir | path join "vendor/autoload/starship.nu")'
+    ]
     let config_list = open $fp | split row -r '\n'
     mut new_config_list = []
     mut matched = false
     for item in $config_list {
-        if ($item | str contains 'oh-my-posh init') {
+        if ($item | str contains 'vendor/autoload') {
             $matched = true
-            $new_config_list = ($new_config_list | append $new_line)
-            print "matched and replaced"
-        } else {
-            $new_config_list = ($new_config_list | append $item)
         }
+        $new_config_list = ($new_config_list | append $item)
     }
 
     if $matched == false {
@@ -24,18 +24,18 @@ def "main nu" [--theme = "atomic"] {
     }
 
     ($new_config_list | str join "\n" | save --force $fp)
-    print $"oh-my-posh theme: [($theme)] set successfully"
+    print "starship set successfully"
 }
 
-def "main pwsh" [--theme = "atomic"] {
+def "main pwsh" [] {
     let fp = (pwsh -c "echo $PROFILE")
     print $fp
-    let new_line = $"oh-my-posh init pwsh --config '($theme)' | Invoke-Expression"
+    let new_line = ['Invoke-Expression (&starship init powershell)']
     let config_list = open $fp | split row -r '\n'
     mut new_config_list = []
     mut matched = false
     for item in $config_list {
-        if ($item | str contains 'oh-my-posh init') {
+        if ($item | str contains 'starship init powershell') {
             $matched = true
             $new_config_list = ($new_config_list | append $new_line)
             print "matched and replaced"
@@ -49,5 +49,5 @@ def "main pwsh" [--theme = "atomic"] {
     }
 
     ($new_config_list | str join "\n" | save --force $fp)
-    print $"oh-my-posh theme: [($theme)] set successfully"
+    print "starship set successfully"
 }

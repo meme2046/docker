@@ -12,7 +12,15 @@ def "main list" [dir_path:string = "."] {
     echo hello | print $"($in) world!"
     print "----------------------------------------"
     ls $dir_path | where type == dir | each {echo $in.name}
-    
+}
+
+def "main lines" [] {
+    let new_lines = [
+        'mkdir ($nu.data-dir | path join "vendor/autoload")',
+        'starship init nu | save -f ($nu.data-dir | path join "vendor/autoload/starship.nu")'
+    ]
+
+    [] | append $new_lines
 }
 
 def "main ts2date" [ts: string] {

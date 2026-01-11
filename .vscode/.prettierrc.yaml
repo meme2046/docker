@@ -23,7 +23,6 @@ embeddedLanguageFormatting: auto
 plugins:
   - "@prettier/plugin-xml"
   - prettier-plugin-toml
-  - prettier-plugin-properties
   - prettier-plugin-sh
 # xml
 xmlWhitespaceSensitivity: strict # Options are `strict`, `preserve`, and `ignore`. You may want `ignore` or `preserve`,default `strict`,default `strict`
@@ -44,6 +43,3 @@ overrides:
       - "*.txt"
     options:
       parser: markdown
-  - files:
-      - "*.properties"
-    parser: dot-properties

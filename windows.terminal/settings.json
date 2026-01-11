@@ -57,7 +57,7 @@
       "backgroundImageOpacity": 0.2,
       "elevate": true,
       "font": {
-        "face": "MesloLGM Nerd Font",
+        "face": "FiraCode Nerd Font Mono",
         "size": 10
       },
       "opacity": 90,
