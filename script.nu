@@ -70,3 +70,10 @@ def "main prettier" [fp:string="./tests/test.properties"] {
     --ignore-path d:/github/meme2046/docker/.vscode/.prettierignore
     --write $fp)
 }
+
+
+def "main gencert" [] {
+    (mkcert -cert-file d:/.mkcert/cert.pem 
+    -key-file d:/.mkcert/key.pem
+    ::1 localhost 127.0.0.1 192.168.123.7)
+}

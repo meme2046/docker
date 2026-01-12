@@ -96,9 +96,12 @@ def "main cron-worker" [] {
     --restart=on-failure:3
     $"registry.cn-chengdu.aliyuncs.com/jusu/cron-worker:($v)")
 }
-
 def "main compose" [] {
     docker compose -p cron -f $"(pwd)/docker.compose.yml" up -d
+}
+# compose worker
+def "main cw" [] {
+    docker compose -p cron -f $"(pwd)/docker.compose.yml" up -d --force-recreate worker
 }
 
 def "main db" [] {

@@ -16,6 +16,8 @@ services:
   api:
     environment:
       - TZ=Asia/Shanghai
+    volumes:
+      - d:/.mkcert:/etc/mkcert
     image: registry.cn-chengdu.aliyuncs.com/jusu/cron-api:latest
     container_name: api
     ports:
