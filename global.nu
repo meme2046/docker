@@ -16,3 +16,15 @@ def pp [num:int=5173] {
 def kl [pid:int] {
     ^taskkill /F /PID $pid
 }
+
+def ips [] {
+    let ips = ([
+        (xh -b ifconfig.co user-agent:curl | str trim),
+        (xh -b ifconfig.me user-agent:curl | str trim),
+        (xh -b ip.gs user-agent:curl | str trim),
+        (xh -b ip.3322.net user-agent:curl | str trim)
+    ] | each { |ip| $ip | str trim | str replace -a "\n" ""})
+
+    # print ($ips | uniq)
+    print $ips
+}
