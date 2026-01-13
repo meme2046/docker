@@ -22,8 +22,8 @@ useTabs: false # useTabs 和 tabWidth 不能同时使用
 embeddedLanguageFormatting: auto
 plugins:
   - "@prettier/plugin-xml"
-  - prettier-plugin-toml
-  - prettier-plugin-sh
+  - prettier-plugin-toml #
+  - prettier-plugin-sh # shellscript, Dockerfile, gitignore, properties, gitignore, dotenv, hosts
 # xml
 xmlWhitespaceSensitivity: strict # Options are `strict`, `preserve`, and `ignore`. You may want `ignore` or `preserve`,default `strict`,default `strict`
 xmlSortAttributesByKey: true

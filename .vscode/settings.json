@@ -95,6 +95,9 @@
   "[dotenv]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "[nushell]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   "[shellscript]": {
     "editor.defaultFormatter": "lumirelle.shell-format-rev"
   },
@@ -106,9 +109,6 @@
   },
   "[go]": {
     "editor.defaultFormatter": "golang.go"
-  },
-  "[nushell]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   // 📝彩虹缩进 indent-rainbow 配置
   "editor.tabSize": 2,
