@@ -66,8 +66,8 @@ def "main pp" [num:int=5173] {
 }
 
 def "main prettier" [fp:string="./tests/test.properties"] {
-    (prettier --config d:/github/meme2046/docker/.vscode/.prettierrc.yaml
-    --ignore-path d:/github/meme2046/docker/.vscode/.prettierignore
+    (prettier --config=d:/github/meme2046/docker/.vscode/.prettierrc.yaml
+    --ignore-path=d:/github/meme2046/docker/.vscode/.prettierignore
     --write $fp)
 }
 
@@ -125,8 +125,9 @@ def "main nullorempty" [input : any] {
     }
 }
 
-def "main ex" [cmd_name: string] {
-    not (main nullorempty (which $cmd_name))
+def "main test" [] {
+    # not (main nullorempty (which $cmd_name))
+    ^pnpm root -g
 }
 
 
