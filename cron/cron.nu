@@ -134,9 +134,16 @@ def "main mysqlbk" [db:string="bot_tx", --cn="mysql"] {
     --routines --triggers --events | save $fp)
     # 复制到另外的磁盘,避免丢失
     cp $fp c:/.backups/mysql
+    main bkcp
 
     print $"mysqldump to ($fp)"
 }
+
+def "main bkcp" [] {
+    # cp --progress --force d:/.backups/mysql/*.sql c:/.backups/mysql
+    cp --progress --force d:/.backups/bruno/*.json c:/.backups/bruno
+}
+
 # nu cron.nu mysqlrestore d:/.db/backups/mysql/bot_tx_2026-01-05_08_46_52.sql --cn mysql
 def "main mysqlrestore" [fp:string="d:/.db/backups/mysql/full_backup.sql",--cn="mysql"] {
     let pwd = $env.MYSQL_PASSWORD

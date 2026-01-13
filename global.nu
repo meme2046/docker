@@ -28,3 +28,39 @@ def ips [] {
     # print ($ips | uniq)
     print $ips
 }
+
+def nullorempty [input : any] {
+    # 判断输入是否为null或者空
+    if ($input == null) {
+        return true
+    } else if (($input | describe) == "string") {
+        return (($input | str length) == 0)
+    } else if ($input | describe | str starts-with "list") {
+        return (($input | length) == 0)
+    } else if ($input | describe | str starts-with "record") {
+        return (($input | columns | length) == 0)
+    } else if ($input | describe | str starts-with "table") {
+        return (($input | columns | length) == 0)
+    } else {
+        return false
+    }
+}
+
+def uvpy [fp: string] {
+    let py = "./.venv/Scripts/python.exe"
+    if (not (nullorempty (which $py))) {
+        print (which $py)
+        print $"✔ Using (^$py --version)"
+        $env.PYTHONIOENCODING = 'utf-8'
+        $env.PYTHONPATH = '.'
+        # $env.PYTHONIOENCODING | print
+        # $env.PYTHONPATH | print
+        ^$py $fp
+    } else if (not (nullorempty (which python))) {
+        print (which python)
+        print $"✔ Using (^python --version)"
+        ^python $fp
+    } else {
+        print "✘ Python not found"
+    }
+}

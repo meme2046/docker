@@ -89,3 +89,44 @@ def "main ips" [] {
     # print ($ips | uniq)
     print $ips
 }
+
+def "main uvpy" [fp: string] {
+    let py = "./venv/Scripts/python.exe"
+    if (not (main nullorempty (which $py))) {
+        print (which $py)
+        print $"✔ Using (^$py --version)"
+        ($env.PYTHONPATH = '.'
+        $env.PYTHONIOENCODING = 'utf-8')
+        print $env.PYTHONPATH
+        print $env.PYTHONIOENCODING
+        ^$py $fp
+    } else if (not (main nullorempty (which python))) {
+        print (which python)
+        print $"✔ Using (^python --version)"
+        ^python $fp
+    } else {
+        print "✘ Python not found"
+    }
+}
+
+def "main nullorempty" [input : any] {
+    if ($input == null) {
+        return true
+    } else if (($input | describe) == "string") {
+        return (($input | str length) == 0)
+    } else if ($input | describe | str starts-with "list") {
+        return (($input | length) == 0)
+    } else if ($input | describe | str starts-with "record") {
+        return (($input | columns | length) == 0)
+    } else if ($input | describe | str starts-with "table") {
+        return (($input | columns | length) == 0)
+    } else {
+        return false
+    }
+}
+
+def "main ex" [cmd_name: string] {
+    not (main nullorempty (which $cmd_name))
+}
+
+
