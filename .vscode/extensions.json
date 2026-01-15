@@ -7,7 +7,7 @@
     "ms-toolsai.jupyter",
     "njpwerner.autodocstring",
     // 通用
-    "esbenp.prettier-vscode",
+    "emeraldwalk.RunOnSave",
     "TheNuProjectContributors.vscode-nushell-lang",
     // 美化
     "oderwat.indent-rainbow",
@@ -24,7 +24,6 @@
     "adamhartford.vscode-base64",
     "formulahendry.code-runner",
     "ahmadalli.vscode-nginx-conf",
-    "lumirelle.shell-format-rev",
     // react
     "bradlc.vscode-tailwindcss",
     "dbaeumer.vscode-eslint",

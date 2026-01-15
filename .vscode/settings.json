@@ -96,6 +96,12 @@
         "match": "Dockerfile$",
         "isAsync": true,
         "cmd": "me pr ${file}"
+      },
+      {
+        // nushell
+        "match": "\\.(nu)$",
+        "isAsync": true,
+        "cmd": "topiary format ${file}"
       }
     ]
   },
