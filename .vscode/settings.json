@@ -61,7 +61,7 @@
     "commands": [
       {
         // prettier
-        "match": "\\.(ts|js|json|html|css|graphql|gql|yaml|yml|md)$",
+        "match": "\\.(ts|js|jsx|tsx|json|html|css|graphql|gql|yaml|yml|md)$",
         "notMatch": "node_modules/*$",
         "isAsync": true,
         "cmd": "me prettier ${file}"
