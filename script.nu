@@ -58,7 +58,7 @@ def "main bkcp" [] {
 def "main pp" [num: int = 5173] {
   let matches = (netstat -ano | decode gbk | lines | where $it =~ $':($num)')
   if ($matches | is-empty) {
-    print $"No process found listening on port ($num)"
+    print $"✘ No process found listening on port 『($num)』"
     return
   } else {
     print $matches
@@ -92,7 +92,7 @@ def "main ips" [] {
   )
 
   # print ($ips | uniq)
-  print $ips
+  print $"✔ IPs: ($ips)"
 }
 
 def "main uvpy" [fp: string] {

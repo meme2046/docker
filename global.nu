@@ -12,7 +12,7 @@ def pp [num: int = 5173] {
 
   let matches = ($netstat_result.stdout | decode gbk | lines | where $it =~ $':($num)')
   if ($matches | is-empty) {
-    print $"No process found listening on port ($num)"
+    print $"✘ No process found listening on port 『($num)』"
   } else {
     print $matches
   }
@@ -33,7 +33,7 @@ def ips [] {
   )
 
   # print ($ips | uniq)
-  print $ips
+  print $"✔ IPs: ($ips)"
 }
 
 def nullorempty [input: any] {
