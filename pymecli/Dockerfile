@@ -1,8 +1,10 @@
 FROM registry.cn-chengdu.aliyuncs.com/jusu/slim:latest
 
 RUN uv python install cpython-3.10.19-linux-x86_64-gnu && uv python pin cpython-3.10.19-linux-x86_64-gnu
-RUN uv tool install pymecli -i https://mirrors.cloud.tencent.com/pypi/simple
-RUN uv tool upgrade --all -i https://mirrors.cloud.tencent.com/pypi/simple
+# RUN uv tool install pymecli -i https://mirrors.cloud.tencent.com/pypi/simple
+# RUN uv tool upgrade --all -i https://mirrors.cloud.tencent.com/pypi/simple
+RUN uv tool install pymecli
+RUN uv tool upgrade --all
 RUN uv cache clean
 
 # # 复制脚本并赋予权限
