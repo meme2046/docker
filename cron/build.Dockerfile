@@ -33,11 +33,13 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -o "$WORKER_OUTPUT_DIR" main.go
 RUN echo "📁$WORKER_OUTPUT_DIR" && ls $WORKER_OUTPUT_DIR
 RUN echo "📁$JOB_OUTPUT_DIR" && ls $JOB_OUTPUT_DIR
 
-FROM alpine:latest
+# FROM alpine:latest
 
-RUN apk add --no-cache tzdata
-RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo "Asia/Shanghai" >/etc/timezone
-RUN apk cache clean && rm -rf /var/cache/apk/* /tmp/* /var/tmp/*
+# RUN apk add --no-cache tzdata
+# RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo "Asia/Shanghai" > /etc/timezone
+# RUN apk cache clean && rm -rf /var/cache/apk/* /tmp/* /var/tmp/*
+
+FROM registry.cn-chengdu.aliyuncs.com/jusu/uv:debian-slim
 
 WORKDIR /worker/go/
 COPY --from=builder /go-job-output .
