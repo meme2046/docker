@@ -15,16 +15,10 @@ http {
   }
 
   server {
-    listen      80;
-    server_name meme.us.kg;
-    return      301 https://$host:8888$request_uri;
-  }
-
-  server {
     listen                    443 ssl;
-    server_name               memeniu.xyz;
-    ssl_certificate           /etc/letsencrypt/live/memeniu.xyz/memeniu.xyz_bundle.pem;
-    ssl_certificate_key       /etc/letsencrypt/live/memeniu.xyz/memeniu.xyz.key;
+    server_name               api.memeniu.xyz;
+    ssl_certificate           /etc/letsencrypt/live/api.memeniu.xyz/api.memeniu.xyz_bundle.pem;
+    ssl_certificate_key       /etc/letsencrypt/live/api.memeniu.xyz/api.memeniu.xyz.key;
     # 优化后的SSL配置
     ssl_protocols             TLSv1.2 TLSv1.3;
     ssl_prefer_server_ciphers on;
@@ -34,7 +28,7 @@ http {
     ssl_stapling_verify       on;
 
     location = /echo {
-      echo "memeniu.xyz config!";
+      echo "api.memeniu.xyz config!";
       echo "Hello from nginx!";
       echo "host = $host";
       echo "request_uri = $request_uri";
