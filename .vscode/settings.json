@@ -18,7 +18,6 @@
       "args": []
     }
   },
-  "window.commandCenter": false,
   "git.autofetch": true,
   "terminal.integrated.defaultProfile.windows": "nu",
   "terminal.integrated.automationProfile.windows": {
@@ -40,7 +39,6 @@
       "source.organizeImports.ruff": "explicit" // 保存时自动排序 import 语句
     }
   },
-  "python.analysis.typeCheckingMode": "standard",
   "python.envFile": "${workspaceFolder}/.env",
   "terminal.integrated.env.windows": {
     "PYTHONPATH": "${workspaceFolder}"
