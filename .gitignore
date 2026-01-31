@@ -15,6 +15,9 @@ tmp*.json
 tmp*.yaml
 cloudflare.ini
 *.pem
+*.crt
+*.csr
+*.key
 logs/
 .env.local
 .env.development.local

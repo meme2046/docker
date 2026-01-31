@@ -37,6 +37,7 @@ def "main certbot_gen" [--force] {
         "--agree-tos",
         "--no-eff-email",
         "-d meme.us.kg",
+        # "-d memeniu.xyz",
     ];
     if $force { $args = ($args | append "--force-renewal") }
     (docker run -it --rm
