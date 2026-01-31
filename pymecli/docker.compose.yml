@@ -42,11 +42,12 @@ services:
     environment:
       - TZ=Asia/Shanghai
     volumes:
-      # - ./files/.nginx:/etc/nginx/nginx.conf:ro
-      - ./files/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
+      - ./files/.nginx:/usr/local/openresty/nginx/conf/nginx.conf:ro
       - ./files/logs:/usr/local/openresty/nginx/logs # 挂载日志目录
+      - ./files/favicon.ico:/usr/local/openresty/nginx/html/favicon.ico
       # - ./files/lua-scripts:/usr/local/openresty/nginx/lua-scripts \ # 挂载Lua脚本
       - ./certbot/conf:/etc/letsencrypt
+      - ./dnspod-cert:/etc/letsencrypt/live/memeniu.xyz/
     depends_on:
       - certbot-renew # 添加这个依赖
       - fastapi

@@ -22,6 +22,29 @@ http {
 
   server {
     listen                    443 ssl;
+    server_name               memeniu.xyz;
+    ssl_certificate           /etc/letsencrypt/live/memeniu.xyz/memeniu.xyz_bundle.pem;
+    ssl_certificate_key       /etc/letsencrypt/live/memeniu.xyz/memeniu.xyz.key;
+    # 优化后的SSL配置
+    ssl_protocols             TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers               ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305;
+    ssl_session_cache         shared:SSL:10m;
+    ssl_session_timeout       1d;
+    ssl_stapling_verify       on;
+
+    location = /echo {
+      echo "memeniu.xyz config!";
+      echo "Hello from nginx!";
+      echo "host = $host";
+      echo "request_uri = $request_uri";
+      echo "http_user_agent = $http_user_agent";
+      echo "http_accept = $http_accept";
+    }
+  }
+
+  server {
+    listen                    443 ssl;
     server_name               meme.us.kg;
     # 证书路径（符号链接需确保权限）
     ssl_certificate           /etc/letsencrypt/live/meme.us.kg/fullchain.pem;
@@ -38,11 +61,12 @@ http {
     location = /nginx {
       content_by_lua_block {
           ngx.log(ngx.DEBUG, "Hello from Nginx! Host: ", ngx.var.host)
-          ngx.say("Hello there! Your secure connection is up and running! Stay cozy ~ (HTTPS)")
+          ngx.say("Hello there! Your secure connection is up and running! Stay cozy ~ (HTTPS)\nFrom: ", ngx.var.host)
       }
     }
 
     location = /echo {
+      echo "meme.us.kg config!";
       echo "Hello from nginx!";
       echo "host = $host";
       echo "request_uri = $request_uri";
