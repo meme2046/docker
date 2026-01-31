@@ -43,7 +43,7 @@ services:
       - TZ=Asia/Shanghai
     volumes:
       # - ./files/.nginx:/etc/nginx/nginx.conf:ro
-      - ./files/.nginx:/usr/local/openresty/nginx/conf/nginx.conf:ro
+      - ./files/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
       - ./files/logs:/usr/local/openresty/nginx/logs # 挂载日志目录
       # - ./files/lua-scripts:/usr/local/openresty/nginx/lua-scripts \ # 挂载Lua脚本
       - ./certbot/conf:/etc/letsencrypt
