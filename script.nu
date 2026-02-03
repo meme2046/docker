@@ -134,3 +134,23 @@ def "main test" [] {
   # not (main nullorempty (which $cmd_name))
   ^pnpm root -g
 }
+
+
+def "main confline" [line: string] {
+  let fp = $nu.config-path
+
+  mut config_list = open $fp | split row -r '\n'
+  mut matched = false
+  for item in $config_list {
+    if ($item | str contains $line) {
+        $matched = true
+    }
+  }
+
+  if ($matched == false) {
+    $config_list = ($config_list | append $line)
+  }
+
+  $config_list | str join "\n" | save --force $fp
+  open $fp
+}

@@ -52,7 +52,7 @@ def nullorempty [input: any] {
     return false
   }
 }
-
+# fp 传入 python 脚本路径
 def uvpy [fp: string] {
   let py = "./.venv/Scripts/python.exe"
   if (not (nullorempty (which $py))) {
@@ -70,4 +70,23 @@ def uvpy [fp: string] {
   } else {
     print "✘ Python not found"
   }
+}
+
+def confline [line: string] {
+  let fp = $nu.config-path
+
+  mut config_list = open $fp | split row -r '\n'
+  mut matched = false
+  for item in $config_list {
+    if ($item | str contains $line) {
+        $matched = true
+    }
+  }
+
+  if ($matched == false) {
+    $config_list = ($config_list | append $line)
+  }
+
+  $config_list | str join "\n" | save --force $fp
+  open $fp
 }
