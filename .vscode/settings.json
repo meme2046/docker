@@ -97,12 +97,6 @@
         "match": "Dockerfile$",
         "isAsync": true,
         "cmd": "me prettier ${file}"
-      },
-      {
-        // nushell
-        "match": "\\.(nu)$",
-        "isAsync": true,
-        "cmd": "topiary format ${file}"
       }
     ]
   },
