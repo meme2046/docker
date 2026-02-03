@@ -71,13 +71,13 @@
         "commandline": "nu",
         "hidden": false,
         "colorScheme": "CGA",
-        "backgroundImage": "d:/quark/dev/curated-images/wallhaven-004.png",
+        "backgroundImage": "d:/quark/dev/curated-images/w008.png",
         "backgroundImageOpacity": 0.2
       },
       {
         "guid": "{526c65f7-7ad4-4028-a9b7-ed0127d6e051}",
         "name": "Pwsh",
-        "commandline": "C:\\scoop\\shims\\pwsh.exe",
+        "commandline": "C:\\.scoop\\shims\\pwsh.exe",
         "hidden": false,
         "colorScheme": "Campbell Powershell",
         "backgroundImage": "d:/quark/dev/curated-images/138.jpg",

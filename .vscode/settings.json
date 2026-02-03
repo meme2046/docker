@@ -9,19 +9,19 @@
   // 📝powershelel配置
   "terminal.integrated.profiles.windows": {
     "pwsh": {
-      "path": "c:/scoop/shims/pwsh.exe",
+      "path": "c:/.scoop/shims/pwsh.exe",
       "args": [],
       "icon": "terminal-powershell"
     },
     "nu": {
-      "path": "c:/scoop/shims/nu.exe",
+      "path": "c:/.scoop/shims/nu.exe",
       "args": []
     }
   },
   "git.autofetch": true,
   "terminal.integrated.defaultProfile.windows": "nu",
   "terminal.integrated.automationProfile.windows": {
-    "path": "c:/scoop/shims/pwsh.exe",
+    "path": "c:/.scoop/shims/pwsh.exe",
     "args": []
   },
   // 终端日志级别
@@ -144,7 +144,7 @@
   },
   "json.format.enable": true,
   "workbench.iconTheme": "vscode-icons",
-  "workbench.colorTheme": "GitHub Light Colorblind (Beta)",
+  "workbench.colorTheme": "Default Dark Modern",
   "terminal.integrated.enableMultiLinePasteWarning": "auto",
   // 📝vscode自带css规则配置
   "css.validate": true,

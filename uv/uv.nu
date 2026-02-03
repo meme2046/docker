@@ -17,7 +17,7 @@ def "main debug" [] {
     docker run -it --rm --privileged
     --name=debug-slim
     -e REDIS_PASSWORD=$env.REDIS_PASSWORD
-    -e CLASH_PROXY=socks5://192.168.123.7:7890
+    -e CLASH_PROXY=socks5://192.168.123.7:7897
     $IMAGE /bin/sh
   )
 }
