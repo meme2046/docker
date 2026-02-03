@@ -54,13 +54,13 @@
   "profiles": {
     "defaults": {
       "backgroundImage": "d:/quark/dev/curated-images/025.jpg",
-      "backgroundImageOpacity": 0.2,
+      "backgroundImageOpacity": 0.1,
       "elevate": true,
       "font": {
         "face": "FiraCode Nerd Font Mono",
         "size": 10
       },
-      "opacity": 90,
+      "opacity": 96,
       "startingDirectory": "d:/tmp",
       "useAcrylic": true
     },
@@ -71,8 +71,7 @@
         "commandline": "nu",
         "hidden": false,
         "colorScheme": "CGA",
-        "backgroundImage": "d:/quark/dev/curated-images/w008.png",
-        "backgroundImageOpacity": 0.2
+        "backgroundImage": "d:/quark/dev/curated-images/w008.png"
       },
       {
         "guid": "{526c65f7-7ad4-4028-a9b7-ed0127d6e051}",
@@ -80,8 +79,7 @@
         "commandline": "C:\\.scoop\\shims\\pwsh.exe",
         "hidden": false,
         "colorScheme": "Campbell Powershell",
-        "backgroundImage": "d:/quark/dev/curated-images/138.jpg",
-        "backgroundImageOpacity": 0.2
+        "backgroundImage": "d:/quark/dev/curated-images/138.jpg"
       }
     ]
   },
