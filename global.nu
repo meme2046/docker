@@ -10,7 +10,7 @@ def pp [num: int = 5173] {
     return
   }
 
-  let matches = ($netstat_result.stdout | decode gbk | lines | where $it =~ $':($num)')
+  let matches = ($netstat_result.stdout | lines | where $it =~ $':($num)')
   if ($matches | is-empty) {
     print $"✘ No process found listening on port 『($num)』"
   } else {
