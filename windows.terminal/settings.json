@@ -61,7 +61,7 @@
         "size": 10
       },
       "opacity": 96,
-      "startingDirectory": "d:/tmp",
+      "startingDirectory": "d:/.tmp",
       "useAcrylic": true
     },
     "list": [

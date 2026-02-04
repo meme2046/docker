@@ -1,4 +1,5 @@
 {
+  "explorer.confirmDelete": true,
   "editor.fontSize": 13,
   "editor.fontFamily": "Consolas,'Courier New',monospace",
   "terminal.integrated.fontFamily": "FiraCode Nerd Font Mono",

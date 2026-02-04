@@ -1,7 +1,7 @@
 def "main github" [] {
 }
 
-def main [dir: string = "d:/.github/meme2046/data"] {
+def main [dir: string = "d:/github/meme2046/data"] {
   gate
   bitget sync
   cd $dir
