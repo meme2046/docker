@@ -1,4 +1,4 @@
-from ghcr.io/astral-sh/uv:debian-slim
+FROM ghcr.io/astral-sh/uv:debian-slim
 
 SHELL ["/bin/sh", "-c"]
 RUN apt update
