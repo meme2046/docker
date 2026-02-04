@@ -133,7 +133,9 @@ def "main mysqlbk" [db:string="bot_tx", --cn="mysql"] {
     --single-transaction
     --routines --triggers --events | save $fp)
     # 复制到另外的磁盘,避免丢失
-    cp $fp c:/.backups/mysql
+    let cbk = "c:/.backups/mysql"
+    mkdir $cbk
+    cp $fp $cbk
     main bkcp
 
     print $"mysqldump to ($fp)"
@@ -141,7 +143,9 @@ def "main mysqlbk" [db:string="bot_tx", --cn="mysql"] {
 
 def "main bkcp" [] {
     # cp --progress --force d:/.backups/mysql/*.sql c:/.backups/mysql
-    cp --progress --force d:/.backups/bruno/*.json c:/.backups/bruno
+    let cbk = "c:/.backups/bruno"
+    mkdir $cbk
+    cp --progress --force d:/.backups/bruno/*.json $cbk
 }
 
 # nu cron.nu mysqlrestore d:/.db/backups/mysql/bot_tx_2026-01-05_08_46_52.sql --cn mysql
