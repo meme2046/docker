@@ -53,7 +53,7 @@
   ],
   "profiles": {
     "defaults": {
-      "backgroundImage": "d:/quark/dev/curated-images/025.jpg",
+      "backgroundImage": "d:/.google/wallpapers/025.jpg",
       "backgroundImageOpacity": 0.1,
       "elevate": true,
       "font": {
@@ -71,7 +71,7 @@
         "commandline": "nu",
         "hidden": false,
         "colorScheme": "CGA",
-        "backgroundImage": "d:/quark/dev/curated-images/w008.png"
+        "backgroundImage": "d:/.google/wallpapers/w008.png"
       },
       {
         "guid": "{526c65f7-7ad4-4028-a9b7-ed0127d6e051}",
@@ -79,7 +79,7 @@
         "commandline": "C:\\.scoop\\shims\\pwsh.exe",
         "hidden": false,
         "colorScheme": "Campbell Powershell",
-        "backgroundImage": "d:/quark/dev/curated-images/138.jpg"
+        "backgroundImage": "d:/.google/wallpapers/138.jpg"
       }
     ]
   },
