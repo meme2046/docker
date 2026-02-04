@@ -30,9 +30,8 @@
   "terminal.integrated.showExitAlert": true,
   // 📝ruff
   "ruff.fixAll": true,
+  "python.analysis.typeCheckingMode": "standard",
   "[python]": {
-    // 📝yapf配置(格式化工具)
-    // "editor.defaultFormatter": "eeyore.yapf",
     "editor.defaultFormatter": "charliermarsh.ruff",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
