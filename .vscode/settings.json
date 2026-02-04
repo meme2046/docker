@@ -167,5 +167,8 @@
     "*.xml": "xml",
     "*.py": "python",
     "*.toml": "toml"
-  }
+  },
+  "Lingma.PreferredLanguage forCommitMessage": "简体中文",
+  "Lingma.PreferredLanguage for AI Chat": "简体中文",
+  "Lingma.DisplayLanguage": "简体中文"
 }

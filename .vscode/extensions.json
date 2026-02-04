@@ -25,6 +25,8 @@
     // react
     "bradlc.vscode-tailwindcss",
     "dbaeumer.vscode-eslint",
-    "midudev.better-svg"
+    "midudev.better-svg",
+    // AI
+    "Alibaba-Cloud.tongyi-lingma"
   ]
 }
