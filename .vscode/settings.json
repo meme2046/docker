@@ -167,7 +167,11 @@
     "*.py": "python",
     "*.toml": "toml"
   },
+  "files.saveConflictResolution": "overwriteFileOnDisk",
   "Lingma.PreferredLanguage forCommitMessage": "简体中文",
   "Lingma.PreferredLanguage for AI Chat": "简体中文",
-  "Lingma.DisplayLanguage": "简体中文"
+  "Lingma.DisplayLanguage": "简体中文",
+  "git.enableSmartCommit": true,
+  "git.confirmSync": false,
+  "window.commandCenter": false
 }
