@@ -39,7 +39,7 @@ RUN echo "📁$JOB_OUTPUT_DIR" && ls $JOB_OUTPUT_DIR
 # RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo "Asia/Shanghai" > /etc/timezone
 # RUN apk cache clean && rm -rf /var/cache/apk/* /tmp/* /var/tmp/*
 
-FROM registry.cn-chengdu.aliyuncs.com/jusu/uv:debian-slim
+FROM registry.cn-chengdu.aliyuncs.com/memeking/uv:debian-slim
 
 WORKDIR /worker/go/
 COPY --from=builder /go-job-output .

@@ -1,4 +1,4 @@
-const IMAGE = "registry.cn-chengdu.aliyuncs.com/jusu/cron-worker:latest"
+const IMAGE = "registry.cn-chengdu.aliyuncs.com/memeking/cron-worker:latest"
 const TEST_IMAGE = "cron-test:latest"
 
 
@@ -71,7 +71,7 @@ def "main cron-api" [] {
     (docker run -d 
     --name=cron-api 
     -p 8000:80
-    registry.cn-chengdu.aliyuncs.com/jusu/cron-api:latest)
+    registry.cn-chengdu.aliyuncs.com/memeking/cron-api:latest)
 }
 
 def "main cron-worker" [] {
@@ -82,19 +82,19 @@ def "main cron-worker" [] {
     --privileged
     --name=cron-worker-1
     --restart=on-failure:3
-    $"registry.cn-chengdu.aliyuncs.com/jusu/cron-worker:($v)")
+    $"registry.cn-chengdu.aliyuncs.com/memeking/cron-worker:($v)")
 
     (docker run -d
     --privileged
     --name=cron-worker-2
     --restart=on-failure:3
-    $"registry.cn-chengdu.aliyuncs.com/jusu/cron-worker:($v)")
+    $"registry.cn-chengdu.aliyuncs.com/memeking/cron-worker:($v)")
 
     (docker run -d
     --privileged
     --name=cron-worker-3
     --restart=on-failure:3
-    $"registry.cn-chengdu.aliyuncs.com/jusu/cron-worker:($v)")
+    $"registry.cn-chengdu.aliyuncs.com/memeking/cron-worker:($v)")
 }
 def "main compose" [] {
     docker compose -p cron -f $"(pwd)/docker.compose.yml" up -d

@@ -1,4 +1,4 @@
-const IMAGE = "registry.cn-chengdu.aliyuncs.com/jusu/ub24:latest"
+const IMAGE = "registry.cn-chengdu.aliyuncs.com/memeking/ub24:latest"
 
 def main [] {
   print 'ub24 script'

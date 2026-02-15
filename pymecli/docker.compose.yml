@@ -12,7 +12,7 @@ services:
       renew --dns-cloudflare
 
   fastapi:
-    image: registry.cn-chengdu.aliyuncs.com/jusu/pymecli:latest
+    image: registry.cn-chengdu.aliyuncs.com/memeking/pymecli:latest
     container_name: fastapi
     expose:
       - "8000"

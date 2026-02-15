@@ -1,6 +1,6 @@
 services:
   debug:
-    image: registry.cn-chengdu.aliyuncs.com/jusu/alpine:latest
+    image: registry.cn-chengdu.aliyuncs.com/memeking/alpine:latest
     container_name: debug
     privileged: true
     tty: true # 相当于 -t

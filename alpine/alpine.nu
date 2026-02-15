@@ -1,5 +1,5 @@
 
-const IMAGE = "registry.cn-chengdu.aliyuncs.com/jusu/alpine:latest"
+const IMAGE = "registry.cn-chengdu.aliyuncs.com/memeking/alpine:latest"
 
 def "main" [] {
     print "alpine script"

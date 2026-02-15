@@ -6,7 +6,7 @@ services:
   worker:
     environment:
       - TZ=Asia/Shanghai
-    image: registry.cn-chengdu.aliyuncs.com/jusu/cron-worker:latest
+    image: registry.cn-chengdu.aliyuncs.com/memeking/cron-worker:latest
     deploy:
       replicas: 3
     networks:
@@ -18,7 +18,7 @@ services:
       - TZ=Asia/Shanghai
     volumes:
       - d:/.mkcert:/etc/mkcert
-    image: registry.cn-chengdu.aliyuncs.com/jusu/cron-api:latest
+    image: registry.cn-chengdu.aliyuncs.com/memeking/cron-api:latest
     container_name: api
     ports:
       - "8000:80"

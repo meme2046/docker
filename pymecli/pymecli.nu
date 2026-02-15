@@ -1,4 +1,4 @@
-const IMAGE = "registry.cn-chengdu.aliyuncs.com/jusu/pymecli:latest"
+const IMAGE = "registry.cn-chengdu.aliyuncs.com/memeking/pymecli:latest"
 const CERTBOT_CLOUDFLARE_IMAGE = "certbot/dns-cloudflare:latest"
 def main [] {
     print 'pypmecli script'

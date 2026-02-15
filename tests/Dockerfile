@@ -1,17 +1,17 @@
-FROM registry.cn-chengdu.aliyuncs.com/jusu/ub24:latest
+FROM registry.cn-chengdu.aliyuncs.com/memeking/ub24:latest
 
 RUN apt install -y libopencv-dev
 RUN apt clean && rm -rf /var/lib/apt/lists/*
 
 RUN apk add --no-cache tzdata \ 
 curl \
-	git \
-	python \
-	trzsz \
-	mkcert
+  git \
+  python \
+  trzsz \
+  mkcert
 
-RUN RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime &&
-	echo "Asia/Shanghai" >/etc/timezone
+RUN RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+  && echo "Asia/Shanghai" > /etc/timezone
 
 # https://pypi.org/simple
 # https://mirrors.cloud.tencent.com/pypi/simple
