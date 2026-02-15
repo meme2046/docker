@@ -28,6 +28,10 @@ def "main build" [] {
     rm -rp $job_dir $worker_dir
 }
 
+def "main push" [] {
+    docker push $IMAGE
+}
+
 def "main mysql" [] {
     (docker run -d
     --name mysql57
