@@ -94,7 +94,7 @@
       },
       {
         // no-dot-ext
-        "match": "Dockerfile$",
+        "match": "Dockerfile$|web.config",
         "isAsync": true,
         "cmd": "me prettier ${file}"
       }

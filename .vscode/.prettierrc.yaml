@@ -1,5 +1,5 @@
 arrowParens: always
-bracketSameLine: false
+bracketSameLine: true
 objectWrap: preserve
 bracketSpacing: true
 semi: true
@@ -26,7 +26,7 @@ plugins:
   - prettier-plugin-sh # shellscript, Dockerfile, gitignore, properties, gitignore, dotenv, hosts
   - prettier-plugin-nginx
 # xml
-xmlWhitespaceSensitivity: strict # Options are `strict`, `preserve`, and `ignore`. You may want `ignore` or `preserve`,default `strict`,default `strict`
+xmlWhitespaceSensitivity: ignore # Options are `strict`, `preserve`, and `ignore`. You may want `ignore` or `preserve`,default `strict`
 xmlSortAttributesByKey: true
 xmlSelfClosingSpace: true # 在自动关闭标记之前添加空格, default `true`
 # toml
