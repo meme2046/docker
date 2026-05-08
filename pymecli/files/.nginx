@@ -14,11 +14,32 @@ http {
     server fastapi:8000;
   }
 
+  # 1. HTTP 服务 (80端口) —— 自动跳转 HTTPS
+  server {
+    listen      80;
+    server_name api.memeniu.xyz;
+
+    # 强制所有 HTTP 跳转到 HTTPS
+    # return      301 https://$host$request_uri;
+    # 反向代理配置
+    location / {
+      proxy_pass            http://fastapi_backend;
+      proxy_set_header      Host $host;
+      proxy_set_header      X-Real-IP $remote_addr;
+      proxy_set_header      X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header      X-Forwarded-Proto $scheme;
+      proxy_connect_timeout 120s;
+      proxy_send_timeout    120s;
+      proxy_read_timeout    120s;
+      client_max_body_size  10M; # 根据需求调整大小
+    }
+  }
+
   server {
     listen                    443 ssl;
     server_name               api.memeniu.xyz;
-    ssl_certificate           /etc/letsencrypt/live/api.memeniu.xyz/api.memeniu.xyz_bundle.pem;
-    ssl_certificate_key       /etc/letsencrypt/live/api.memeniu.xyz/api.memeniu.xyz.key;
+    ssl_certificate           /etc/letsencrypt/live/api.memeniu.xyz/cert.pem;
+    ssl_certificate_key       /etc/letsencrypt/live/api.memeniu.xyz/key.pem;
     # 优化后的SSL配置
     ssl_protocols             TLSv1.2 TLSv1.3;
     ssl_prefer_server_ciphers on;

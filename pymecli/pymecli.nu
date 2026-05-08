@@ -33,14 +33,19 @@ def "main certbot_gen" [--force] {
     mut args = [
         "certonly",
         "--dns-cloudflare",
-        "--email memeking2046@gmail.com",
-        "--agree-tos",
-        "--no-eff-email",
+        # -h # 帮助
+        "-m memeking2046@gmail.com",
+        "--agree-tos", # 同意协议（不弹窗）
+        "--no-eff-email", # 不订阅邮件（不弹窗）
+        --non-interactive # 完全静默运行(绝不提问)
         "-d meme.us.kg",
+        --dns-cloudflare-credentials /etc/letsencrypt/cloudflare.ini # 这个文件已在 .gitignore 忽略,不用担心泄露
         # "-d memeniu.xyz",
     ];
+
     if $force { $args = ($args | append "--force-renewal") }
-    (docker run -it --rm
+    (docker run -it
+    --rm
     --name certbot-cloudflare
     -v $"(pwd)/certbot/conf:/etc/letsencrypt"
     -e CF_API_TOKEN=$"($env.CF_TOKEN)"
