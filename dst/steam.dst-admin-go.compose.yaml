@@ -1,0 +1,30 @@
+services:
+  dst-admin-go:
+    image: hujinbo23/dst-admin-go:latest
+    container_name: dst-admin-go
+    ports:
+      - "8082:8082"
+      - "10999:10999/udp"
+      - "10998:10998/udp"
+    volumes:
+      - "c:/dst/dst-admin-go/dstsave:/root/.klei/DoNotStarveTogether"
+      - "c:/dst/dst-admin-go/dstsave/back:/app/backup"
+      - "c:/dst/dst-admin-go/steamcmd:/app/steamcmd"
+      - "c:/dst/dst-admin-go/dst-server:/app/dst-dedicated-server"
+      - "c:/dst/dst-admin-go/dstsave/password.txt:/app/password.txt"
+      - "c:/dst/dst-admin-go/dstsave/dst-db:/app/dst-db"
+      - "c:/dst/dst-admin-go/dstsave/first:/app/first"
+      - "c:/dst/dst-admin-go/dst-admin-go.log:/app/dst-admin-go.log"
+    network_mode: bridge
+    restart: "no"
+    environment:
+      - TZ=Asia/Shanghai
+    # entrypoint: >
+    #   /bin/sh -c "
+    #   export DEBIAN_FRONTEND=noninteractive;
+    #   apt update;
+    #   apt install -y tzdata;
+    #   ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime;
+    #   echo 'Asia/Shanghai' > /etc/timezone;
+    #   exec /app/docker-entrypoint.sh
+    #   "
