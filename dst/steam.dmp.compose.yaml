@@ -7,17 +7,18 @@ services:
     network_mode: bridge
     ports:
       - "8082:8082"
-      - "11000-11010:11000-11010/udp"
+      - "11001-11002:11001-11002/udp"
       - "31001-31002:31001-31002/udp"
-      - "31001-31002:31001-31002/tcp"
       - "41001-41002:41001-41002/udp"
-      - "41001-41002:41001-41002/tcp"
+      # - "11001-11002:11001-11002/tcp"
+      # - "31001-31002:31001-31002/tcp"
+      # - "41001-41002:41001-41002/tcp"
     environment:
       - TZ=Asia/Shanghai
       - DMP_PORT=8082
       - DMP_IN_CONTAINER=1
       # 日志等级设置为info (debug | info | warning | error)
-      - LEVEL=info
+      - LEVEL=warning
     volumes:
       # dmp 数据库目录
       - c:/dst/dmp/data:/root/data
