@@ -1,4 +1,4 @@
-FROM ghcr.io/miracleeverywhere/dst-management-platform-api:latest
+FROM ghcr.io/miracleeverywhere/dst-management-platform-api:v3.1.4
 
 # 避免apt交互弹窗
 ENV DEBIAN_FRONTEND=noninteractive

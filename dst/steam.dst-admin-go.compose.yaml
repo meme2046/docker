@@ -1,0 +1,19 @@
+services:
+  dst-admin-go:
+    image: hujinbo23/dst-admin-go:latest
+    container_name: dst-admin-go
+    ports:
+      - "8082:8082"
+      - "10999:10999/udp"
+      - "10998:10998/udp"
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - c:/dst/admin-go/dstsave:/root/.klei/DoNotStarveTogether
+      - c:/dst/admin-go/dstsave/back:/app/backup
+      - c:/dst/admin-go/steamcmd:/app/steamcmd
+      - c:/dst/admin-go/dst-dedicated-server:/app/dst-dedicated-server
+      - c:/dst/admin-go/dstsave/password.txt:/app/password.txt
+      - c:/dst/admin-go/dstsave/dst-db:/app/dst-db
+      - c:/dst/admin-go/dstsave/first:/app/first
+    restart: no

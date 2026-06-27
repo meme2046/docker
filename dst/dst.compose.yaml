@@ -1,0 +1,97 @@
+# 端口都是使用的官方默认端口
+services:
+  mod-update:
+    image: superjump22/dontstarvetogether:latest
+    container_name: mod-update
+    restart: "no"
+    network_mode: host
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - "c:/.dst/mods:/home/steam/dst/game/mods"
+      - "c:/.dst/ugc_mods:/home/steam/dst/game/ugc_mods"
+    command:
+      - -only_update_server_mods
+      - -ugc_directory
+      - /home/steam/dst/game/ugc_mods
+
+  dst-master:
+    # image: superjump22/dontstarvetogether:latest
+    build:
+      context: .
+      dockerfile: dst.Dockerfile
+    container_name: dst-master
+    restart: "no"
+    network_mode: host
+    stdin_open: true
+    tty: true
+    # ports:
+    #   - "10888:10888/udp" # 集群Master端口
+    #   - "10999:10999/udp" # 地面世界端口
+    #   - "27016:27016/udp" # 地面世界Steam端口
+    #   - "8766:8766/udp" # 地面世界Steam认证端口
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - "c:/.dst/save:/home/steam/dst/save"
+      - "c:/.dst/mods:/home/steam/dst/game/mods"
+      - "c:/.dst/ugc_mods:/home/steam/dst/game/ugc_mods"
+    command:
+      - -skip_update_server_mods
+      - -ugc_directory
+      - /home/steam/dst/game/ugc_mods
+      - -persistent_storage_root
+      - /home/steam/dst
+      - -conf_dir
+      - save
+      - -cluster
+      - Cluster_1
+      - -shard
+      - Master
+      # - -bind_ip=0.0.0.0
+    # 健康检查：检测分片通信端口
+    healthcheck:
+      test: ["CMD-SHELL", "nc -zu 127.0.0.1 10999"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+    # 启动前先完成模组更新
+    depends_on:
+      mod-update:
+        condition: service_completed_successfully
+
+  dst-caves:
+    image: superjump22/dontstarvetogether:latest
+    container_name: dst-caves
+    restart: "no"
+    network_mode: host
+    stdin_open: true
+    tty: true
+    # ports:
+    #   - "10998:10998/udp" # 地下世界端口
+    #   - "27017:27017/udp" # 地下世界Steam端口
+    #   - "8767:8767/udp" # 地下世界Steam认证端口
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - "c:/.dst/save:/home/steam/dst/save"
+      - "c:/.dst/mods:/home/steam/dst/game/mods"
+      - "c:/.dst/ugc_mods:/home/steam/dst/game/ugc_mods"
+    command:
+      - -skip_update_server_mods
+      - -ugc_directory
+      - /home/steam/dst/game/ugc_mods
+      - -persistent_storage_root
+      - /home/steam/dst
+      - -conf_dir
+      - save
+      - -cluster
+      - Cluster_1
+      - -shard
+      - Caves
+      # - -bind_ip=0.0.0.0
+    # 必须等master分片端口就绪再启动洞穴
+    depends_on:
+      dst-master:
+        condition: service_healthy
