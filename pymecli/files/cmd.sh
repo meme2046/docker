@@ -19,14 +19,14 @@ if [ -n "$CLASH_PROXY" ]; then # -n: non-empty
 fi
 
 SSL_KEY=""
-if [ -f "/etc/letsencrypt/live/meme.us.kg/privkey.pem" ]; then
-  SSL_KEY="--ssl-keyfile /etc/letsencrypt/live/meme.us.kg/privkey.pem"
-fi
+# if [ -f "/etc/letsencrypt/live/meme.us.kg/privkey.pem" ]; then
+#   SSL_KEY="--ssl-keyfile /etc/letsencrypt/live/meme.us.kg/privkey.pem"
+# fi
 
 SSL_CERT=""
-if [ -f "/etc/letsencrypt/live/meme.us.kg/fullchain.pem" ]; then
-  SSL_CERT="--ssl-certfile /etc/letsencrypt/live/meme.us.kg/fullchain.pem"
-fi
+# if [ -f "/etc/letsencrypt/live/meme.us.kg/fullchain.pem" ]; then
+#   SSL_CERT="--ssl-certfile /etc/letsencrypt/live/meme.us.kg/fullchain.pem"
+# fi
 
 # 启动 FastAPI 服务
 fast 0.0.0.0 --port 80 \

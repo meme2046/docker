@@ -5,7 +5,7 @@ def main [] {
 }
 # --no-cache
 def "main build" [] {
-    (DOCKER_BUILDKIT=0 docker build
+    (docker build
     -t $IMAGE
     -f Dockerfile .)
 }
@@ -85,8 +85,11 @@ def "main nginx_debug" [] {
 }
 
 def "main dpgen" [] {
-    docker compose -p acme-dnspod -f $"(pwd)/docker.compose.yml" up -d acme-dnspod;
-    docker exec -it acme-dnspod acme.sh --issue --dns dns_dp -d api.memeniu.xyz --email meme2046@outlook.com
+    # docker compose -p acme-dnspod -f $"(pwd)/docker.compose.yml" up -d acme-dnspod;
+    # docker compose -p fast -f $"(pwd)/docker.compose.yml" up -d;
+    docker exec -it acme-dnspod acme.sh --issue --dns dns_dp -d api.memeniu.xyz --email meme2046@outlook.com;
+    docker exec -it acme-dnspod-qiniu acme.sh --issue --dns dns_dp -d memeniu.xyz --email meme2046@outlook.com;
+    docker exec -it acme-dnspod-qiniucdn acme.sh --issue --dns dns_dp -d cdn.memeniu.xyz --email meme2046@outlook.com
 }
 
 def "main cfgen" [] {

@@ -23,6 +23,30 @@ services:
     command: daemon
     restart: always
 
+  acme-dnspod-qiniu:
+    image: neilpang/acme.sh:latest
+    container_name: acme-dnspod-qiniu
+    volumes:
+      - d:/.letsencrypt/dnspod/memeniu.xyz:/acme.sh
+    environment:
+      - TZ=Asia/Shanghai
+      - DP_Id=${DP_Id}
+      - DP_Key=${DP_Key}
+    command: daemon
+    restart: always
+
+  acme-dnspod-qiniucdn:
+    image: neilpang/acme.sh:latest
+    container_name: acme-dnspod-qiniucdn
+    volumes:
+      - d:/.letsencrypt/dnspod/cdn.memeniu.xyz:/acme.sh
+    environment:
+      - TZ=Asia/Shanghai
+      - DP_Id=${DP_Id}
+      - DP_Key=${DP_Key}
+    command: daemon
+    restart: always
+
   acme-cloudflare:
     image: neilpang/acme.sh:latest
     container_name: acme-cloudflare

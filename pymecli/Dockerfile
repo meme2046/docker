@@ -1,6 +1,13 @@
-FROM registry.cn-chengdu.aliyuncs.com/memeking/uv:debian-slim
+FROM ghcr.io/astral-sh/uv:debian-slim
 
-RUN uv python install cpython-3.10.19-linux-x86_64-gnu && uv python pin cpython-3.10.19-linux-x86_64-gnu
+RUN apt update
+RUN apt install -y tzdata curl git
+
+RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo "Asia/Shanghai" > /etc/timezone
+
+RUN apt clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN uv python install cpython-3.10.20-linux-x86_64-gnu && uv python pin cpython-3.10.20-linux-x86_64-gnu
 # RUN uv tool install pymecli -i https://mirrors.cloud.tencent.com/pypi/simple
 # RUN uv tool upgrade --all -i https://mirrors.cloud.tencent.com/pypi/simple
 RUN uv tool install pymecli
