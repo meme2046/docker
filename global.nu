@@ -71,7 +71,7 @@ def uvpy [fp: string] {
     print "✘ Python not found"
   }
 }
-
+# 如果不存在则添加到nushell配置文件中
 def confline [line: string] {
   let fp = $nu.config-path
 
