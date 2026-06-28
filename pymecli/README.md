@@ -12,3 +12,11 @@ mkcert 本地证书过期时间很长(豆包说默认有825天), 可以直接使
 ```shell
 mkcert -cert-file D:\.mkcert\cert.pem -key-file D:\.mkcert\key.pem 192.168.123.7
 ```
+
+# 测试
+
+```shell
+curl https://api.memeniu.xyz:8888/echo                     # dnspod
+curl --ssl-revoke-best-effort https://meme.us.kg:8888/echo # cloudflare
+curl --ssl-revoke-best-effort https://192.168.123.7:8000   # local mkcert
+```
