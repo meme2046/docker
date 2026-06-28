@@ -1,15 +1,40 @@
 services:
-  certbot-renew:
-    image: certbot/dns-cloudflare:latest
-    container_name: certbot-renew
+  # certbot-renew:
+  #   image: certbot/dns-cloudflare:latest
+  #   container_name: certbot-renew
+  #   volumes:
+  #     - ./certbot/conf:/etc/letsencrypt
+  #   environment:
+  #     - CF_API_TOKEN=${CF_TOKEN}
+  #   networks:
+  #     - app-network
+  #   command: >
+  #     renew --dns-cloudflare
+
+  acme-dnspod:
+    image: neilpang/acme.sh:latest
+    container_name: acme-dnspod
     volumes:
-      - ./certbot/conf:/etc/letsencrypt
+      - d:/.letsencrypt/dnspod/api.memeniu.xyz:/acme.sh
     environment:
-      - CF_API_TOKEN=${CF_TOKEN}
-    networks:
-      - app-network
-    command: >
-      renew --dns-cloudflare
+      - TZ=Asia/Shanghai
+      - DP_Id=${DP_Id}
+      - DP_Key=${DP_Key}
+    command: daemon
+    restart: always
+
+  acme-cloudflare:
+    image: neilpang/acme.sh:latest
+    container_name: acme-cloudflare
+    volumes:
+      - d:/.letsencrypt/cloudflare/meme.us.kg:/acme.sh
+    environment:
+      - TZ=Asia/Shanghai
+      - CF_Token=${CF_TOKEN}
+      - CF_Account_ID=${CF_ACCOUNT}
+      - CF_Zone_ID=${CF_ZONE}
+    command: daemon
+    restart: always
 
   fastapi:
     image: registry.cn-chengdu.aliyuncs.com/memeking/pymecli:latest
@@ -46,11 +71,13 @@ services:
       - ./files/logs:/usr/local/openresty/nginx/logs # 挂载日志目录
       - ./files/favicon.ico:/usr/local/openresty/nginx/html/favicon.ico
       # - ./files/lua-scripts:/usr/local/openresty/nginx/lua-scripts \ # 挂载Lua脚本
-      - ./certbot/conf:/etc/letsencrypt # meme.us.kg
+      # - ./certbot/conf:/etc/letsencrypt # meme.us.kg
       # - ./dnspod-cert:/etc/letsencrypt/live/api.memeniu.xyz/ # api.memeniu.xyz
-      - d:/.mkcert/api.memeniu.xyz:/etc/letsencrypt/live/api.memeniu.xyz/ # api.memeniu.xyz, dnspod
+      # - d:/.mkcert/api.memeniu.xyz:/etc/letsencrypt/live/api.memeniu.xyz/ # api.memeniu.xyz, dnspod
+      - "d:/.letsencrypt/cloudflare/meme.us.kg:/etc/letsencrypt/live/meme.us.kg"
+      - "d:/.letsencrypt/dnspod/api.memeniu.xyz:/etc/letsencrypt/live/api.memeniu.xyz"
     depends_on:
-      - certbot-renew # 添加这个依赖
+      # - certbot-renew # 添加这个依赖
       - fastapi
     networks:
       - app-network

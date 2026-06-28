@@ -38,8 +38,8 @@ http {
   server {
     listen                    443 ssl;
     server_name               api.memeniu.xyz;
-    ssl_certificate           /etc/letsencrypt/live/api.memeniu.xyz/cert.pem;
-    ssl_certificate_key       /etc/letsencrypt/live/api.memeniu.xyz/key.pem;
+    ssl_certificate           /etc/letsencrypt/live/api.memeniu.xyz/api.memeniu.xyz_ecc/fullchain.cer;
+    ssl_certificate_key       /etc/letsencrypt/live/api.memeniu.xyz/api.memeniu.xyz_ecc/api.memeniu.xyz.key;
     # 优化后的SSL配置
     ssl_protocols             TLSv1.2 TLSv1.3;
     ssl_prefer_server_ciphers on;
@@ -75,8 +75,8 @@ http {
     listen                    443 ssl;
     server_name               meme.us.kg;
     # 证书路径（符号链接需确保权限）
-    ssl_certificate           /etc/letsencrypt/live/meme.us.kg/fullchain.pem;
-    ssl_certificate_key       /etc/letsencrypt/live/meme.us.kg/privkey.pem;
+    ssl_certificate           /etc/letsencrypt/live/meme.us.kg/meme.us.kg_ecc/fullchain.cer;
+    ssl_certificate_key       /etc/letsencrypt/live/meme.us.kg/meme.us.kg_ecc/meme.us.kg.key;
     # 优化后的SSL配置
     ssl_protocols             TLSv1.2 TLSv1.3;
     ssl_prefer_server_ciphers on;

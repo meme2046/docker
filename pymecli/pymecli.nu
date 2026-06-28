@@ -84,3 +84,16 @@ def "main nginx_debug" [] {
     nginx:alpine)
 }
 
+def "main dpgen" [] {
+    docker compose -p acme-dnspod -f $"(pwd)/docker.compose.yml" up -d acme-dnspod;
+    docker exec -it acme-dnspod acme.sh --issue --dns dns_dp -d api.memeniu.xyz --email meme2046@outlook.com
+}
+
+def "main cfgen" [] {
+    docker compose -p acme-cloudflare -f $"(pwd)/docker.compose.yml" up -d acme-cloudflare;
+    docker exec -it acme-cloudflare acme.sh --issue --dns dns_cf -d meme.us.kg --email meme2046@outlook.com
+}
+
+def "main nginx" [] {
+    docker compose -p nginx-test -f $"(pwd)/docker.compose.yml" up -d nginx;
+}
