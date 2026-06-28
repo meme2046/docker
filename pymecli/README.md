@@ -1,6 +1,6 @@
 # 七牛证书,letsencrypt
 
-letsencrypt证书有效期只有90天，需要定期更新. 到期后, 登录七牛网站,`image: neilpang/acme.sh:latest`会自动续期, 只需要将这两个位置的证书上传并配置下即可:
+letsencrypt证书有效期只有90天，需要定期更新. 到期后, 登录七牛网站, `image: neilpang/acme.sh:latest`会自动续期, 只需要将这两个位置的证书上传并配置下即可:
 
 1. `d:/.letsencrypt/dnspod/memeniu.xyz`
 2. `d:/.letsencrypt/dnspod/cdn.memeniu.xyz`
