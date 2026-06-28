@@ -14,14 +14,14 @@ def "main list" [dir_path: string = "."] {
   ls $dir_path | where type == dir | each { echo $in.name }
 }
 
-def "main lines" [] {
-  let new_lines = [
-    'mkdir ($nu.data-dir | path join "vendor/autoload")'
-    'starship init nu | save -f ($nu.data-dir | path join "vendor/autoload/starship.nu")'
-  ]
+# def "main lines" [] {
+#   let new_lines = [
+#     'mkdir ($nu.data-dir | path join "vendor/autoload")'
+#     'starship init nu | save -f ($nu.data-dir | path join "vendor/autoload/starship.nu")'
+#   ]
 
-  [] | append $new_lines
-}
+#   [] | append $new_lines
+# }
 
 def "main ts2date" [ts: string] {
   $ts | str substring 0..9 | into datetime -f "%s" | date to-timezone local | format date "%Y-%m-%d %H:%M:%S"
