@@ -23,7 +23,7 @@ def "main dmppush" [] {
 }
 
 # 完整启动饥荒转服, 包含森林和洞穴
-def "main dst" [] {
+def "main compose" [] {
     docker compose -p dontstarvetogether -f $"(pwd)/dst.compose.yaml" up -d
 }
 
