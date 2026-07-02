@@ -87,7 +87,7 @@ services:
     container_name: nginx
     ports:
       - "8888:443"
-      - "8800:80"
+      - "9999:80"
     environment:
       - TZ=Asia/Shanghai
     volumes:
