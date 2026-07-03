@@ -1723,27 +1723,27 @@ function injectRuleProviders(config) {
 
   config["rule-providers"]["my-direct"] = {
     type: "http",
-    url: "https://fastly.jsdelivr.net/gh/meme2046/data@main/clash/direct.yaml",
+    url: "https://fastly.jsdelivr.net/gh/meme2046/data@main/clash/direct.yaml?_t={{timestamp}}",
     path: "./ruleset/my-direct.yaml",
     format: "yaml",
     behavior: "classical",
-    interval: 86400,
+    interval: 0,
   };
   config["rule-providers"]["my-proxy"] = {
     type: "http",
-    url: "https://fastly.jsdelivr.net/gh/meme2046/data@main/clash/proxy.yaml",
+    url: "https://fastly.jsdelivr.net/gh/meme2046/data@main/clash/proxy.yaml?_t={{timestamp}}",
     path: "./ruleset/my-proxy.yaml",
     format: "yaml",
     behavior: "classical",
-    interval: 86400,
+    interval: 0,
   };
   config["rule-providers"]["my-reject"] = {
     type: "http",
-    url: "https://fastly.jsdelivr.net/gh/meme2046/data@main/clash/reject.yaml",
+    url: "https://fastly.jsdelivr.net/gh/meme2046/data@main/clash/reject.yaml?_t={{timestamp}}",
     path: "./ruleset/my-reject.yaml",
     format: "yaml",
     behavior: "classical",
-    interval: 86400,
+    interval: 0,
   };
 
   // v5.1.6 P0-FIX#2: CDN 切换（raw.githubusercontent.com → fastly.jsdelivr.net）消除启动 EOF 风暴
