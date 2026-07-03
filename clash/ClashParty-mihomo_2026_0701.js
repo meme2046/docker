@@ -1727,7 +1727,7 @@ function injectRuleProviders(config) {
     path: "./ruleset/my-direct.yaml",
     format: "yaml",
     behavior: "classical",
-    interval: 120, // 2分钟
+    interval: 86400,
   };
   config["rule-providers"]["my-proxy"] = {
     type: "http",
@@ -1735,7 +1735,7 @@ function injectRuleProviders(config) {
     path: "./ruleset/my-proxy.yaml",
     format: "yaml",
     behavior: "classical",
-    interval: 180, // 3分钟
+    interval: 86400,
   };
   config["rule-providers"]["my-reject"] = {
     type: "http",
@@ -1743,7 +1743,7 @@ function injectRuleProviders(config) {
     path: "./ruleset/my-reject.yaml",
     format: "yaml",
     behavior: "classical",
-    interval: 240, // 4分钟
+    interval: 86400,
   };
 
   // v5.1.6 P0-FIX#2: CDN 切换（raw.githubusercontent.com → fastly.jsdelivr.net）消除启动 EOF 风暴
