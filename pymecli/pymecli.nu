@@ -18,7 +18,7 @@ def "main run" [] {
     (docker run -d
     --name pymecli-fast
     -v $"(pwd)/certbot/conf:/etc/letsencrypt"
-    -e PROXY=socks5://192.168.123.7:7897
+    -e PROXY=socks5://192.168.124.7:7897
     -p 8888:80
     --restart unless-stopped
     $IMAGE
@@ -69,7 +69,7 @@ def "main debug" [] {
     --name=debug-pymecli
     -v $"(pwd)/certbot/conf:/etc/letsencrypt"
     -e REDIS_PASSWORD=$env.REDIS_PASSWORD
-    -e CLASH_PROXY=socks5://192.168.123.7:7897
+    -e CLASH_PROXY=socks5://192.168.124.7:7897
     -p 9911:80
     $IMAGE /bin/sh)
 }

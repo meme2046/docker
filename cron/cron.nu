@@ -20,12 +20,18 @@ def "main build" [] {
     for item in $worker_items {
         cp -rv $"d:/codeup/cron/cron-worker/($item)" $worker_dir
     }
-    # --no-cache
-    (DOCKER_BUILDKIT=0 docker build
+
+    (docker build
     -t $IMAGE
-    -f build.Dockerfile .)
+    -f cron.worker.job.Dockerfile .)
 
     rm -rp $job_dir $worker_dir
+}
+
+def "main buildapi" [] {
+    (docker build
+    -t $IMAGE
+    -f cron.api.Dockerfile .)
 }
 
 def "main push" [] {
@@ -60,13 +66,13 @@ def "main mongo" [] {
 def "main etcd-install" [] {
     # scoop install etcd -g
     # 安装nssm
-    scoop install nssm 
+    # scoop install nssm 
     # 安装etcd服务 
     (nssm install EtcdService etcd --name etcd_1 
     --data-dir c:\etcd\data\etcd_1 -
     -auto-compaction-retention=1 
-    --listen-client-urls http://192.168.123.7:2379 
-    --advertise-client-urls http://192.168.123.7:2380)
+    --listen-client-urls http://192.168.124.7:2379 
+    --advertise-client-urls http://192.168.124.7:2380)
     # 卸载服务
     # nssm remove EtcdService confirm
 }

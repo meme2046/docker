@@ -1,0 +1,14 @@
+services:
+  socat-master-64:
+    image: alpine/socat
+    container_name: socat-master-64
+    network_mode: host
+    restart: always
+    command: UDP6-LISTEN:11001,reuseaddr,fork UDP4:127.0.0.1:10999
+
+  socat-caves-64:
+    image: alpine/socat
+    container_name: socat-caves-64
+    network_mode: host
+    restart: always
+    command: UDP6-LISTEN:11002,reuseaddr,fork UDP4:127.0.0.1:10998

@@ -75,9 +75,9 @@ def "main prettier" [fp: string = "./tests/test.properties"] {
 
 def "main gencert" [] {
   (
-    mkcert -cert-file d:/.mkcert/cert.pem
-    -key-file d:/.mkcert/key.pem
-    ::1 localhost 127.0.0.1 192.168.123.7
+    mkcert -cert-file d:/.letsencrypt/mkcert/cert.pem
+    -key-file d:/.letsencrypt/mkcert/key.pem
+    192.168.124.7
   )
 }
 

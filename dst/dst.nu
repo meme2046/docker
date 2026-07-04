@@ -27,6 +27,10 @@ def "main compose" [] {
     docker compose -p dontstarvetogether -f $"(pwd)/dst.compose.yaml" up -d
 }
 
+def "main socat" [] {
+    docker compose -p socat -f $"(pwd)/socat.compose.yaml" up -d
+}
+
 # 只启动dst-master
 def "main dstmaster" [] {
     docker compose -p dstmaster -f $"(pwd)/dst.compose.yaml" up -d dst-master
