@@ -1,3 +1,5 @@
+const HOST_IP = "192.168.124.7"
+
 def main [] {
   print 'my docker cli collection'
 }
@@ -77,7 +79,7 @@ def "main gencert" [] {
   (
     mkcert -cert-file d:/.letsencrypt/mkcert/cert.pem
     -key-file d:/.letsencrypt/mkcert/key.pem
-    192.168.124.7
+    ($HOST_IP)
   )
 }
 

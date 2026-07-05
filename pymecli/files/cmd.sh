@@ -7,10 +7,10 @@
 #     # 生成证书
 #     mkcert -cert-file /etc/mkcert/cert.pem \
 #       -key-file /etc/mkcert/key.pem \
-#       localhost 127.0.0.1 ::1 192.168.124.7 meme.us.kg www.meme.us.kg
+#       localhost 127.0.0.1 ::1 <host_ip> meme.us.kg www.meme.us.kg
 # fi
 # windows 下生成证书⬇️⬇️⬇️
-# mkcert -cert-file d:/.ssh/mkcert/cert.pem -key-file d:/.ssh/mkcert/key.pem localhost 127.0.0.1 ::1 192.168.124.7
+# mkcert -cert-file d:/.ssh/mkcert/cert.pem -key-file d:/.ssh/mkcert/key.pem localhost 127.0.0.1 ::1 <host_ip>
 
 # 添加代理参数支持
 PROXY_ARG=""

@@ -1,6 +1,7 @@
 const IMAGE = "registry.cn-chengdu.aliyuncs.com/memeking/cron-worker:latest"
 const CRON_API_IMAGE = "registry.cn-chengdu.aliyuncs.com/memeking/cron-api:latest"
 const TEST_IMAGE = "cron-test:latest"
+const HOST_IP = "192.168.124.7"
 
 
 def main [] {
@@ -88,8 +89,8 @@ def "main etcd-install" [] {
     (nssm install EtcdService etcd --name etcd_1
     --data-dir c:/.data/etcd/etcd_1
     --auto-compaction-retention=1
-    --listen-client-urls http://192.168.124.7:2379 
-    --advertise-client-urls http://192.168.124.7:2380)
+    --listen-client-urls http://($HOST_IP):2379 
+    --advertise-client-urls http://($HOST_IP):2380)
     # 卸载服务
     # nssm remove EtcdService confirm
 }

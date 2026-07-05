@@ -1,5 +1,6 @@
 const IMAGE = "registry.cn-chengdu.aliyuncs.com/memeking/pymecli:latest"
 const CERTBOT_CLOUDFLARE_IMAGE = "certbot/dns-cloudflare:latest"
+const HOST_IP = "192.168.124.7"
 def main [] {
     print 'pypmecli script'
 }
@@ -24,7 +25,7 @@ def "main run" [] {
     (docker run -d
     --name pymecli-fast
     -v $"(pwd)/certbot/conf:/etc/letsencrypt"
-    -e PROXY=socks5://192.168.124.7:7897
+    -e PROXY=socks5://($HOST_IP):7897
     -p 8888:80
     --restart unless-stopped
     $IMAGE
@@ -75,7 +76,7 @@ def "main debug" [] {
     --name=debug-pymecli
     -v $"(pwd)/certbot/conf:/etc/letsencrypt"
     -e REDIS_PASSWORD=$env.REDIS_PASSWORD
-    -e CLASH_PROXY=socks5://192.168.124.7:7897
+    -e CLASH_PROXY=socks5://($HOST_IP):7897
     -p 9911:80
     $IMAGE /bin/sh)
 }
@@ -105,4 +106,10 @@ def "main cfgen" [] {
 
 def "main nginx" [] {
     docker compose -p nginx-test -f $"(pwd)/docker.compose.yml" up -d nginx;
+}
+
+def "main print_test" [] {
+    print socks5://($HOST_IP):7897;
+    print $IMAGE;
+    print http://($HOST_IP):2379;
 }
