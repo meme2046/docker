@@ -1,6 +1,6 @@
 const IMAGE = "registry.cn-chengdu.aliyuncs.com/memeking/pymecli:latest"
 const CERTBOT_CLOUDFLARE_IMAGE = "certbot/dns-cloudflare:latest"
-const HOST_IP = "192.168.124.7"
+const HOST_IP = "192.168.123.7"
 def main [] {
     print 'pypmecli script'
 }

@@ -1,7 +1,7 @@
 const IMAGE = "registry.cn-chengdu.aliyuncs.com/memeking/cron-worker:latest"
 const CRON_API_IMAGE = "registry.cn-chengdu.aliyuncs.com/memeking/cron-api:latest"
 const TEST_IMAGE = "cron-test:latest"
-const HOST_IP = "192.168.124.7"
+const HOST_IP = "192.168.123.7"
 
 
 def main [] {
@@ -31,9 +31,11 @@ def "main build" [--no-cache] {
     if $no_cache {
         $args = ($args | prepend "--no-cache")
     }
-    docker build ...$args
+    docker build ...$args;
 
-    rm -rp $job_dir $worker_dir
+    rm -rp $job_dir $worker_dir;
+
+    docker push $IMAGE;
 }
 
 def "main push" [] {
@@ -49,7 +51,9 @@ def "main buildcronapi" [--no-cache] {
     if $no_cache {
         $args = ($args | prepend "--no-cache")
     }
-    docker build ...$args
+    docker build ...$args;
+    
+    docker push $CRON_API_IMAGE;
 }
 
 def "main pushcronapi" [] {

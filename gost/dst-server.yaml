@@ -1,0 +1,21 @@
+services:
+  # ========== 服务端转发（外网IPv6入站 → 本地游戏回环）==========
+  # 主世界 IPv6:10999 → 127.0.0.1:10999
+  - name: server-main
+    addr: "[240e:333:2cb6:4000:6951:7793:2ab0:c4ce]:10999"
+    listener:
+      type: udp
+    handler:
+      type: udp
+    forwarders:
+      - addr: 127.0.0.1:10999
+
+  # 洞穴 IPv6:10998 → 127.0.0.1:10998
+  - name: server-cave
+    addr: "[240e:333:2cb6:4000:6951:7793:2ab0:c4ce]:10998"
+    listener:
+      type: udp
+    handler:
+      type: udp
+    forwarders:
+      - addr: 127.0.0.1:10998
