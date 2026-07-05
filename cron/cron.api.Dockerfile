@@ -9,7 +9,7 @@ RUN apt clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN uv python install cpython-3.10.20-linux-x86_64-gnu && uv python pin cpython-3.10.20-linux-x86_64-gnu
 
-RUN uv tool install pymecli
+RUN uv tool install cronapi-py
 RUN uv tool upgrade --all
 RUN uv cache clean
 

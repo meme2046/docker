@@ -3,11 +3,17 @@ const CERTBOT_CLOUDFLARE_IMAGE = "certbot/dns-cloudflare:latest"
 def main [] {
     print 'pypmecli script'
 }
-# --no-cache
-def "main build" [] {
-    (docker build
-    -t $IMAGE
-    -f Dockerfile .)
+
+def "main build" [--no-cache] {
+    mut args = [
+        "-t", $IMAGE,
+        "-f", "Dockerfile",
+        "."
+    ]
+    if $no_cache {
+        $args = ($args | prepend "--no-cache")
+    }
+    docker build ...$args
 }
 
 def "main push" [] {

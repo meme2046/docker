@@ -1,4 +1,5 @@
 const IMAGE = "registry.cn-chengdu.aliyuncs.com/memeking/cron-worker:latest"
+const CRON_API_IMAGE = "registry.cn-chengdu.aliyuncs.com/memeking/cron-api:latest"
 const TEST_IMAGE = "cron-test:latest"
 
 
@@ -6,7 +7,7 @@ def main [] {
     print 'cron script'
 }
 
-def "main build" [] {
+def "main build" [--no-cache] {
     let job_dir = "./go-job"
     let worker_dir = "./cron-worker"
     mkdir $job_dir $worker_dir
@@ -21,21 +22,37 @@ def "main build" [] {
         cp -rv $"d:/codeup/cron/cron-worker/($item)" $worker_dir
     }
 
-    (docker build
-    -t $IMAGE
-    -f cron.worker.job.Dockerfile .)
+    mut args = [
+        "-t", $IMAGE,
+        "-f", "cron.worker.job.Dockerfile",
+        "."
+    ]
+    if $no_cache {
+        $args = ($args | prepend "--no-cache")
+    }
+    docker build ...$args
 
     rm -rp $job_dir $worker_dir
 }
 
-def "main buildapi" [] {
-    (docker build
-    -t $IMAGE
-    -f cron.api.Dockerfile .)
-}
-
 def "main push" [] {
     docker push $IMAGE
+}
+
+def "main buildcronapi" [--no-cache] {
+    mut args = [
+        "-t", $CRON_API_IMAGE,
+        "-f", "cron.api.Dockerfile",
+        "."
+    ]
+    if $no_cache {
+        $args = ($args | prepend "--no-cache")
+    }
+    docker build ...$args
+}
+
+def "main pushcronapi" [] {
+    docker push $CRON_API_IMAGE
 }
 
 def "main mysql" [] {
@@ -68,9 +85,9 @@ def "main etcd-install" [] {
     # 安装nssm
     # scoop install nssm 
     # 安装etcd服务 
-    (nssm install EtcdService etcd --name etcd_1 
-    --data-dir c:\etcd\data\etcd_1 -
-    -auto-compaction-retention=1 
+    (nssm install EtcdService etcd --name etcd_1
+    --data-dir c:/.data/etcd/etcd_1
+    --auto-compaction-retention=1
     --listen-client-urls http://192.168.124.7:2379 
     --advertise-client-urls http://192.168.124.7:2380)
     # 卸载服务
@@ -81,7 +98,7 @@ def "main cron-api" [] {
     (docker run -d 
     --name=cron-api 
     -p 8000:80
-    registry.cn-chengdu.aliyuncs.com/memeking/cron-api:latest)
+    $CRON_API_IMAGE)
 }
 
 def "main cron-worker" [] {
