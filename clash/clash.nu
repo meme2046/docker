@@ -27,5 +27,6 @@ def "main getcfg" [] {
     print ($"✔ Successfully downloaded to: ($output)")
   } else {
     print "✘ Download failed!"
+    return
   }
 }
