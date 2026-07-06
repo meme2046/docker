@@ -1,4 +1,4 @@
-const DMP_IMAGE = "registry.cn-chengdu.aliyuncs.com/memeking/dmp:latest"
+const DST_IMAGE = "superjump22/dontstarvetogether:latest"
 
 def main [] {
     print 'dst script'
@@ -12,19 +12,13 @@ def "main dstadmingo" [] {
     docker compose -p dstadmingo -f $"(pwd)/steam.dst-admin-go.compose.yaml" up -d
 }
 
-def "main dmpbuild" [] {
-    (docker build
-    -t $DMP_IMAGE
-    -f steam.dmp.Dockerfile .)
-}
-
-def "main dmppush" [] {
-    docker push $DMP_IMAGE
-}
-
 # 完整启动饥荒转服, 包含森林和洞穴
 def "main compose" [] {
-    docker compose -p dontstarvetogether -f $"(pwd)/dst.compose.yaml" up -d
+    # 更新 modoverrides.lua中的客户端mod version
+    dst cmu d:/.backups/dontstarvetogether/modoverrides.lua -o c:/.dst/save/Cluster_1/Master/modoverrides.lua -o c:/.dst/save/Cluster_1/Caves/modoverrides.lua;
+    docker compose -f $"(pwd)/dst.compose.yaml" pull;
+    docker compose -f $"(pwd)/dst.compose.yaml" build;
+    docker compose -p dontstarvetogether -f $"(pwd)/dst.compose.yaml" up -d;
 }
 
 def "main socat" [] {

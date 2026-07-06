@@ -1,4 +1,4 @@
-const HOST_IP = "192.168.124.7"
+const HOST_IP = "192.168.123.7"
 
 def main [] {
   print 'my docker cli collection'
