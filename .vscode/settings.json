@@ -168,10 +168,24 @@
     "*.toml": "toml"
   },
   "files.saveConflictResolution": "overwriteFileOnDisk",
-  "Lingma.PreferredLanguage forCommitMessage": "简体中文",
-  "Lingma.PreferredLanguage for AI Chat": "简体中文",
-  "Lingma.DisplayLanguage": "简体中文",
+  "QoderCN.DisplayLanguage": "简体中文",
+  "QoderCN.PreferredLanguage for AI Chat": "简体中文",
+  "QoderCN.PreferredLanguage forCommitMessage": "简体中文",
   "git.enableSmartCommit": true,
   "git.confirmSync": false,
-  "window.commandCenter": false
+  "window.commandCenter": false,
+  "trae.chatLanguage": "cn",
+  // 📝partial-diff 文本比较插件配置
+  "partialDiff.preComparisonTextNormalizationRules": [
+    {
+      "name": "移除所有纯空白行(兼容Windows/Linux换行)",
+      "match": "\\s*\\r?\\n",
+      "replaceWith": "\n"
+    },
+    {
+      "name": "清除每行首尾多余空格（保留中间缩进）",
+      "match": "^\\s+|\\s+$",
+      "replaceWith": ""
+    }
+  ]
 }

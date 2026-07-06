@@ -22,6 +22,7 @@
     "adamhartford.vscode-base64",
     "formulahendry.code-runner",
     "ahmadalli.vscode-nginx-conf",
+    "ryu1kn.partial-diff", // 文本比较插件
     // react
     "bradlc.vscode-tailwindcss",
     "dbaeumer.vscode-eslint",
