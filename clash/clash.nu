@@ -11,9 +11,12 @@ def "main cp" [] {
 }
 
 # 获取ClashParty(mihomo).js脚本, 添加自定义配置, 并输出_update文件
-def "main cfg" [] {
+def "main cfg" [--smart] {
   # 从 GitHub 下载 ClashParty(mihomo).js 配置文件
-  let target_url = "https://raw.githubusercontent.com/IvanSolis1989/Smart-Config-Kit/main/Clash%20Party/ClashParty(mihomo-smart).js";
+  mut target_url = "https://raw.githubusercontent.com/IvanSolis1989/Smart-Config-Kit/main/Clash%20Party/ClashParty(mihomo).js";
+  if $smart {
+    $target_url = "https://raw.githubusercontent.com/IvanSolis1989/Smart-Config-Kit/main/Clash%20Party/ClashParty(mihomo-smart).js";
+  }
   
   let basename = $"(($target_url | url parse).path | path basename)";
 

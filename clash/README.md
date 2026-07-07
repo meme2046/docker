@@ -22,4 +22,9 @@ https://raw.githubusercontent.com/meme2046/data/main/clash/reject.yaml
 https://raw.githubusercontent.com/meme2046/data/main/clash/round.yaml
 ```
 
-# 脚本修改
+# 脚本生成
+
+```shell
+nu clash.nu cfg         # 生成配置自定义配置文件
+nu clash.nu cfg --smart # smart版
+```
