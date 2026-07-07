@@ -15,6 +15,8 @@ def "main build" [--no-cache] {
         $args = ($args | prepend "--no-cache")
     }
     docker build ...$args
+
+    docker push $IMAGE
 }
 
 def "main push" [] {

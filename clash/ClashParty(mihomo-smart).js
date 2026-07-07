@@ -1,18 +1,19 @@
-﻿// Clash 覆写脚本 - SUB-STORE 多机场精细分流版
-// 版本：v5.4.37-normal.1 (2026-06-29)
-// 架构：22 url-test 区域组（11 全部 + 11 家宽）+ 33 业务策略组 + 376 rule-providers
-// 基线：Clash Party v5.4.37（与同目录 ClashParty(mihomo-smart).js 规则 100% 等价，仅区域组从 smart 改为 url-test）
+﻿// Clash Smart 内核覆写脚本 - SUB-STORE 多机场精细分流版
+// 版本：v5.4.37 (2026-06-29)
+// 架构：SUB-STORE 多机场融合 + 22 Smart 区域组（11 全部 + 11 家宽）+ 33 业务策略组（含 14 流媒体平台组）+ 376 rule-providers 100%+ 服务覆盖
 // v5.4.37: DNS-POLICY#170 geosite 级解析器分流 · v5.4.36: CLEAN#171-DIRECT 删除冗余直写规则
-// 适用：Mihomo / Clash.Meta 稳定版内核、不支持 smart + LightGBM 的分支；也适用于想完全关闭 ML 评估的用户
 // 变更历史：见 `Clash Party/CHANGELOG.md`
 
 // ================================================================
 //  版本常量
 // ================================================================
 
-const VERSION = 'v5.4.37-normal.1'
+const VERSION = 'v5.4.37'
 
-// v5.4.9 FEAT#LOCAL-TOOLS: desktop local-tool direct whitelist.
+// v5.4.9 FEAT#LOCAL-TOOLS:
+// Desktop-capable local tools that should not be routed through proxy nodes.
+// Keep exact PROCESS-NAME entries for sing-box / Surge parity; avoid broad
+// regex such as .*vpn.* or .*vnc.*.
 const LOCAL_TOOL_DIRECT_PROCESS_NAMES = [
   'Oray.exe',
   'OrayService.exe',
@@ -127,8 +128,9 @@ function isResidentialNode(name) {
 // ================================================================
 
 const REGION_DB = [
-  // v5.2.6-normal.1 FIX#24-P0: 补齐 ISO alpha-3 代码（TWN/JPN/KOR/SGP/CHN），
-  //   与 Clash Smart 内核覆写脚本.js 保持对齐（见 Smart 版同编号修复）
+  // v5.2.6 FIX#24-P0: 补齐 ISO alpha-3 代码（TWN/JPN/KOR/SGP/USA/CHN/HKG），
+  //   避免 "TWN 01"、"JPN 01"、"KOR 01"、"SGP 01" 命名的节点被归为 UNCLASSIFIED
+  //   进而触发 apacNodes / c.ALL fallback，把 HK 等节点塞入 🇹🇼 台湾节点 / 🇯🇵 日韩节点
   { id: 'HK', kw: ['香港', 'hong kong', 'hongkong', 'hkg', '港'], iso: ['HK'] },
   { id: 'TW', kw: ['台湾', '台北', '台中', '高雄', '新北', '桃园', 'taiwan', 'taipei', 'taichung', 'kaohsiung', 'tpe', 'twn'], iso: ['TW'] },
   { id: 'CN', kw: ['中国', '大陆', '国内', '中国大陆', 'china', 'mainland', '回国节点', '回国专线', '回国线路', '回国加速', '回国服务', '直连国内', '国内直连', '中转国内', '落地国内', '北京', '上海', '广州', '深圳', 'beijing', 'shanghai', 'guangzhou', 'shenzhen', '成都', '重庆', '杭州', '南京', '武汉', '天津', '苏州', '西安', '长沙', 'chengdu', 'chongqing', 'hangzhou', 'nanjing', 'wuhan', 'tianjin', 'suzhou', 'xian', 'changsha', '沈阳', '青岛', '郑州', '大连', '东莞', '宁波', '厦门', '济南', '无锡', '合肥', '昆明', '福州', '哈尔滨', '佛山', '长春', '石家庄', '太原', '南宁', '贵阳', '乌鲁木齐', '兰州', '海口', '银川', '西宁', '拉萨', '呼和浩特', '电信', '联通', '移动', '铁通', 'chinatelecom', 'chinaunicom', 'chinamobile', 'chn', 'pek', 'pkx', 'pvg', 'szx', 'ctu', 'ckg', 'hgh', 'nkg', 'wuh', 'tsn', 'syx', 'xiy', 'csx', 'kmg', 'hak', 'dlc', 'tao', 'she', 'hrb', 'cgo'], iso: ['CN'] },
@@ -156,7 +158,8 @@ function _getWordBoundaryRegex(keyword, caseSensitive) {
   _regexCache.set(key, re)
   return re
 }
-function _isChinese(str) { return /[\u4e00-\u9fa5]/.test(str) }
+const _CHINESE_RE = /[\u4e00-\u9fa5]/
+function _isChinese(str) { return _CHINESE_RE.test(str) }
 
 const _compiledRegions = REGION_DB.map(function(region) {
   var matchers = []
@@ -248,10 +251,10 @@ const BIZ = {
   FINAL: '🐟 漏网之鱼', AD: '🛑 广告拦截',
 }
 
-var ACC_BANK_RULES = ['US','UK','HK','SG','JP','AU','CA','DE','NL','FR'].map(function(cc) { return 'RULE-SET,acc-bank-' + cc.toLowerCase() + ',' + BIZ.PAYMENTS })
-var ACC_VF_RULES = ['wise','monzo','revolut'].map(function(svc) { return 'RULE-SET,acc-vf-' + svc + ',' + BIZ.PAYMENTS })
-var ACC_FAKE_LOCATION_RULES = ['bilibili','kuaishou','xigua','weibo','zhihu','tieba','douban','xianyu'].map(function(app) { return 'RULE-SET,acc-fl-' + app + ',' + BIZ.CNMEDIA })
-
+// v5.4.25: 预计算静态规则数组，避免 injectRules() 每次调用重建
+const ACC_BANK_RULES = ['US','UK','HK','SG','JP','AU','CA','DE','NL','FR'].map(function(cc) { return 'RULE-SET,acc-bank-' + cc.toLowerCase() + ',' + BIZ.PAYMENTS })
+const ACC_VF_RULES = ['wise','monzo','revolut'].map(function(svc) { return 'RULE-SET,acc-vf-' + svc + ',' + BIZ.PAYMENTS })
+const ACC_FAKE_LOCATION_RULES = ['bilibili','kuaishou','xigua','weibo','zhihu','tieba','douban','xianyu'].map(function(app) { return 'RULE-SET,acc-fl-' + app + ',' + BIZ.CNMEDIA })
 const AD_FALSE_POSITIVE_ALLOWLIST = [
   // v5.4.2 P0-FIX#41: 小米核心服务 DIRECT 白名单——前置 miuiprivacy/advertisingmitv。
   // 小米账号认证安全域名（auth.be.sec.miui.com / idm.api.io.mi.com 在 miuiprivacy 中被误杀导致登录"网络错误"）。
@@ -304,8 +307,8 @@ const DOUYIN_CNMEDIA_GUARD_RULES = [
 const REGION_ORDER = ['GLOBAL', 'HK', 'TW', 'SG', 'JPKR', 'APAC', 'US', 'EU', 'AMERICAS', 'AFRICA', 'OTHER']
 const REGION_HOME_MAP = {
   GLOBAL: 'GLOBAL_HOME', HK: 'HK_HOME', TW: 'TW_HOME',
-  SG: 'SG_HOME', JPKR: 'JPKR_HOME', APAC: 'APAC_HOME', US: 'US_HOME',
-  EU: 'EU_HOME', AMERICAS: 'AMERICAS_HOME', AFRICA: 'AFRICA_HOME',
+  SG: 'SG_HOME', JPKR: 'JPKR_HOME', APAC: 'APAC_HOME',
+  US: 'US_HOME', EU: 'EU_HOME', AMERICAS: 'AMERICAS_HOME', AFRICA: 'AFRICA_HOME',
   OTHER: 'OTHER_HOME',
 }
 
@@ -367,16 +370,18 @@ const GEO_REGIONS_ALL = [
   'Africa_North', 'Africa_South', 'Africa_West', 'Africa_East', 'Africa_Central'
 ]
 const GEO_REGIONS_INTL = GEO_REGIONS_ALL.filter(r => r !== 'Asia_China')
+const GEO_REGIONS_INTL_D_RULES = GEO_REGIONS_INTL.map(function(r) { return 'RULE-SET,acc-geo-d-' + r.toLowerCase().replace(/_/g,'-') + ',' + BIZ.INTL_SITE })
+const GEO_REGIONS_INTL_IP_RULES = GEO_REGIONS_INTL.map(function(r) { return 'RULE-SET,acc-geo-ip-' + r.toLowerCase().replace(/_/g,'-') + ',' + BIZ.INTL_SITE + ',no-resolve' })
 
 // ================================================================
-//  模块 E：区域组创建（url-test，非 Smart 内核等价写法）
+//  模块 E：Smart 组创建
 // ================================================================
 
-function upsertUrlTestGroup(config, name, proxies) {
-  var group = { name: name, type: 'url-test', url: 'https://www.gstatic.com/generate_204', interval: 300, tolerance: 10, lazy: false, proxies: proxies.slice() }
+function upsertSmartGroup(config, name, proxies) {
+  var group = { name: name, type: 'smart', uselightgbm: true, collectdata: false, strategy: 'sticky-sessions', interval: 300, tolerance: 30, proxies: proxies.slice() }
   var idx = config['proxy-groups'].findIndex(function(g) { return g && g.name === name })
   if (idx !== -1) { config['proxy-groups'][idx] = group } else { config['proxy-groups'].push(group) }
-  console.log(`[${VERSION}] url-test: "${name}" -> ${proxies.length} nodes`)
+  console.log(`[${VERSION}] Smart: "${name}" -> ${proxies.length} nodes`)
 }
 
 // ================================================================
@@ -433,8 +438,7 @@ function injectBusinessGroups(config, activeSmartNames) {
     { name: BIZ.FINAL, type: 'select', proxies: standardProxies.slice() },
     { name: BIZ.AD, type: 'select', proxies: ['REJECT', 'DIRECT'] },
   ]
-  var _smartNameSet = new Set(Object.values(SMART))
-  var firstSmartIdx = config['proxy-groups'].findIndex(function(g) { return g && _smartNameSet.has(g.name) })
+  var firstSmartIdx = config['proxy-groups'].findIndex(function(g) { return g && g.type === 'smart' })
   groups.forEach(function(group, i) {
     var existIdx = config['proxy-groups'].findIndex(function(g) { return g && g.name === group.name })
     if (existIdx !== -1) { config['proxy-groups'][existIdx] = group }
@@ -1251,6 +1255,7 @@ function injectRuleProviders(config) {
     }
 
     // ── GeoRouting Domain × 17 区域（原 acc-georouting-domain 404 → 按区域拆分，Domain版=作者推荐🔥）──
+    // 区域路由规则变化极慢，interval 用 7 天（604800s）减少 34 providers 的并发刷新频率
     const GEO_INTERVAL = 604800
     for (const region of GEO_REGIONS_ALL) {
       const slug = region.toLowerCase().replace(/_/g, '-')
@@ -1313,12 +1318,12 @@ function injectRules(config) {
     // v5.4.34 FIX#169-AMAP: webapi.amap.com 属高德地图国内 API。专用 amap 规则放在广告/威胁规则之后、
     //   TikTok/GFW/geolocation-!cn 宽规则之前，避免依赖尾部 RULE-SET,cn 才直连。
     `RULE-SET,amap,${BIZ.CN_SITE}`,
-    // v5.4.22 #1 借鉴 Proxy-override：QUIC 精细化——YouTube/Google/MS/Apple 白名单豁免，其余海外 QUIC REJECT
-    "AND,((DST-PORT,443),(NETWORK,UDP),(GEOSITE,youtube)),📹 YouTube",
-    "AND,((DST-PORT,443),(NETWORK,UDP),(GEOSITE,google)),🔍 Google 服务",
-    "AND,((DST-PORT,443),(NETWORK,UDP),(RULE-SET,microsoft)),Ⓜ️ 微软服务",
-    "AND,((DST-PORT,443),(NETWORK,UDP),(RULE-SET,apple)),🍎 苹果服务",
-    "AND,((DST-PORT,443),(NETWORK,UDP),(NOT,((GEOSITE,cn)))),REJECT",
+    // v5.4.22 #1 借鉴 Proxy-override：QUIC 精细化——YouTube/Google/MS/Apple 白名单豁免（QUIC 走对应业务组），其余海外 QUIC REJECT 强制回退 HTTP/2
+    `AND,((DST-PORT,443),(NETWORK,UDP),(GEOSITE,youtube)),${BIZ.YT}`,
+    `AND,((DST-PORT,443),(NETWORK,UDP),(GEOSITE,google)),${BIZ.GOOGLE}`,
+    `AND,((DST-PORT,443),(NETWORK,UDP),(RULE-SET,microsoft)),${BIZ.MS}`,
+    `AND,((DST-PORT,443),(NETWORK,UDP),(RULE-SET,apple)),${BIZ.APPLE}`,
+    `AND,((DST-PORT,443),(NETWORK,UDP),(NOT,((GEOSITE,cn)))),REJECT`,
     // v5.2.1 FIX#19: DST-PORT,7680 必须在 GEOIP,private 之前，否则私有 IP 先匹配走 DIRECT
     'DST-PORT,7680,REJECT',
     'GEOSITE,private,DIRECT',
@@ -1628,6 +1633,7 @@ function injectRules(config) {
     'DOMAIN-SUFFIX,feishu.cn,DIRECT',
     'DOMAIN-SUFFIX,dingtalk.com,DIRECT',
     'DOMAIN-SUFFIX,welink.huaweicloud.com,DIRECT',
+    `RULE-SET,bilibili,${BIZ.CNMEDIA}`,
 
     // v5.1.2 FIX#2: 港澳台哔哩哔哩需港区代理解锁（v5.1.1 误归入 CNMEDIA/DIRECT 导致 412）
     // ============ 🎵 TikTok ============
@@ -1640,7 +1646,6 @@ function injectRules(config) {
     `RULE-SET,netflix,${BIZ.NFLX}`,
     `RULE-SET,netflix-ip,${BIZ.NFLX},no-resolve`,
     `RULE-SET,szkane-netflixip,${BIZ.NFLX},no-resolve`,
-    `GEOIP,netflix,${BIZ.NFLX},no-resolve`,
     // ── Disney+/HBO/Hulu/Prime Video ──
     `RULE-SET,disney,${BIZ.DSNP}`,
     `RULE-SET,hbo,${BIZ.HBO}`,
@@ -1659,7 +1664,7 @@ function injectRules(config) {
     `RULE-SET,qobuz,${BIZ.MUSIC}`,
 
     // ============ 🇭🇰 香港流媒体 ============
-    // CLEAN#165: mytvsuper.com, nowe.com, rthk.hk, cabletv.com.hk 已被同策略 RULE-SET 覆盖
+    // v5.4.27 CLEAN#165: mytvsuper.com/nowe.com/rthk.hk/cabletv.com.hk 已被同策略 RULE-SET 覆盖，移除直写
     `RULE-SET,szkane-bilihmt,${BIZ.STREAM_HK}`,
     `DOMAIN-SUFFIX,mytv.com.hk,${BIZ.STREAM_HK}`,
     `DOMAIN-SUFFIX,viu.com,${BIZ.STREAM_HK}`,
@@ -1677,9 +1682,9 @@ function injectRules(config) {
     `RULE-SET,moov,${BIZ.STREAM_HK}`,
 
     // ============ 🇹🇼 台湾流媒体 ============
-    // CLEAN#165: litv.tv, video.friday.tw, friday.tw, linetv.tw, hamivideo.hinet.net 已被同策略 RULE-SET 覆盖
     `RULE-SET,bahamut,${BIZ.STREAM_TW}`,
     `RULE-SET,kktv,${BIZ.STREAM_TW}`,
+    // CLEAN#165: litv.tv/friday.tw/linetv.tw/hamivideo.hinet.net 已被同策略 RULE-SET 覆盖
     `DOMAIN-SUFFIX,elta.tv,${BIZ.STREAM_TW}`,
     `DOMAIN-SUFFIX,mod.cht.com.tw,${BIZ.STREAM_TW}`,
     `DOMAIN-SUFFIX,ofiii.com,${BIZ.STREAM_TW}`,
@@ -1694,7 +1699,7 @@ function injectRules(config) {
     `RULE-SET,cht,${BIZ.STREAM_TW}`,
 
     // ============ 🇯🇵 日韩流媒体 ============
-    // CLEAN#165: tver.jp, dmm.com, dmm.co.jp, nicovideo.jp, nicovideo.me, dmc.nico 已被同策略 RULE-SET 覆盖
+    // CLEAN#165: tver.jp/dmm.com/dmm.co.jp/nicovideo.jp/nicovideo.me/dmc.nico 已被同策略 RULE-SET 覆盖
     `RULE-SET,abema,${BIZ.STREAM_JP}`,
     `RULE-SET,dazn,${BIZ.STREAM_JP}`,
     `DOMAIN-SUFFIX,unext.jp,${BIZ.STREAM_JP}`,
@@ -1732,8 +1737,12 @@ function injectRules(config) {
     `RULE-SET,japonx,${BIZ.STREAM_JP}`,
     `RULE-SET,nikkei,${BIZ.STREAM_JP}`,
 
+    // ══════════════════════════════════════════════════════════
+    //  v5.4.8: 中后段业务规则按匹配优先级重排
+    // ══════════════════════════════════════════════════════════
+
     // ============ 🇪🇺 欧洲流媒体 ============
-    // CLEAN#165: itv.com, itvstatic.com, britbox.com 已被同策略 RULE-SET 覆盖
+    // CLEAN#165: itv.com/itvstatic.com/britbox.com 已被同策略 RULE-SET 覆盖
     `RULE-SET,bbc,${BIZ.STREAM_EU}`,
     `DOMAIN-SUFFIX,nowtv.co.uk,${BIZ.STREAM_EU}`,
     `DOMAIN-SUFFIX,canalplus.com,${BIZ.STREAM_EU}`,
@@ -1767,7 +1776,7 @@ function injectRules(config) {
     `RULE-SET,szkane-uk,${BIZ.STREAM_EU}`,
 
     // ============ 🌐 其他国外流媒体 ============
-    // CLEAN#165: wetv.vip, wetvinfo.com, viki.com, viki.io, mewatch.sg, discoveryplus.com 已被同策略 RULE-SET 覆盖
+    // CLEAN#165: wetv.vip/wetvinfo.com/viki.com/viki.io/mewatch.sg/discoveryplus.com 已被同策略 RULE-SET 覆盖
     `RULE-SET,viu,${BIZ.STREAM_OTHER}`,
     `DOMAIN-SUFFIX,iq.com,${BIZ.STREAM_OTHER}`,
     `DOMAIN-SUFFIX,vidio.com,${BIZ.STREAM_OTHER}`,
@@ -1887,7 +1896,6 @@ function injectRules(config) {
     `RULE-SET,oracle,${BIZ.TOOLS}`,
     `RULE-SET,unity,${BIZ.TOOLS}`,
     `RULE-SET,szkane-developer,${BIZ.TOOLS}`,
-    `GEOIP,google,${BIZ.GOOGLE},no-resolve`,
 
     // ============ Ⓜ️ 微软服务 ============
     `RULE-SET,onedrive,${BIZ.MS}`,
@@ -1996,7 +2004,6 @@ function injectRules(config) {
     `RULE-SET,majsoul,${BIZ.GAME_CN}`,
 
     // ============ 🎮 国外游戏 ============
-    // CLEAN#165: ubisoft.com, ubi.com, riotgames.com, leagueoflegends.com, valorant.com, rockstargames.com, gog.com, gogalaxy.com, supercell.com, garena.com, hoyoverse.com, hoyolab.com 已被同策略 RULE-SET 覆盖
     `RULE-SET,steam,${BIZ.GAME_INTL}`,
     `RULE-SET,epic,${BIZ.GAME_INTL}`,
     `RULE-SET,playstation,${BIZ.GAME_INTL}`,
@@ -2005,6 +2012,7 @@ function injectRules(config) {
     `RULE-SET,ea,${BIZ.GAME_INTL}`,
     `RULE-SET,blizzard,${BIZ.GAME_INTL}`,
     `GEOSITE,category-games,${BIZ.GAME_INTL}`,
+    // CLEAN#165: 下列直写域名已被同策略 RULE-SET 覆盖（ubi/riot/rockstar/gog/supercell/garena/hoyoverse）
     `RULE-SET,rockstar,${BIZ.GAME_INTL}`,
     `RULE-SET,riot,${BIZ.GAME_INTL}`,
     `RULE-SET,gog,${BIZ.GAME_INTL}`,
@@ -2091,6 +2099,7 @@ function injectRules(config) {
     `DOMAIN-SUFFIX,gofood.co.id,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,grabfood.com,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,66tutup.com,${BIZ.INTL_SITE}`,
+    `GEOIP,ID,${BIZ.INTL_SITE},no-resolve`,
     `RULE-SET,acc-homeip-us,${BIZ.INTL_SITE},no-resolve`,
     `RULE-SET,acc-homeip-jp,${BIZ.INTL_SITE},no-resolve`,
     `RULE-SET,acc-aqara-global,${BIZ.INTL_SITE}`,
@@ -2113,8 +2122,8 @@ function injectRules(config) {
     `RULE-SET,szkane-edutools,${BIZ.INTL_SITE}`,
     `RULE-SET,naver,${BIZ.INTL_SITE}`,
     `RULE-SET,ehgallery,${BIZ.INTL_SITE}`,
-    ...GEO_REGIONS_INTL.map(r => `RULE-SET,acc-geo-d-${r.toLowerCase().replace(/_/g,'-')},${BIZ.INTL_SITE}`),
-    ...GEO_REGIONS_INTL.map(r => `RULE-SET,acc-geo-ip-${r.toLowerCase().replace(/_/g,'-')},${BIZ.INTL_SITE},no-resolve`),
+    ...GEO_REGIONS_INTL_D_RULES,
+    ...GEO_REGIONS_INTL_IP_RULES,
     `DOMAIN-SUFFIX,archive.org,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,udemy.com,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,udemycdn.com,${BIZ.INTL_SITE}`,
@@ -2141,7 +2150,6 @@ function injectRules(config) {
     `DOMAIN-SUFFIX,ksei.co.id,${BIZ.PAYMENTS}`,
 
     // ============ 📺 国内流媒体 ============
-    `RULE-SET,bilibili,${BIZ.CNMEDIA}`,
     `DOMAIN-SUFFIX,iqiyi.com,${BIZ.CNMEDIA}`,
     `DOMAIN-SUFFIX,iqiyipic.com,${BIZ.CNMEDIA}`,
     `DOMAIN-SUFFIX,71.am,${BIZ.CNMEDIA}`,
@@ -2242,11 +2250,12 @@ function injectRules(config) {
     `RULE-SET,acc-geo-ip-asia-china,${BIZ.CN_SITE},no-resolve`,
 
     // ============ GEOIP 标签路由 ============
-    `GEOIP,ID,${BIZ.INTL_SITE},no-resolve`,
     `GEOIP,cloudflare,${BIZ.INTL_SITE},no-resolve`,
     `GEOIP,telegram,${BIZ.IM},no-resolve`,
+    `GEOIP,netflix,${BIZ.NFLX},no-resolve`,
     `GEOIP,facebook,${BIZ.SOCIAL},no-resolve`,
     `GEOIP,twitter,${BIZ.SOCIAL},no-resolve`,
+    `GEOIP,google,${BIZ.GOOGLE},no-resolve`,
     `GEOIP,CN,${BIZ.CN_SITE},no-resolve`,
 
     `MATCH,${BIZ.FINAL}`,
@@ -2259,6 +2268,31 @@ function injectRules(config) {
 // ================================================================
 
 function overwriteGeneral(config) {
+  config['unified-delay'] = true
+  config['tcp-concurrent'] = true
+  config['find-process-mode'] = 'strict'
+  config['keep-alive-idle'] = 30
+  config['keep-alive-interval'] = 15
+  config['geodata-mode'] = true
+  config['geox-url'] = {
+    geoip:   'https://fastly.jsdelivr.net/gh/Loyalsoldier/geoip@release/geoip.dat',
+    mmdb:    'https://fastly.jsdelivr.net/gh/Loyalsoldier/geoip@release/Country.mmdb',
+    asn:     'https://fastly.jsdelivr.net/gh/Loyalsoldier/geoip@release/GeoLite2-ASN.mmdb',
+  }
+  config['geo-auto-update'] = true
+  if (!config.profile) config.profile = {}
+  config.profile['store-selected'] = true
+  config.profile['store-fake-ip'] = true
+  config.profile['tracing'] = true
+  // v5.4.1 P2: Hosts DNS 预解析——消除 fake-ip 冷启动循环依赖
+  if (!config.hosts) config.hosts = {}
+  var dnsHosts = {
+    'dns.alidns.com': ['223.5.5.5', '223.6.6.6'],
+    'doh.pub': ['119.29.29.29'],
+    'dns.google': ['8.8.8.8', '8.8.4.4'],
+    'cloudflare-dns.com': ['1.1.1.1', '1.0.0.1']
+  }
+  Object.keys(dnsHosts).forEach(function(k) { if (!config.hosts[k]) config.hosts[k] = dnsHosts[k] })
   // v5.4.4 FIX#142: 修复 v5.4.1+ 引入的 DNS 空壳 bug——创建 config.dns 时未提供 nameserver
   //   导致内核跳过默认 DNS，国内网站 DIRECT 连接因 DNS 解析失败而超时
   if (!config.dns) config.dns = {}
@@ -2308,38 +2342,96 @@ function overwriteGeneral(config) {
   config.dns['fallback-filter'].geosite = ['gfw', 'geolocation-!cn']
   config.dns['fallback-filter'].ipcidr = ['240.0.0.0/4', '0.0.0.0/32', '127.0.0.0/8', '10.0.0.0/8', '192.168.0.0/16']
   if (!Array.isArray(config.dns['fallback-filter'].domain)) config.dns['fallback-filter'].domain = []
-  // v5.4.1 P0+P2: fake-ip-filter 扩展 + Hosts DNS 预解析
+  // v5.4.1 P0: fake-ip-filter 扩展（Smart 内核不支持 fake-ip-filter-mode: rule，使用传统域名列表）
   var currentFakeIpFilter = Array.isArray(config.dns['fake-ip-filter']) ? config.dns['fake-ip-filter'] : []
-  config.dns['fake-ip-filter'] = uniqList(currentFakeIpFilter.concat(['+.lan','+.local','+.localdomain','+.home.arpa','+.msftconnecttest.com','+.msftncsi.com','localhost.ptlogin2.qq.com','localhost.sec.qq.com','localhost.work.weixin.qq.com','+.in-addr.arpa','+.ip6.arpa','time.*.com','time.*.gov','ntp.*.com','pool.ntp.org','+.ntp.org','+.pool.ntp.org','+.market.xiaomi.com','+.stun.*.*','+.stun.*.*.*','+.turn.*.*','+.turn.*.*.*','+.n.n.srv.nintendo.net','+.stun.playstation.net','+.xboxlive.com','stun.l.google.com','stun1.l.google.com','stun2.l.google.com','stun3.l.google.com','stun4.l.google.com','global.turn.twilio.com','auth.docker.io','registry-1.docker.io','index.docker.io','hub.docker.com','production.cloudflare.docker.com','+.push.apple.com','+.pub.3gppnetwork.org','+.bing.com','+.rustdesk.com','+.todesk.com','+.oray.com','+.sunlogin.com','+.teamviewer.com','+.anydesk.com','+.battlenet.com.cn','+.wotgame.cn','+.wggames.cn','+.wowsgame.cn','+.mcdn.bilivideo.cn','+.miwifi.com','+.courier.push.apple.com','+.miui.com','+.xiaomi.com','+.xiaomi.net','+.mijia.tech','+.gotui.com']))
-  if (!config.hosts) config.hosts = {}
-  var dnsH = {'dns.alidns.com':['223.5.5.5','223.6.6.6'],'doh.pub':['119.29.29.29'],'dns.google':['8.8.8.8','8.8.4.4'],'cloudflare-dns.com':['1.1.1.1','1.0.0.1']}
-  Object.keys(dnsH).forEach(function(k){if(!config.hosts[k])config.hosts[k]=dnsH[k]})
-  // v5.4.22 #1 借鉴 Proxy-override：QUIC SNI 嗅探（对齐 CMFA/OpenClash）；force-dns-mapping 使真 IP QUIC（fake-ip-filter 域名如 mcdn.bilivideo.cn）也能 GEOSITE 匹配，避免被 NOT,((GEOSITE,cn)) 误拒。
-  config.sniffer = { enable: true, 'parse-pure-ip': true, 'force-dns-mapping': true, 'override-destination': true, sniff: { HTTP: { ports: ['80', '8080-8880'], 'override-destination': true }, TLS: { ports: ['443', '8443'] }, QUIC: { ports: ['443', '8443', '4433'] } }, 'skip-domain': ['+.push.apple.com'], 'skip-dst-address': ['91.105.192.0/23', '91.108.4.0/22', '91.108.8.0/21', '91.108.16.0/21', '91.108.56.0/22', '95.161.64.0/20', '149.154.160.0/20', '185.76.151.0/24', '2001:67c:4e8::/48', '2001:b28:f23c::/47', '2001:b28:f23f::/48', '2a0a:f280:203::/48'] }
-  config['unified-delay'] = true
-  config['tcp-concurrent'] = true
-  config['find-process-mode'] = 'strict'
-  config['keep-alive-idle'] = 30
-  config['keep-alive-interval'] = 15
-  config['geodata-mode'] = true
-  config['geox-url'] = {
-    geoip:   'https://fastly.jsdelivr.net/gh/Loyalsoldier/geoip@release/geoip.dat',
-    mmdb:    'https://fastly.jsdelivr.net/gh/Loyalsoldier/geoip@release/Country.mmdb',
-    asn:     'https://fastly.jsdelivr.net/gh/Loyalsoldier/geoip@release/GeoLite2-ASN.mmdb',
+  config.dns['fake-ip-filter'] = uniqList(currentFakeIpFilter.concat([
+    '+.lan',
+    '+.local',
+    '+.localdomain',
+    '+.home.arpa',
+    '+.msftconnecttest.com',
+    '+.msftncsi.com',
+    'localhost.ptlogin2.qq.com',
+    'localhost.sec.qq.com',
+    'localhost.work.weixin.qq.com',
+    '+.in-addr.arpa',
+    '+.ip6.arpa',
+    'time.*.com',
+    'time.*.gov',
+    'ntp.*.com',
+    'pool.ntp.org',
+    '+.ntp.org',
+    '+.pool.ntp.org',
+    '+.market.xiaomi.com',
+    '+.stun.*.*',
+    '+.stun.*.*.*',
+    '+.turn.*.*',
+    '+.turn.*.*.*',
+    '+.n.n.srv.nintendo.net',
+    '+.stun.playstation.net',
+    '+.xboxlive.com',
+    'stun.l.google.com',
+    'stun1.l.google.com',
+    'stun2.l.google.com',
+    'stun3.l.google.com',
+    'stun4.l.google.com',
+    'global.turn.twilio.com',
+    'auth.docker.io',
+    'registry-1.docker.io',
+    'index.docker.io',
+    'hub.docker.com',
+    'production.cloudflare.docker.com',
+    '+.push.apple.com',
+    '+.pub.3gppnetwork.org',
+    '+.bing.com',
+    // v5.4.12 FIX#RD-REALIP: RustDesk rendezvous/relay needs real IPs while still routing via work proxy.
+    '+.rustdesk.com',
+    // v5.4.19 #3 借鉴 Proxy-override：远控/游戏/P2P 需真实 IP 才能打洞/直连（同 RustDesk 语义）。
+    '+.todesk.com', '+.oray.com', '+.sunlogin.com', '+.teamviewer.com', '+.anydesk.com',
+    '+.battlenet.com.cn', '+.wotgame.cn', '+.wggames.cn', '+.wowsgame.cn',
+    '+.mcdn.bilivideo.cn',
+    '+.miwifi.com',
+    '+.courier.push.apple.com',
+    '+.miui.com',
+    '+.xiaomi.com',
+    '+.xiaomi.net',
+    '+.mijia.tech',
+    '+.gotui.com'
+  ]))
+  // v5.4.22 #1 借鉴 Proxy-override：QUIC SNI 嗅探（对齐 CMFA/OpenClash 的 sniffer）。
+  //   force-dns-mapping 把真实 IP 连接（含 batch A 放进 fake-ip-filter 的域名，如 mcdn.bilivideo.cn）
+  //   映射回域名，使 QUIC 精细化的 GEOSITE/RULE-SET 匹配对真 IP QUIC 同样生效；否则真 IP QUIC 会被
+  //   NOT,((GEOSITE,cn)) 误判 REJECT。skip-dst-address 跳过 Telegram 网段（MTProto 会干扰嗅探）。
+  config.sniffer = {
+    enable: true,
+    'parse-pure-ip': true,
+    'force-dns-mapping': true,
+    'override-destination': true,
+    sniff: {
+      HTTP: { ports: ['80', '8080-8880'], 'override-destination': true },
+      TLS: { ports: ['443', '8443'] },
+      QUIC: { ports: ['443', '8443', '4433'] }
+    },
+    'skip-domain': ['+.push.apple.com'],
+    'skip-dst-address': ['91.105.192.0/23', '91.108.4.0/22', '91.108.8.0/21', '91.108.16.0/21', '91.108.56.0/22', '95.161.64.0/20', '149.154.160.0/20', '185.76.151.0/24', '2001:67c:4e8::/48', '2001:b28:f23c::/47', '2001:b28:f23f::/48', '2a0a:f280:203::/48']
   }
-  config['geo-auto-update'] = true
-  if (!config.profile) config.profile = {}
-  config.profile['store-selected'] = true
-  config.profile['store-fake-ip'] = true
-  config.profile['tracing'] = true
-  // v5.4.1 P3: Mixed Listeners 按地区端口
-  if(!config.listeners)config.listeners=[]
-  var rp=[{name:'MIXED-HK',port:50000,proxy:SMART.HK},{name:'MIXED-SG',port:50001,proxy:SMART.SG},{name:'MIXED-TW',port:50002,proxy:SMART.TW},{name:'MIXED-JP',port:50003,proxy:SMART.JPKR},{name:'MIXED-US',port:50004,proxy:SMART.US},{name:'MIXED-EU',port:50005,proxy:SMART.EU},{name:'MIXED-DIRECT',port:10086,proxy:'DIRECT'}]
-  var ep=new Set(config.listeners.map(function(l){return l.port}))
-  rp.forEach(function(r){if(!ep.has(r.port))config.listeners.push({name:r.name,type:'mixed',port:r.port,proxy:r.proxy})})
+  // v5.4.1 P3: Mixed Listeners——按地区分配端口，SwitchyOmega 一键切地区
+  if (!config.listeners) config.listeners = []
+  var regionPorts = [
+    { name: 'MIXED-HK', port: 50000, proxy: SMART.HK },
+    { name: 'MIXED-SG', port: 50001, proxy: SMART.SG },
+    { name: 'MIXED-TW', port: 50002, proxy: SMART.TW },
+    { name: 'MIXED-JP', port: 50003, proxy: SMART.JPKR },
+    { name: 'MIXED-US', port: 50004, proxy: SMART.US },
+    { name: 'MIXED-EU', port: 50005, proxy: SMART.EU },
+    { name: 'MIXED-DIRECT', port: 10086, proxy: 'DIRECT' }
+  ]
+  var existingPorts = new Set(config.listeners.map(function(l) { return l.port }))
+  regionPorts.forEach(function(r) {
+    if (!existingPorts.has(r.port)) config.listeners.push({ name: r.name, type: 'mixed', port: r.port, proxy: r.proxy })
+  })
   if (!config.tun) config.tun = {}
   if (!config.tun['exclude-process']) config.tun['exclude-process'] = []
-  // v5.2.1 FIX#20: GSCService.exe 加入排除列表，fake-ip 模式下 ip.cip.cc 无法解析
   var gcuExcludes = ['GCUService.exe', 'GCUBridge.exe', 'WorkPro.exe', 'GSCService.exe', 'gsupservice.exe', 'gchsvc.exe']
   gcuExcludes.forEach(function(proc) {
     if (config.tun['exclude-process'].indexOf(proc) === -1) { config.tun['exclude-process'].push(proc) }
@@ -2360,9 +2452,12 @@ function uniqList(list) {
 // ================================================================
 
 function cleanupSubscription(config) {
-  // v5.2.6-normal.1 FIX#26-P0: 与 Smart 版保持对齐 —— 清空订阅自带的所有 proxy-groups
-  //   原 4 关键词黑名单无法清除机场模板提供的地区组 / 流媒体组，导致代理组 60+。
-  //   本脚本 46 组（18 url-test + 28 select）是唯一权威来源。
+  // v5.2.6 FIX#26-P0: 清空订阅自带的所有 proxy-groups
+  //   原 4 关键词黑名单（负载均衡/自动选择/手动选择/节点选择）只能清除部分机场模板，
+  //   机场若提供地区组（🇭🇰 香港 / 🇹🇼 台湾 / …）或流媒体组，会和本脚本 18 Smart + 31 业务组共存，
+  //   用户端会看到 70+ 甚至 80+ 代理组（本脚本期望恰好 53 个）。
+  //   本脚本 53 个组是唯一权威来源：业务组只引用 SMART.* / DIRECT / REJECT，Smart 组只引用
+  //   config.proxies 里的节点名，不依赖任何订阅原生组，所以可以安全地整体清空。
   var removed = (config['proxy-groups'] || []).length
   config['proxy-groups'] = []
   if (removed > 0) console.log(`[${VERSION}] Removed ${removed} subscription proxy-groups`)
@@ -2418,13 +2513,14 @@ function sortProxyGroups(config) {
   config['proxy-groups'].forEach(g => {
     if (!g || !g.name) return
     if (bizNames.has(g.name)) { bizGroups.push(g) }
-    else if (smartNames.has(g.name)) { smartGroups.push(g) }
+    else if (smartNames.has(g.name) || g.type === 'smart') { smartGroups.push(g) }
     else { otherGroups.push(g) }
   })
   const bizOrder = Object.values(BIZ)
   bizGroups.sort((a, b) => bizOrder.indexOf(a.name) - bizOrder.indexOf(b.name))
   const smartOrder = Object.values(SMART)
   smartGroups.sort((a, b) => { const ia = smartOrder.indexOf(a.name); const ib = smartOrder.indexOf(b.name); return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib) })
+  // v5.4.5: 🌍 全球节点置顶，方便查看全部节点状态和测速
   var globalGroup = smartGroups.find(function(g) { return g.name === SMART.GLOBAL })
   var restSmartGroups = smartGroups.filter(function(g) { return g.name !== SMART.GLOBAL })
   config['proxy-groups'] = globalGroup ? [globalGroup, ...bizGroups, ...restSmartGroups, ...otherGroups] : [...bizGroups, ...smartGroups, ...otherGroups]
@@ -2453,35 +2549,36 @@ function main(config) {
     var homeJpkrNodes = c.HOME_JP.concat(c.HOME_KR)
     var homeApacNodes = c.HOME_HK.concat(c.HOME_TW, c.HOME_CN, c.HOME_JP, c.HOME_KR, c.HOME_SG, c.HOME_APAC_OTHER)
     var homeAmericasNodes = c.HOME_US.concat(c.HOME_AM)
-    upsertUrlTestGroup(config, SMART.GLOBAL, c.ALL)
-    if (c.HOME_ALL.length > 0) upsertUrlTestGroup(config, SMART.GLOBAL_HOME, c.HOME_ALL)
-    // v5.2.8-normal.2: 全部/家宽区域统一空组不创建，避免静默回退污染家宽或地区语义
-    //   （与 Smart 版同步修复。SMART.GLOBAL 始终存在兜底）
-    if (c.HK.length > 0) upsertUrlTestGroup(config, SMART.HK, c.HK)
-    if (c.HOME_HK.length > 0) upsertUrlTestGroup(config, SMART.HK_HOME, c.HOME_HK)
-    if (c.TW.length > 0) upsertUrlTestGroup(config, SMART.TW, c.TW)
-    if (c.HOME_TW.length > 0) upsertUrlTestGroup(config, SMART.TW_HOME, c.HOME_TW)
-    if (c.SG.length > 0) upsertUrlTestGroup(config, SMART.SG, c.SG)
-    if (c.HOME_SG.length > 0) upsertUrlTestGroup(config, SMART.SG_HOME, c.HOME_SG)
-    if (jpkrNodes.length > 0) upsertUrlTestGroup(config, SMART.JPKR, jpkrNodes)
-    if (homeJpkrNodes.length > 0) upsertUrlTestGroup(config, SMART.JPKR_HOME, homeJpkrNodes)
-    if (apacNodes.length > 0) upsertUrlTestGroup(config, SMART.APAC, apacNodes)
-    if (homeApacNodes.length > 0) upsertUrlTestGroup(config, SMART.APAC_HOME, homeApacNodes)
-    if (c.US.length > 0) upsertUrlTestGroup(config, SMART.US, c.US)
-    if (c.HOME_US.length > 0) upsertUrlTestGroup(config, SMART.US_HOME, c.HOME_US)
-    if (c.EU.length > 0) upsertUrlTestGroup(config, SMART.EU, c.EU)
-    if (c.HOME_EU.length > 0) upsertUrlTestGroup(config, SMART.EU_HOME, c.HOME_EU)
-    if (americasNodes.length > 0) upsertUrlTestGroup(config, SMART.AMERICAS, americasNodes)
-    if (homeAmericasNodes.length > 0) upsertUrlTestGroup(config, SMART.AMERICAS_HOME, homeAmericasNodes)
-    if (c.AF.length > 0) upsertUrlTestGroup(config, SMART.AFRICA, c.AF)
-    if (c.HOME_AF.length > 0) upsertUrlTestGroup(config, SMART.AFRICA_HOME, c.HOME_AF)
-    if (c.OTHER.length > 0) upsertUrlTestGroup(config, SMART.OTHER, c.OTHER)
-    if (c.HOME_OTHER.length > 0) upsertUrlTestGroup(config, SMART.OTHER_HOME, c.HOME_OTHER)
+    upsertSmartGroup(config, SMART.GLOBAL, c.ALL)
+    if (c.HOME_ALL.length > 0) upsertSmartGroup(config, SMART.GLOBAL_HOME, c.HOME_ALL)
+    // v5.2.6 FIX#25-P0: 统一空区域不建组（原 HK/TW/JPKR/APAC/US fallback 到 apacNodes/c.ALL
+    //   会把 HK/全节点 silently 塞入 🇹🇼 台湾节点 / 🇯🇵 日韩节点 —— 区域污染）
+    //   SMART.GLOBAL 始终存在作为兜底；业务组对 STANDARD_PROXIES 的 filterProxies 会自动剔除未创建的组引用
+    if (c.HK.length > 0) upsertSmartGroup(config, SMART.HK, c.HK)
+    if (c.HOME_HK.length > 0) upsertSmartGroup(config, SMART.HK_HOME, c.HOME_HK)
+    if (c.TW.length > 0) upsertSmartGroup(config, SMART.TW, c.TW)
+    if (c.HOME_TW.length > 0) upsertSmartGroup(config, SMART.TW_HOME, c.HOME_TW)
+    if (c.SG.length > 0) upsertSmartGroup(config, SMART.SG, c.SG)
+    if (c.HOME_SG.length > 0) upsertSmartGroup(config, SMART.SG_HOME, c.HOME_SG)
+    if (jpkrNodes.length > 0) upsertSmartGroup(config, SMART.JPKR, jpkrNodes)
+    if (homeJpkrNodes.length > 0) upsertSmartGroup(config, SMART.JPKR_HOME, homeJpkrNodes)
+    if (apacNodes.length > 0) upsertSmartGroup(config, SMART.APAC, apacNodes)
+    if (homeApacNodes.length > 0) upsertSmartGroup(config, SMART.APAC_HOME, homeApacNodes)
+    if (c.US.length > 0) upsertSmartGroup(config, SMART.US, c.US)
+    if (c.HOME_US.length > 0) upsertSmartGroup(config, SMART.US_HOME, c.HOME_US)
+    if (c.EU.length > 0) upsertSmartGroup(config, SMART.EU, c.EU)
+    if (c.HOME_EU.length > 0) upsertSmartGroup(config, SMART.EU_HOME, c.HOME_EU)
+    if (americasNodes.length > 0) upsertSmartGroup(config, SMART.AMERICAS, americasNodes)
+    if (homeAmericasNodes.length > 0) upsertSmartGroup(config, SMART.AMERICAS_HOME, homeAmericasNodes)
+    if (c.AF.length > 0) upsertSmartGroup(config, SMART.AFRICA, c.AF)
+    if (c.HOME_AF.length > 0) upsertSmartGroup(config, SMART.AFRICA_HOME, c.HOME_AF)
+    if (c.OTHER.length > 0) upsertSmartGroup(config, SMART.OTHER, c.OTHER)
+    if (c.HOME_OTHER.length > 0) upsertSmartGroup(config, SMART.OTHER_HOME, c.HOME_OTHER)
 
-    // 收集实际创建的区域组名（按 SMART 常量名匹配），过滤业务组的 proxy 引用
-    var activeSmartNames = new Set(config['proxy-groups'].filter(function(g) { return g && g.type === 'url-test' }).map(function(g) { return g.name }))
+    // 收集实际创建的 Smart 组名，过滤业务组的 proxy 引用
+    var activeSmartNames = new Set(config['proxy-groups'].filter(function(g) { return g && g.type === 'smart' }).map(function(g) { return g.name }))
     activeSmartNames.add('DIRECT'); activeSmartNames.add('REJECT')
-    console.log(`[${VERSION}] Active url-test region groups: ${[...activeSmartNames].filter(function(n) { return n !== 'DIRECT' && n !== 'REJECT' }).join(', ')}`)
+    console.log(`[${VERSION}] Active Smart groups: ${[...activeSmartNames].filter(function(n) { return n !== 'DIRECT' && n !== 'REJECT' }).join(', ')}`)
 
     injectBusinessGroups(config, activeSmartNames)
     injectRuleProviders(config)

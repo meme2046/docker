@@ -10,12 +10,14 @@ def "main cp" [] {
   cp --progress --force d:/github/meme2046/data/clash/reject.yaml c:/Users/me/AppData/Roaming/io.github.clash-verge-rev.clash-verge-rev/ruleset/my-reject.yaml
 }
 
-# 获取ClashParty(mihomo).js脚本, 并添加自定义配置
-def "main getcfg" [] {
--  # https://github.com/IvanSolis1989/Smart-Config-Kit/blob/main/Clash%20Party/ClashParty(mihomo).js
+# 获取ClashParty(mihomo).js脚本, 添加自定义配置, 并输出_update文件
+def "main cfg" [] {
   # 从 GitHub 下载 ClashParty(mihomo).js 配置文件
-  let target_url = "https://github.com/IvanSolis1989/Smart-Config-Kit/raw/main/Clash%20Party/ClashParty(mihomo).js";
-  let output = $"./(($target_url | url parse).path | path basename)"
+  let target_url = "https://raw.githubusercontent.com/IvanSolis1989/Smart-Config-Kit/main/Clash%20Party/ClashParty(mihomo-smart).js";
+  
+  let basename = $"(($target_url | url parse).path | path basename)";
+
+  let output = $"./($basename)";
 
   print ($"Downloading from: ($target_url)")
   print ($"Downloading to: ($output)")
@@ -29,4 +31,8 @@ def "main getcfg" [] {
     print "✘ Download failed!"
     return
   }
+
+  ^me js clash $output
+
+  cp --progress --force $output $"d:/github/meme2046/data/clash/($basename)"
 }
