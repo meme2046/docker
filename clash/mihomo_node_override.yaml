@@ -1,42 +1,3 @@
-# 脚本地址
-
-https://github.com/IvanSolis1989/Smart-Config-Kit/tree/main/Clash%20Party
-
-# 我的规则
-
-1. jsdelivr cdn
-
-```url
-https://fastly.jsdelivr.net/gh/meme2046/data@main/clash/direct.yaml
-https://fastly.jsdelivr.net/gh/meme2046/data@main/clash/proxy.yaml
-https://fastly.jsdelivr.net/gh/meme2046/data@main/clash/reject.yaml
-https://fastly.jsdelivr.net/gh/meme2046/data@main/clash/round.yaml
-```
-
-2. github
-
-```url
-https://raw.githubusercontent.com/meme2046/data/main/clash/direct.yaml
-https://raw.githubusercontent.com/meme2046/data/main/clash/proxy.yaml
-https://raw.githubusercontent.com/meme2046/data/main/clash/reject.yaml
-https://raw.githubusercontent.com/meme2046/data/main/clash/round.yaml
-```
-
-# 脚本生成
-
-```shell
-nu clash.nu cfg         # 生成配置自定义配置文件
-nu clash.nu cfg --smart # smart版
-```
-
-# UI补充配置
-
-## 操作说明
-
-1. 默认配置文件地址: `%APPDATA%\mihomo-party\mihomo.yaml`
-2. 打开配置文件, 将下方配置粘贴**覆盖** `%APPDATA%\mihomo-party\mihomo.yaml` 中的内容
-
-```yaml
 geodata-mode: true
 geox-url:
   geoip: https://fastly.jsdelivr.net/gh/Loyalsoldier/geoip@release/geoip.dat
@@ -86,4 +47,3 @@ sniffer:
     - 2a0a:f280:203::/48
   force-domain: []
   skip-src-address: []
-```
