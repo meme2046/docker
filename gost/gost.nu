@@ -2,7 +2,7 @@
 const HOST_IP = "192.168.123.7"
 
 def main [] {
-  route print | findstr "192.168.123"
+  route print | find "192.168.123"
 }
 
 def "main run" [] {

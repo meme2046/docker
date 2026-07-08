@@ -1,7 +1,7 @@
 services:
   # ========== 服务端转发（外网IPv6入站 → 本地游戏回环）==========
   # 主世界 IPv6:10999 → 127.0.0.1:10999
-  - name: server-main
+  - name: server-master
     addr: "[240e:333:2cb6:4000:48c6:83ad:482b:63e7]:10999"
     listener:
       type: udp
@@ -19,22 +19,3 @@ services:
       type: udp
     forwarders:
       - addr: 127.0.0.1:10998
-
-  # ========== 本机客户端转发（内网网卡接收游戏连接，转发公网IPv6）==========
-  - name: client-main
-    addr: 127.0.0.1:10999
-    listener:
-      type: udp
-    handler:
-      type: udp
-    forwarders:
-      - addr: "[240e:333:2cb6:4000:48c6:83ad:482b:63e7]:10999"
-
-  - name: client-cave
-    addr: 127.0.0.1:10998
-    listener:
-      type: udp
-    handler:
-      type: udp
-    forwarders:
-      - addr: "[240e:333:2cb6:4000:48c6:83ad:482b:63e7]:10998"
