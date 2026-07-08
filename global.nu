@@ -16,10 +16,10 @@ def kl [pid: int] {
 def ips [] {
   let ips = (
     [
-      (^xh -b ifconfig.co user-agent:curl | str trim)
-      (^xh -b ifconfig.me user-agent:curl | str trim)
-      (^xh -b ip.gs user-agent:curl | str trim)
-      (^xh -b ip.3322.net user-agent:curl | str trim)
+      (http -H {"user-agent":"curl"} ip.sb | str trim)
+      (http -H {"user-agent":"curl"} ping0.cc | str trim)
+      (http ip.gs | str trim)
+      (http ip.3322.net | str trim)
     ] | each {|ip| $ip | str trim | str replace -a "\n" "" }
   )
 
@@ -27,21 +27,24 @@ def ips [] {
   print $"✔ IPs: ($ips)"
 }
 
-def nullorempty [input: any] {
-  # 判断输入是否为null或者空
-  if ($input == null) {
-    return true
-  } else if (($input | describe) == "string") {
-    return (($input | str length) == 0)
-  } else if ($input | describe | str starts-with "list") {
-    return (($input | length) == 0)
-  } else if ($input | describe | str starts-with "record") {
-    return (($input | columns | length) == 0)
-  } else if ($input | describe | str starts-with "table") {
-    return (($input | columns | length) == 0)
-  } else {
-    return false
-  }
+def nullorempty [input?: any] {
+    # 统一取值：有位置参数用参数，无则取管道输入
+    let val = if $input == null { $in } else { $input }
+
+    # 下面全部判断 val，不再判断 $input
+    if $val == null {
+        return true
+    } else if (($val | describe) == "string" or ($val | describe) == "byte stream") {
+        return (($val | str length) == 0)
+    } else if ($val | describe | str starts-with "list") {
+        return (($val | length) == 0)
+    } else if ($val | describe | str starts-with "record") {
+        return (($val | columns | length) == 0)
+    } else if ($val | describe | str starts-with "table") {
+        return (($val | columns | length) == 0)
+    } else {
+        return false
+    }
 }
 # fp 传入 python 脚本路径
 def uvpy [fp: string] {
@@ -62,7 +65,7 @@ def uvpy [fp: string] {
     print "✘ Python not found"
   }
 }
-# 如果不存在则添加到nushell配置文件中
+# 一行内容,如果不存在则添加到nushell配置文件中
 def confline [line: string] {
   let fp = $nu.config-path
 
