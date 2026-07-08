@@ -4,19 +4,10 @@ def ts2date [ts: string] {
 
 # port scan
 def pp [num: int = 5173] {
-  let netstat_result = (netstat -ano | complete)
-  if $netstat_result.exit_code != 0 {
-    print $"Error netstat: ($netstat_result.stderr)"
-    return
-  }
-
-  let matches = ($netstat_result.stdout | lines | where $it =~ $':($num)')
-  if ($matches | is-empty) {
-    print $"✘ No process found listening on port 『($num)』"
-  } else {
-    print $matches
-  }
+  let netstat_result = (netstat -ano | find $num)
+  print $netstat_result
 }
+
 # kill process
 def kl [pid: int] {
   ^taskkill /F /PID $pid

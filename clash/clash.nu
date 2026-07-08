@@ -17,8 +17,10 @@ def "main cfg" [--smart] {
   if $smart {
     $target_url = "https://raw.githubusercontent.com/IvanSolis1989/Smart-Config-Kit/main/Clash%20Party/ClashParty(mihomo-smart).js";
   }
+
+  let url_data = $target_url | url parse
   
-  let basename = $"(($target_url | url parse).path | path basename)";
+  let basename = $"(url_data.path | path basename)";
 
   let output = $"./($basename)";
 
