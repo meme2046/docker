@@ -9,7 +9,7 @@
 
 ## 配置
 
-运行脚本: `nu ./tp.nu setup`, 会配置好topiary 格式化nushell的环境
+运行脚本: `nu ./tp.nu setup`, 会配置好topiary 格式化nushell的环境, 详情查看 `./tp.nu`
 
 ## vscode自动格式化
 
