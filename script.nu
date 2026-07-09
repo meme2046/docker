@@ -128,16 +128,20 @@ def "main uvpy" [fp: string] {
 }
 
 def "main nullorempty" [input: any] {
-  if ($input == null) {
+  # 统一取值：有位置参数用参数，无则取管道输入
+  let val = if $input == null { $in } else { $input }
+
+  # 下面全部判断 val，不再判断 $input
+  if $val == null {
     return true
-  } else if (($input | describe) == "string") {
-    return (($input | str length) == 0)
-  } else if ($input | describe | str starts-with "list") {
-    return (($input | length) == 0)
-  } else if ($input | describe | str starts-with "record") {
-    return (($input | columns | length) == 0)
-  } else if ($input | describe | str starts-with "table") {
-    return (($input | columns | length) == 0)
+  } else if (($val | describe) == "string" or ($val | describe) == "byte stream") {
+    return (($val | str length) == 0)
+  } else if ($val | describe | str starts-with "list") {
+    return (($val | length) == 0)
+  } else if ($val | describe | str starts-with "record") {
+    return (($val | columns | length) == 0)
+  } else if ($val | describe | str starts-with "table") {
+    return (($val | columns | length) == 0)
   } else {
     return false
   }
@@ -156,7 +160,7 @@ def "main confline" [line: string] {
   mut matched = false
   for item in $config_list {
     if ($item | str contains $line) {
-        $matched = true
+      $matched = true
     }
   }
 
