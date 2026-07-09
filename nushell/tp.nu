@@ -60,8 +60,6 @@ def "main ts-nu" [] {
   main ts-nu-build
 }
 
-
-
 def "main setup" [] {
   main cfg-pull
   main set-lang-cfg

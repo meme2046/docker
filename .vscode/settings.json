@@ -68,6 +68,12 @@
         "cmd": "me prettier \"${file}\""
       },
       {
+        // topiary format nushell
+        "match": "\\.(nu)$",
+        "isAsync": true,
+        "cmd": "topiary format \"${file}\""
+      },
+      {
         // @prettier/plugin-xml
         "match": "\\.(xml|svg)$",
         "isAsync": true,

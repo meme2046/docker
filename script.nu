@@ -16,15 +16,6 @@ def "main list" [dir_path: string = "."] {
   ls $dir_path | where type == dir | each { echo $in.name }
 }
 
-# def "main lines" [] {
-#   let new_lines = [
-#     'mkdir ($nu.data-dir | path join "vendor/autoload")'
-#     'starship init nu | save -f ($nu.data-dir | path join "vendor/autoload/starship.nu")'
-#   ]
-
-#   [] | append $new_lines
-# }
-
 def "main ts2date" [ts: string] {
   $ts | str substring 0..9 | into datetime -f "%s" | date to-timezone local | format date "%Y-%m-%d %H:%M:%S"
 }
@@ -33,43 +24,14 @@ def "main git" [] {
   git ls-remote https://github.com/github/gitignore.git HEAD
 }
 
-# ipv6 测试
-# ping -6 ipv6.baidu.com
-# ping -6 www.tsinghua.edu.cn
-
-def "main killport" [num: int = 5173] {
-  let matches = (netstat -ano | decode utf-8 | lines | where $it =~ $':($num)')
-  if ($matches | is-empty) {
-    print $"No process found listening on port ($num)"
-    return
-  }
-  let pid = ($matches | first | split row --regex '\s+' | last | str trim)
-  if ($pid | is-empty) {
-    print $"No process found listening on port ($num)"
-  } else {
-    print $"Killing process ID: ($pid) listening on port ($num)"
-    ^taskkill /F /PID $pid
-  }
+# kill process
+def kl [pid: int] {
+  ^taskkill /F /PID $pid
 }
-# 复制备份文件到c盘,避免d盘损坏
+
 def "main bkcp" [] {
   cp --progress --force d:/.backups/mysql/*.sql c:/.backups/mysql
   cp --progress --force d:/.backups/bruno/*.json c:/.backups/bruno
-}
-
-def "main pp1" [num: int = 5173] {
-  let netstat_result = (netstat -ano | complete)
-  if $netstat_result.exit_code != 0 {
-    print $"Error netstat: ($netstat_result.stderr)"
-    return
-  }
-
-  let matches = ($netstat_result.stdout | lines | where $it =~ $':($num)')
-  if ($matches | is-empty) {
-    print $"✘ No process found listening on port 『($num)』"
-  } else {
-    print $matches
-  }
 }
 
 def "main pp" [num: int = 5173] {
@@ -151,7 +113,6 @@ def "main test" [] {
   # not (main nullorempty (which $cmd_name))
   ^pnpm root -g
 }
-
 
 def "main confline" [line: string] {
   let fp = $nu.config-path
