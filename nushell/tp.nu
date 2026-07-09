@@ -56,7 +56,6 @@ def "main ts-nu-build" [] {
 
 def "main ts-nu" [] {
   git clone git@github.com:nushell/tree-sitter-nu.git # build后这个文件夹可删除
-  # scoop install -g tree-sitter
   main ts-nu-build
 }
 

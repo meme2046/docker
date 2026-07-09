@@ -1,4 +1,4 @@
-# topiary 格式化nushell
+# nushell格式化, topiary
 
 配置脚本:`./tp.nu`
 
