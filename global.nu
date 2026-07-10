@@ -84,3 +84,8 @@ def confline [line: string] {
   $config_list | str join "\n" | save --force $fp
   open $fp
 }
+
+# 使用notepad++ 打开文件, 防阻塞当前进程
+def npp [file: path] {
+  ^start "" ^notepad++ $file
+}

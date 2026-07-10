@@ -1,0 +1,23 @@
+[window]
+  # 窗口尺寸
+  dimensions = { columns = 180, lines = 60 }
+  padding = { x = 4, y = 0 }
+  # 窗口位置
+  # position = { x = 800, y = 200 }
+
+[terminal]
+  # 默认终端程序
+  shell = { program = "nu" }
+
+[general]
+  # 实时配置热重载
+  live_config_reload = true
+  working_directory = "d:/.tmp"
+
+[mouse]
+  # 右键粘贴
+  bindings = [{ mouse = "Right", action = "Paste" }]
+
+[selection]
+  # 选中复制
+  save_to_clipboard = true
