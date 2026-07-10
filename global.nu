@@ -57,6 +57,10 @@ def uvpy [fp: string] {
     # $env.PYTHONIOENCODING | print
     # $env.PYTHONPATH | print
     ^$py $fp
+  } else if (not (nullorempty (which python3.10))) {
+    print (which python3.10)
+    print $"✔ Using (^python3.10 --version)"
+    ^python3.10 $fp
   } else if (not (nullorempty (which python))) {
     print (which python)
     print $"✔ Using (^python --version)"

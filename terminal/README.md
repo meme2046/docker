@@ -10,3 +10,7 @@
 2. (可选)需要配置 startship, 运行 `starship config`, 将 `./starship.toml` 复制到打开文件中即可
 3. 运行 `nu starship.nu pwsh` 为 `pwsh` 添加starship配置
 4. 运行 `nu starship.nu nu` 为 `nushell` 添加starship配置
+
+# windows.terminal
+
+1. 配置文件在 `./windows.terminal.settings.json` 复制覆盖配置即可
