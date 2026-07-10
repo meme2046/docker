@@ -171,7 +171,9 @@
     "*.env": "dotenv",
     "*.xml": "xml",
     "*.py": "python",
-    "*.toml": "toml"
+    "*.toml": "toml",
+    "**/deleted/**/*.tsx": "plaintext",
+    "**/deleted/**/*.ts": "plaintext"
   },
   "files.saveConflictResolution": "overwriteFileOnDisk",
   "QoderCN.DisplayLanguage": "简体中文",
