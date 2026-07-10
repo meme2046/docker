@@ -4,25 +4,13 @@ def main [] {
   print 'dst script'
 }
 
-def "main dmp" [] {
-  docker compose -p dstmanagementplatform -f $"(pwd)/steam.dmp.compose.yaml" up -d
-}
-
-def "main dstadmingo" [] {
-  docker compose -p dstadmingo -f $"(pwd)/steam.dst-admin-go.compose.yaml" up -d
-}
-
 # 完整启动饥荒转服, 包含森林和洞穴
 def "main compose" [] {
   # 更新 modoverrides.lua中的客户端mod version
-  dst cmu d:/github/meme2046/docker/dst/modoverrides.lua -o c:/.dst/save/Cluster_1/Master/modoverrides.lua -o c:/.dst/save/Cluster_1/Caves/modoverrides.lua;
+  dst convert-update d:/github/meme2046/docker/dst/modoverrides.lua -o c:/.dst/save/Cluster_1/Master/modoverrides.lua -o c:/.dst/save/Cluster_1/Caves/modoverrides.lua;
   docker compose -f $"(pwd)/dst.compose.yaml" pull;
   docker compose -f $"(pwd)/dst.compose.yaml" build;
   docker compose -p dontstarvetogether -f $"(pwd)/dst.compose.yaml" up -d;
-}
-
-def "main socat" [] {
-  docker compose -p socat -f $"(pwd)/socat.compose.yaml" up -d
 }
 
 # 只启动dst-master
@@ -34,20 +22,22 @@ def "main dstmod" [] {
   docker compose -p dstmodupdate -f $"(pwd)/dst.compose.yaml" run --rm mod-update
 }
 
-# 镜像更新
-def "main dstimage" [] {
-  if (docker images -q --filter "reference=*dst-master" | lines | is-empty) {
-    print $"No image to remove"
-  } else {
-    docker images -q --filter "reference=*dst-master" | lines | docker rmi -f ...$in
-  }
-  docker compose -f $"(pwd)/dst.compose.yaml" pull
-  docker compose -f $"(pwd)/dst.compose.yaml" build
+# 设置dedicated_server_mods_setup.lua, dst启动自动更新模组会需要这个配置
+def "main modsetup" [] {
+  dst mod-setup d:/github/meme2046/docker/dst/modoverrides.lua -o c:/.dst/mods/dedicated_server_mods_setup.lua
+}
+# 更新 modoverrides.lua中(Convert client mod to server mod)中的客户端模组的version
+def "main convertup" [] {
+  dst convert-update d:/github/meme2046/docker/dst/modoverrides.lua -o c:/.dst/save/Cluster_1/Master/modoverrides.lua -o c:/.dst/save/Cluster_1/Caves/modoverrides.lua;
 }
 
-# udp测试
+# 复制目录中的配置文件到指定主路径下
+def "main copy" [path = "c:/.dst/save/Cluster_1"] {
+  cp --force cluster.ini $"($path)/cluster.ini"
 
-def "main udp" [] {
-  nc -zu 125.80.87.239 10999
-  $env.LAST_EXIT_CODE
+  cp --force master/server.ini $"($path)/Master/server.ini"
+  cp --force caves/server.ini $"($path)/Caves/server.ini"
+
+  cp --force master/leveldataoverride.lua $"($path)/Master/leveldataoverride.lua"
+  cp --force caves/leveldataoverride.lua $"($path)/Caves/leveldataoverride.lua"
 }
