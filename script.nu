@@ -132,3 +132,22 @@ def "main confline" [line: string] {
   $config_list | str join "\n" | save --force $fp
   open $fp
 }
+
+# 添加一行内容,如果不存在则添加到nushell配置文件中
+def appendline1 [fp: string line: string] {
+
+  mut lines = open --raw $fp | split row -r '\n'
+  mut matched = false
+  for item in $lines {
+    if ($item | str contains ($line | str trim)) {
+      $matched = true
+    }
+  }
+
+  if ($matched == false) {
+    $lines = ($lines | append $line)
+  }
+
+  $lines | str join "\n" | save --force $fp
+  open $fp
+}

@@ -65,23 +65,21 @@ def uvpy [fp: string] {
     print "✘ Python not found"
   }
 }
-# 一行内容,如果不存在则添加到nushell配置文件中
-def confline [line: string] {
-  let fp = $nu.config-path
 
-  mut config_list = open $fp | split row -r '\n'
-  mut matched = false
-  for item in $config_list {
-    if ($item | str contains $line) {
-      $matched = true
-    }
+# 添加一行内容,如果不存在则添加到nushell配置文件中
+def appendline [fp: string line: string] {
+  if (not ($fp | path exists)) {
+    print "✘ File not found: $fp"
+    return
   }
 
-  if ($matched == false) {
-    $config_list = ($config_list | append $line)
-  }
+  let trimmed_line = $line | str trim
+  let content = open --raw $fp
 
-  $config_list | str join "\n" | save --force $fp
+  if ($content | find $trimmed_line | length) == 0 {
+    $"($content)\n($line)" | save --force $fp
+  }
+  print $"($fp):\n"
   open $fp
 }
 
