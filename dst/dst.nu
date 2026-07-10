@@ -31,7 +31,7 @@ def "main convertup" [] {
   dst convert-update d:/github/meme2046/docker/dst/modoverrides.lua -o c:/.dst/save/Cluster_1/Master/modoverrides.lua -o c:/.dst/save/Cluster_1/Caves/modoverrides.lua;
 }
 
-# 复制目录中的配置文件到指定主路径下
+# 复制目录中的配置文件到指定主路径下, 开服必须的文件
 def "main copy" [path = "c:/.dst/save/Cluster_1"] {
   cp --force cluster.ini $"($path)/cluster.ini"
 
