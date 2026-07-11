@@ -38,5 +38,3 @@ v6Domains.forEach(function (domain) {
   }
 });
 ```
-
-`n run dev js clash "d:/github/meme2046/docker/clash/ClashParty(mihomo-smart).js" "d:/github/meme2046/docker/clash/custom.clash.config.json"`

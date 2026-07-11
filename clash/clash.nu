@@ -36,7 +36,7 @@ def "main cfg" [--smart] {
     return
   }
 
-  ^me js clash $download_path
+  ^me js clash $download_path ./custom.clash.config.json
 
   if $smart {
     cp --force --verbose "ClashParty(mihomo-smart)_update.js" $"d:/github/meme2046/data/clash/($basename)"
