@@ -1,7 +1,6 @@
 def main [] {
-    print 'pypmecli script'
+  print 'pypmecli script'
 }
-
 
 # 本地更新覆盖clash verge自定义规则, 未使用
 def "main cp" [] {
@@ -19,8 +18,8 @@ def "main cfg" [--smart] {
   }
 
   let url_data = $target_url | url parse
-  
-  let basename = $"(url_data.path | path basename)";
+
+  let basename = $"($url_data.path | path basename)";
 
   let output = $"./($basename)";
 
