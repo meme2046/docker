@@ -31,11 +31,13 @@ function isInfoNode(name) {
     "试用",
     "应急",
   ];
+
   const infoRes = [
     /\b(?:USE|USED|TOTAL|EXPIRE|EMAIL)\b/i,
     /Panel|Channel|Author|剩余流量|已用流量|到期时间|下次重置/i,
     /\b(?:Sign|Login|Register|Help|FAQ)\b/i,
   ];
+
   const s = String(name || "");
   return (
     infoPatterns.some((p) => s.includes(p)) || infoRes.some((re) => re.test(s))
@@ -86,6 +88,7 @@ const REGION_DB = [
       "tpe",
       "twn",
     ],
+
     iso: ["TW"],
   },
   {
@@ -187,6 +190,7 @@ const REGION_DB = [
       "hrb",
       "cgo",
     ],
+
     iso: ["CN"],
   },
   {
@@ -230,6 +234,7 @@ const REGION_DB = [
       "cts",
       "oka",
     ],
+
     iso: ["JP"],
   },
   {
@@ -256,6 +261,7 @@ const REGION_DB = [
       "gmp",
       "pus",
     ],
+
     iso: ["KR"],
   },
   { id: "SG", kw: ["新加坡", "singapore", "sgp", "sin"], iso: ["SG"] },
@@ -357,6 +363,7 @@ const REGION_DB = [
       "hnl",
       "anc",
     ],
+
     iso: ["US"],
   },
   {
@@ -582,6 +589,7 @@ const REGION_DB = [
       "tbilisi",
       "第比利斯",
     ],
+
     iso: [
       "GB",
       "UK",
@@ -729,6 +737,7 @@ const REGION_DB = [
       "苏里南",
       "suriname",
     ],
+
     iso: [
       "CA",
       "MX",
@@ -885,6 +894,7 @@ const REGION_DB = [
       "佛得角",
       "cape verde",
     ],
+
     iso: [
       "EG",
       "SD",
@@ -1125,6 +1135,7 @@ const REGION_DB = [
       "新喀里多尼亚",
       "new caledonia",
     ],
+
     iso: [
       "IN",
       "IND",
@@ -2539,6 +2550,7 @@ const REGION_ORDER = [
   "AFRICA",
   "OTHER",
 ];
+
 const REGION_HOME_MAP = {
   GLOBAL: "GLOBAL_HOME",
   HK: "HK_HOME",
@@ -2767,14 +2779,17 @@ function overwriteGeneral(config) {
     "https://1.1.1.1/dns-query",
     "223.5.5.5",
   ];
+
   var domesticDoH = [
     "https://dns.alidns.com/dns-query",
     "https://doh.pub/dns-query",
   ];
+
   var foreignDoH = [
     "https://cloudflare-dns.com/dns-query",
     "https://dns.google/dns-query",
   ];
+
   var proxyDoH = foreignDoH.concat(domesticDoH);
   config.dns["default-nameserver"] = bootstrapDns.slice();
   config.dns.nameserver = domesticDoH.slice();
@@ -2828,6 +2843,7 @@ function overwriteGeneral(config) {
     "10.0.0.0/8",
     "192.168.0.0/16",
   ];
+
   if (!Array.isArray(config.dns["fallback-filter"].domain))
     config.dns["fallback-filter"].domain = [];
   // v5.4.1 P0: fake-ip-filter 扩展（Smart 内核不支持 fake-ip-filter-mode: rule，使用传统域名列表）
@@ -2963,27 +2979,10 @@ function overwriteGeneral(config) {
     "gsupservice.exe",
     "gchsvc.exe",
   ];
+
   gcuExcludes.forEach(function (proc) {
     if (config.tun["exclude-process"].indexOf(proc) === -1) {
       config.tun["exclude-process"].push(proc);
-    }
-  });
-  const targetDomains = ["api.memeniu.xyz", "meme.us.kg"];
-  config.ipv6 = true;
-  config.dns.ipv6 = true;
-  const ipv6Doh = [
-    "https://[2402:4e00::]/dns-query",
-    "https://[2400:3200::1]/dns-query",
-  ];
-  const mixedDns = [...domesticDoH, ...ipv6Doh];
-  targetDomains.forEach(function (host) {
-    if (!config.dns["nameserver-policy"][host]) {
-      config.dns["nameserver-policy"][host] = mixedDns.slice();
-    }
-  });
-  targetDomains.forEach(function (domain) {
-    if (!config.dns["fake-ip-filter"].includes(domain)) {
-      config.dns["fake-ip-filter"].push(domain);
     }
   });
 }
@@ -3046,6 +3045,7 @@ function injectSmartFingerprint(config) {
     "android",
     "edge",
   ];
+
   config.proxies.forEach((p) => {
     if (!p || typeof p !== "object") return;
     // v5.2.0 FIX#15: 先判断协议类型，再判断是否需要指纹（逻辑顺序优化）
@@ -3215,6 +3215,63 @@ function main(config) {
     console.log(
       `[${VERSION}] Done! Groups: ${config["proxy-groups"].length}, Rules: ${config.rules.length}, Providers: ${Object.keys(config["rule-providers"]).length}`,
     );
+    const ruleSet = [
+      "RULE-SET,my-direct,DIRECT",
+      "RULE-SET,my-reject,REJECT",
+      "RULE-SET,my-proxy,🌍 全球节点",
+    ];
+    config.rules = [...ruleSet, ...config.rules];
+    const ruleProviders = {
+      "my-direct": {
+        behavior: "classical",
+        format: "yaml",
+        interval: 3600,
+        path: "./ruleset/my-direct.yaml",
+        type: "http",
+        url: "https://raw.githubusercontent.com/meme2046/data/main/clash/direct.yaml?_t={{timestamp}}",
+      },
+      "my-proxy": {
+        behavior: "classical",
+        format: "yaml",
+        interval: 3600,
+        path: "./ruleset/my-proxy.yaml",
+        type: "http",
+        url: "https://raw.githubusercontent.com/meme2046/data/main/clash/proxy.yaml?_t={{timestamp}}",
+      },
+      "my-reject": {
+        behavior: "classical",
+        format: "yaml",
+        interval: 3600,
+        path: "./ruleset/my-reject.yaml",
+        type: "http",
+        url: "https://raw.githubusercontent.com/meme2046/data/main/clash/reject.yaml?_t={{timestamp}}",
+      },
+    };
+    Object.keys(ruleProviders).forEach(function (key) {
+      config["rule-providers"][key] = ruleProviders[key];
+    });
+    const v6Domains = ["api.memeniu.xyz", "meme.us.kg", "+.steamserver.net"];
+    config.ipv6 = true;
+    config.dns.ipv6 = true;
+    const domesticDoH = [
+      "https://dns.alidns.com/dns-query",
+      "https://doh.pub/dns-query",
+    ];
+    const ipv6Doh = [
+      "https://[2402:4e00::]/dns-query",
+      "https://[2400:3200::1]/dns-query",
+    ];
+    const mixedDns = [...domesticDoH, ...ipv6Doh];
+    v6Domains.forEach(function (host) {
+      if (!config.dns["nameserver-policy"][host]) {
+        config.dns["nameserver-policy"][host] = mixedDns.slice();
+      }
+    });
+    v6Domains.forEach(function (domain) {
+      if (!config.dns["fake-ip-filter"].includes(domain)) {
+        config.dns["fake-ip-filter"].push(domain);
+      }
+    });
     return config;
   } catch (e) {
     console.error(`[${VERSION}] Error:`, e);

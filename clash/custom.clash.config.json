@@ -1,0 +1,34 @@
+{
+  "ruleSet": [
+    "RULE-SET,my-direct,DIRECT",
+    "RULE-SET,my-reject,REJECT",
+    "RULE-SET,my-proxy,🌍 全球节点"
+  ],
+  "ruleProviders": {
+    "my-direct": {
+      "behavior": "classical",
+      "format": "yaml",
+      "interval": 3600,
+      "path": "./ruleset/my-direct.yaml",
+      "type": "http",
+      "url": "https://raw.githubusercontent.com/meme2046/data/main/clash/direct.yaml?_t={{timestamp}}"
+    },
+    "my-proxy": {
+      "behavior": "classical",
+      "format": "yaml",
+      "interval": 3600,
+      "path": "./ruleset/my-proxy.yaml",
+      "type": "http",
+      "url": "https://raw.githubusercontent.com/meme2046/data/main/clash/proxy.yaml?_t={{timestamp}}"
+    },
+    "my-reject": {
+      "behavior": "classical",
+      "format": "yaml",
+      "interval": 3600,
+      "path": "./ruleset/my-reject.yaml",
+      "type": "http",
+      "url": "https://raw.githubusercontent.com/meme2046/data/main/clash/reject.yaml?_t={{timestamp}}"
+    }
+  },
+  "v6Domains": ["api.memeniu.xyz", "meme.us.kg", "+.steamserver.net"]
+}

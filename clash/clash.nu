@@ -21,22 +21,26 @@ def "main cfg" [--smart] {
 
   let basename = $"($url_data.path | path basename)";
 
-  let output = $"./($basename)";
+  let download_path = $"./($basename)";
 
   print ($"Downloading from: ($target_url)")
-  print ($"Downloading to: ($output)")
+  print ($"Downloading to: ($download_path)")
 
-  rm -f $output
+  rm -f $download_path
 
-  http get $target_url | save --force $output
-  if ($output | path exists) {
-    print ($"✔ Successfully downloaded to: ($output)")
+  http get $target_url | save --force $download_path
+  if ($download_path | path exists) {
+    print ($"✔ Successfully downloaded to: ($download_path)")
   } else {
     print "✘ Download failed!"
     return
   }
 
-  ^me js clash $output
+  ^me js clash $download_path
 
-  cp --progress --force $output $"d:/github/meme2046/data/clash/($basename)"
+  if $smart {
+    cp --force --verbose "ClashParty(mihomo-smart)_update.js" $"d:/github/meme2046/data/clash/($basename)"
+  } else {
+    cp --force --verbose "ClashParty(mihomo)_update.js" $"d:/github/meme2046/data/clash/($basename)"
+  }
 }
