@@ -2,6 +2,8 @@
 
 配置脚本:`./tp.nu`
 
+> 参考链接: https://github.com/blindFS/topiary-nushell
+
 ## 前置条件
 
 1. 下载: https://visualstudio.microsoft.com/zh-hans/visual-cpp-build-tools/
