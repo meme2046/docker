@@ -24,7 +24,7 @@ def "main dstmod" [] {
 
 # 设置dedicated_server_mods_setup.lua, dst启动自动更新模组会需要这个配置
 def "main modsetup" [] {
-  dst mod-setup d:/github/meme2046/docker/dst/modoverrides.lua -o c:/.dst/mods/dedicated_server_mods_setup.lua
+  dst mod-setup d:/github/meme2046/docker/dst/modoverrides.lua -o c:/.dst/mods/dedicated_server_mods_setup.lua -o ./dedicated_server_mods_setup.lua
 }
 # 更新 modoverrides.lua中(Convert client mod to server mod)中的客户端模组的version
 def "main convertup" [] {
