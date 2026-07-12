@@ -27,12 +27,12 @@ def "main modsetup" [] {
   dst mod-setup d:/github/meme2046/docker/dst/modoverrides.lua -o c:/.dst/mods/dedicated_server_mods_setup.lua -o ./dedicated_server_mods_setup.lua
 }
 # 更新 modoverrides.lua中(Convert client mod to server mod)中的客户端模组的version
-def "main convertup" [] {
-  dst convert-update d:/github/meme2046/docker/dst/modoverrides.lua -o c:/.dst/save/Cluster_1/Master/modoverrides.lua -o c:/.dst/save/Cluster_1/Caves/modoverrides.lua;
+def "main convertup" [path = "c:/.dst/save/Cluster_1"] {
+  dst convert-update d:/github/meme2046/docker/dst/modoverrides.lua -o $"($path)/Master/modoverrides.lua" -o $"($path)/Caves/modoverrides.lua";
 }
 
 # 复制目录中的配置文件到指定主路径下, 开服必须的文件
-def "main copy" [path = "c:/.dst/save/Cluster_1"] {
+def "main server_file" [path = "c:/.dst/save/Cluster_1"] {
   cp --force cluster.ini $"($path)/cluster.ini"
 
   cp --force master/server.ini $"($path)/Master/server.ini"

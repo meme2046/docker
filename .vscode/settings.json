@@ -112,7 +112,7 @@
   },
   // 📝彩虹缩进 indent-rainbow 配置
   "editor.tabSize": 2,
-  "indentRainbow.ignoreErrorLanguages": ["plaintext"],
+  "indentRainbow.ignoreErrorLanguages": ["plaintext", "markdown"],
   "indentRainbow.includedLanguages": [
     "plaintext",
     "javascript",
