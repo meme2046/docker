@@ -4,22 +4,26 @@ def main [] {
   print 'dst script'
 }
 
-# 完整启动饥荒转服, 包含森林和洞穴
+# 启动饥荒专服, 包含森林和洞穴
 def "main compose" [] {
   # 更新 modoverrides.lua中的客户端mod version
-  dst convert-update d:/github/meme2046/docker/dst/modoverrides.lua -o c:/.dst/save/Cluster_1/Master/modoverrides.lua -o c:/.dst/save/Cluster_1/Caves/modoverrides.lua;
-  docker compose -f $"(pwd)/dst.compose.yaml" pull;
-  docker compose -f $"(pwd)/dst.compose.yaml" build;
+  main prepare;
   docker compose -p dontstarvetogether -f $"(pwd)/dst.compose.yaml" up -d;
 }
 
-# 只启动dst-master
+# 只启动森林(地面)
 def "main dstmaster" [] {
   docker compose -p dstmaster -f $"(pwd)/dst.compose.yaml" up -d dst-master
 }
-# mod安装/更新
+# 单独启动mod安装/更新
 def "main dstmod" [] {
   docker compose -p dstmodupdate -f $"(pwd)/dst.compose.yaml" run --rm mod-update
+}
+#  开服前准备工作, 1. 更新modoverrides.lua中客户端版本信息 2. 拉取镜像检查游戏否有更新 3. 构建镜像中间镜像
+def "main prepare" [] {
+  dst convert-update d:/github/meme2046/docker/dst/modoverrides.lua -o c:/.dst/save/Cluster_1/Master/modoverrides.lua -o c:/.dst/save/Cluster_1/Caves/modoverrides.lua;
+  docker compose -f $"(pwd)/dst.compose.yaml" pull;
+  docker compose -f $"(pwd)/dst.compose.yaml" build;
 }
 
 # 设置dedicated_server_mods_setup.lua, dst启动自动更新模组会需要这个配置
