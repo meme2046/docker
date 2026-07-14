@@ -64,44 +64,50 @@
         // prettier
         "match": "\\.(txt|ts|js|jsx|tsx|json|html|css|graphql|gql|yaml|yml|md)$",
         "notMatch": "node_modules/*$",
-        "isAsync": true,
+        "isAsync": false,
         "cmd": "me prettier \"${file}\""
       },
       {
         // topiary format nushell
         "match": "\\.(nu)$",
-        "isAsync": true,
+        "isAsync": false,
         "cmd": "topiary format \"${file}\""
       },
       {
         // @prettier/plugin-xml
         "match": "\\.(xml|svg)$",
-        "isAsync": true,
+        "isAsync": false,
         "cmd": "me prettier \"${file}\""
       },
       {
         // prettier-plugin-toml
         "match": "\\.(toml)$",
-        "isAsync": true,
+        "isAsync": false,
         "cmd": "me prettier \"${file}\""
       },
       {
         // prettier-plugin-nginx
         "match": "\\.(nginx)$",
-        "isAsync": true,
+        "isAsync": false,
+        "cmd": "me prettier \"${file}\""
+      },
+      {
+        // prettier-plugin-ini
+        "match": "\\.(ini)$",
+        "isAsync": false,
         "cmd": "me prettier \"${file}\""
       },
       {
         // prettier-plugin-sh
         "match": "\\.(sh|env|Dockerfile|properties|gitignore|dockerignore|prettierignore)$",
         "notMatch": "\\.(nu)$",
-        "isAsync": true,
+        "isAsync": false,
         "cmd": "me prettier \"${file}\""
       },
       {
         // no-dot-ext
         "match": "Dockerfile$|web.config",
-        "isAsync": true,
+        "isAsync": false,
         "cmd": "me prettier \"${file}\""
       }
     ]
