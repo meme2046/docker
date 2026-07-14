@@ -26,6 +26,8 @@
     // react
     "bradlc.vscode-tailwindcss",
     "dbaeumer.vscode-eslint",
-    "midudev.better-svg"
+    "midudev.better-svg",
+    // AI
+    "Doubao.doubao-app-share-vscode-plugin"
   ]
 }

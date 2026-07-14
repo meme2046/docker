@@ -2,31 +2,34 @@
 
 https://github.com/IvanSolis1989/Smart-Config-Kit/tree/main/Clash%20Party
 
-# 我的规则
+# 我的配置
 
-1. jsdelivr cdn
+1. jsdelivr cdn 规则
 
-```url
-https://fastly.jsdelivr.net/gh/meme2046/data@main/clash/direct.yaml
-https://fastly.jsdelivr.net/gh/meme2046/data@main/clash/proxy.yaml
-https://fastly.jsdelivr.net/gh/meme2046/data@main/clash/reject.yaml
-https://fastly.jsdelivr.net/gh/meme2046/data@main/clash/round.yaml
-```
+   https://fastly.jsdelivr.net/gh/meme2046/data@main/clash/direct.yaml  
+   https://fastly.jsdelivr.net/gh/meme2046/data@main/clash/proxy.yaml  
+   https://fastly.jsdelivr.net/gh/meme2046/data@main/clash/reject.yaml  
+   https://fastly.jsdelivr.net/gh/meme2046/data@main/clash/round.yaml
 
-2. github
+2. github 规则
 
-```url
-https://raw.githubusercontent.com/meme2046/data/main/clash/direct.yaml
-https://raw.githubusercontent.com/meme2046/data/main/clash/proxy.yaml
-https://raw.githubusercontent.com/meme2046/data/main/clash/reject.yaml
-https://raw.githubusercontent.com/meme2046/data/main/clash/round.yaml
-```
+   https://raw.githubusercontent.com/meme2046/data/main/clash/direct.yaml  
+   https://raw.githubusercontent.com/meme2046/data/main/clash/proxy.yaml  
+   https://raw.githubusercontent.com/meme2046/data/main/clash/reject.yaml  
+   https://raw.githubusercontent.com/meme2046/data/main/clash/round.yaml
+
+3. 生成好的脚本
+
+   https://raw.githubusercontent.com/meme2046/data/main/ClashParty(mihomo).js
+   https://raw.githubusercontent.com/meme2046/data/main/ClashParty(mihomo-smart).js
+   https://raw.githubusercontent.com/meme2046/data/main/clash/FlClash(mihomo).js
+   https://fastly.jsdelivr.net/gh/meme2046/data@main/clash/FlClash(mihomo).js
 
 # 脚本生成
 
 ```shell
-nu clash.nu cfg         # 生成配置自定义配置文件
-nu clash.nu cfg --smart # smart版
+nu clash.nu config                          # 生成配置自定义配置文件
+nu clash.nu config --type clash-party-smart # smart版
 ```
 
 # UI补充配置
@@ -86,4 +89,8 @@ sniffer:
     - 2a0a:f280:203::/48
   force-domain: []
   skip-src-address: []
+```
+
+```
+
 ```
