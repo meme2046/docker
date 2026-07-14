@@ -36,7 +36,7 @@ def "main convertup" [path = "c:/.dst/save/Cluster_1"] {
 }
 
 # 复制目录中的配置文件到指定主路径下, 开服必须的文件
-def "main server_file" [path = "c:/.dst/save/Cluster_1"] {
+def "main override" [path = "c:/.dst/save/Cluster_1"] {
   cp --force cluster.ini $"($path)/cluster.ini"
 
   cp --force master/server.ini $"($path)/Master/server.ini"
