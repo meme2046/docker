@@ -46,6 +46,7 @@ def "main override" [path = "c:/.dst/save/Cluster_1"] {
   cp --force caves/leveldataoverride.lua $"($path)/Caves/leveldataoverride.lua"
 }
 
+# 删除备份, 删除存档, 删除日志, 重新开局
 def "main reset" [path = "c:/.dst/save/Cluster_1"] {
   main override $path
   rm --recursive --force --verbose $"($path)/Master/backup" $"($path)/Caves/backup" $"($path)/Master/save" $"($path)/Caves/save" | print --stderr
