@@ -45,3 +45,9 @@ def "main override" [path = "c:/.dst/save/Cluster_1"] {
   cp --force master/leveldataoverride.lua $"($path)/Master/leveldataoverride.lua"
   cp --force caves/leveldataoverride.lua $"($path)/Caves/leveldataoverride.lua"
 }
+
+def "main reset" [path = "c:/.dst/save/Cluster_1"] {
+  main override $path
+  rm --recursive --force --verbose $"($path)/Master/backup" $"($path)/Caves/backup" $"($path)/Master/save" $"($path)/Caves/save" | print --stderr
+  rm --force --verbose $"($path)/Master/server_chat_log.txt" $"($path)/Caves/server_chat_log.txt" $"($path)/Master/server_log.txt" $"($path)/Caves/server_log.txt" | print --stderr
+}
