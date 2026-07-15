@@ -7,7 +7,7 @@ def main [] {
 # 启动饥荒专服, 包含森林和洞穴
 def "main compose" [] {
   # 更新 modoverrides.lua中的客户端mod version
-  main prepare;
+  # main prepare;
   docker compose -p dontstarvetogether -f $"(pwd)/dst.compose.yaml" up -d;
 }
 

@@ -4,7 +4,7 @@ services:
     image: superjump22/dontstarvetogether:latest
     container_name: mod-update
     restart: "no"
-    network_mode: host
+    # network_mode: host
     environment:
       - TZ=Asia/Shanghai
     volumes:
@@ -22,14 +22,14 @@ services:
       dockerfile: dst.Dockerfile
     container_name: dst-master
     restart: "no"
-    network_mode: host
+    # network_mode: host
     stdin_open: true
     tty: true
-    # ports:
-    #   - "10888:10888/udp" # 集群Master端口
-    #   - "10999:10999/udp" # 地面世界端口
-    #   - "27016:27016/udp" # 地面世界Steam端口
-    #   - "8766:8766/udp" # 地面世界Steam认证端口
+    ports:
+      - "10888:10888/udp" # 集群Master端口
+      - "10999:10999/udp" # 地面世界端口
+      - "27016:27016/udp" # 地面世界Steam端口
+      - "8766:8766/udp" # 地面世界Steam认证端口
     environment:
       - TZ=Asia/Shanghai
     volumes:
@@ -65,13 +65,13 @@ services:
     image: superjump22/dontstarvetogether:latest
     container_name: dst-caves
     restart: "no"
-    network_mode: host
+    # network_mode: host
     stdin_open: true
     tty: true
-    # ports:
-    #   - "10998:10998/udp" # 地下世界端口
-    #   - "27017:27017/udp" # 地下世界Steam端口
-    #   - "8767:8767/udp" # 地下世界Steam认证端口
+    ports:
+      - "10998:10998/udp" # 地下世界端口
+      - "27017:27017/udp" # 地下世界Steam端口
+      - "8767:8767/udp" # 地下世界Steam认证端口
     environment:
       - TZ=Asia/Shanghai
     volumes:
