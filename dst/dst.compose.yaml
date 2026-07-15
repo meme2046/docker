@@ -15,6 +15,9 @@ services:
       - -ugc_directory
       - /home/steam/dst/game/ugc_mods
 
+    networks:
+      - app-network
+
   dst-master:
     # image: superjump22/dontstarvetogether:latest
     build:
@@ -61,6 +64,9 @@ services:
       mod-update:
         condition: service_completed_successfully
 
+    networks:
+      - app-network
+
   dst-caves:
     image: superjump22/dontstarvetogether:latest
     container_name: dst-caves
@@ -95,3 +101,10 @@ services:
     depends_on:
       dst-master:
         condition: service_healthy
+
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

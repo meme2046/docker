@@ -7,7 +7,7 @@ def main [] {
 # 启动饥荒专服, 包含森林和洞穴
 def "main compose" [] {
   # 更新 modoverrides.lua中的客户端mod version
-  # main prepare;
+  main prepare;
   docker compose -p dontstarvetogether -f $"(pwd)/dst.compose.yaml" up -d;
 }
 
@@ -49,6 +49,6 @@ def "main override" [path = "c:/.dst/save/Cluster_1"] {
 # 删除备份, 删除存档, 删除日志, 重新开局
 def "main reset" [path = "c:/.dst/save/Cluster_1"] {
   main override $path
-  rm --recursive --force --verbose $"($path)/Master/backup" $"($path)/Caves/backup" $"($path)/Master/save" $"($path)/Caves/save" | print --stderr
-  rm --force --verbose $"($path)/Master/server_chat_log.txt" $"($path)/Caves/server_chat_log.txt" $"($path)/Master/server_log.txt" $"($path)/Caves/server_log.txt" | print --stderr
+  # rm --recursive --force --verbose $"($path)/Master/backup" $"($path)/Caves/backup" $"($path)/Master/save" $"($path)/Caves/save" | print --stderr
+  # rm --force --verbose $"($path)/Master/server_chat_log.txt" $"($path)/Caves/server_chat_log.txt" $"($path)/Master/server_log.txt" $"($path)/Caves/server_log.txt" | print --stderr
 }
