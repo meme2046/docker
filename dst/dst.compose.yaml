@@ -16,7 +16,7 @@ services:
       - /home/steam/dst/game/ugc_mods
 
     networks:
-      - app-network
+      - dst-network
 
   dst-master:
     # image: superjump22/dontstarvetogether:latest
@@ -51,7 +51,6 @@ services:
       - Cluster_1
       - -shard
       - Master
-      # - -bind_ip=0.0.0.0
     # 健康检查：检测分片通信端口
     healthcheck:
       test: ["CMD-SHELL", "nc -zu 127.0.0.1 10999"]
@@ -65,7 +64,7 @@ services:
         condition: service_completed_successfully
 
     networks:
-      - app-network
+      - dst-network
 
   dst-caves:
     image: superjump22/dontstarvetogether:latest
@@ -96,15 +95,14 @@ services:
       - Cluster_1
       - -shard
       - Caves
-      # - -bind_ip=0.0.0.0
     # 必须等master分片端口就绪再启动洞穴
     depends_on:
       dst-master:
         condition: service_healthy
 
     networks:
-      - app-network
+      - dst-network
 
 networks:
-  app-network:
+  dst-network:
     driver: bridge

@@ -7,7 +7,7 @@ def main [] {
 # 启动饥荒专服, 包含森林和洞穴
 def "main compose" [] {
   # 更新 modoverrides.lua中的客户端mod version
-  main prepare;
+  # main prepare;
   docker compose -p dontstarvetogether -f $"(pwd)/dst.compose.yaml" up -d;
 }
 
@@ -50,5 +50,15 @@ def "main override" [path = "c:/.dst/save/Cluster_1"] {
 def "main reset" [path = "c:/.dst/save/Cluster_1"] {
   main override $path
   # rm --recursive --force --verbose $"($path)/Master/backup" $"($path)/Caves/backup" $"($path)/Master/save" $"($path)/Caves/save" | print --stderr
-  # rm --force --verbose $"($path)/Master/server_chat_log.txt" $"($path)/Caves/server_chat_log.txt" $"($path)/Master/server_log.txt" $"($path)/Caves/server_log.txt" | print --stderr
+  rm --force --verbose $"($path)/Master/server_chat_log.txt" $"($path)/Caves/server_chat_log.txt" $"($path)/Master/server_log.txt" $"($path)/Caves/server_log.txt" | print --stderr
+}
+
+def "main route" [] {
+  route add -p 172.25.0.3 mask 255.255.255.255 192.168.123.7
+  # route add -p 172.25.0.3 mask 255.255.255.255 172.25.64.1
+  # route add -p 172.25.0.3 mask 255.255.255.255 172.25.64.1
+  # route print | find 172.25.0.3
+  # route delete 172.25.0.3
+  #管理员PowerShell执行，修改注册表，重启电脑生效
+  # Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -Name "IPEnableRouter" -Value 1
 }
