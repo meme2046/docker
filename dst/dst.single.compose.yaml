@@ -1,0 +1,60 @@
+services:
+  mod-update:
+    image: superjump22/dontstarvetogether:latest
+    container_name: dst-mod-update
+    restart: "no"
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - "c:/.dst/mods:/home/steam/dst/game/mods"
+      - "c:/.dst/ugc_mods:/home/steam/dst/game/ugc_mods"
+    command:
+      - -only_update_server_mods
+      - -ugc_directory
+      - /home/steam/dst/game/ugc_mods
+    networks:
+      - dst-network
+
+  master-caves:
+    image: superjump22/dontstarvetogether:latest
+    container_name: master-caves
+    restart: "no"
+    stdin_open: true
+    tty: true
+    # 一次性暴露地面、洞穴、Steam所有UDP端口
+    ports:
+      # 集群互通端口（本地127通信，宿主机仅转发备用）
+      - "10888:10888/udp"
+      # 地面世界端口段
+      - "10999:10999/udp"
+      # 洞穴端口
+      - "10998:10998/udp"
+      # 地面Steam通信
+      - "27016:27016/udp"
+      # 地面Steam认证
+      - "8766:8766/udp"
+      # 洞穴Steam通信
+      - "27017:27017/udp"
+      # 洞穴Steam认证
+      - "8767:8767/udp"
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      # 统一挂载存档、模组目录
+      - "c:/.dst/save:/home/steam/dst/save"
+      - "c:/.dst/mods:/home/steam/dst/game/mods"
+      - "c:/.dst/ugc_mods:/home/steam/dst/game/ugc_mods"
+      # 关键：挂载自定义启动脚本到容器内，覆盖默认单分片启动命令
+      - "./dst.single.sh:/home/steam/dst/game/bin64/dst.single.sh"
+    # 覆盖镜像默认command，执行双分片启动脚本
+    entrypoint: ["/bin/bash"]
+    command: ["/home/steam/dst/game/bin64/dst.single.sh"]
+    depends_on:
+      mod-update:
+        condition: service_completed_successfully
+    networks:
+      - dst-network
+
+networks:
+  dst-network:
+    driver: bridge

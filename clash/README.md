@@ -40,6 +40,9 @@ nu clash.nu config --type clash-party-smart # smart版
 2. 打开配置文件, 将下方配置粘贴**覆盖** `%APPDATA%\mihomo-party\mihomo.yaml` 中的内容
 
 ```yaml
+mixed-port: 7897
+socks-port: 7898
+port: 7899
 geodata-mode: true
 geox-url:
   geoip: https://fastly.jsdelivr.net/gh/Loyalsoldier/geoip@release/geoip.dat
@@ -89,8 +92,4 @@ sniffer:
     - 2a0a:f280:203::/48
   force-domain: []
   skip-src-address: []
-```
-
-```
-
 ```

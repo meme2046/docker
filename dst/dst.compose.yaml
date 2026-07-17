@@ -30,7 +30,7 @@ services:
     tty: true
     ports:
       - "10888:10888/udp" # 集群Master端口
-      - "10999:10999/udp" # 地面世界端口
+      - "10999-11018:10999-11018/udp" # 地面世界端口
       - "27016:27016/udp" # 地面世界Steam端口
       - "8766:8766/udp" # 地面世界Steam认证端口
     environment:

@@ -6,9 +6,15 @@ def main [] {
 
 # 启动饥荒专服, 包含森林和洞穴
 def "main compose" [] {
-  # 更新 modoverrides.lua中的客户端mod version
-  # main prepare;
-  docker compose -p dontstarvetogether -f $"(pwd)/dst.compose.yaml" up -d;
+  let fp = $"(pwd)/dst.compose.yaml"
+  main prepare $fp;
+  docker compose -p dst -f $"(pwd)/dst.compose.yaml" up -d;
+}
+
+def "main single" [] {
+  let fp = $"(pwd)/dst.single.compose.yaml"
+  main prepare $fp;
+  docker compose -p dst-single -f $fp up -d;
 }
 
 # 只启动森林(地面)
@@ -19,11 +25,12 @@ def "main dstmaster" [] {
 def "main dstmod" [] {
   docker compose -p dstmodupdate -f $"(pwd)/dst.compose.yaml" run --rm mod-update
 }
-#  开服前准备工作, 1. 更新modoverrides.lua中客户端版本信息 2. 拉取镜像检查游戏否有更新 3. 构建镜像中间镜像
-def "main prepare" [] {
+# 开服前准备工作, 1. 更新modoverrides.lua中客户端版本信息 2. 拉取镜像检查游戏否有更新 3. 构建镜像中间镜像
+# fp: compose.yaml文件路径, 用于拉取镜像和构建镜像
+def "main prepare" [fp: string] {
   dst convert-update d:/github/meme2046/docker/dst/modoverrides.lua -o c:/.dst/save/Cluster_1/Master/modoverrides.lua -o c:/.dst/save/Cluster_1/Caves/modoverrides.lua;
-  docker compose -f $"(pwd)/dst.compose.yaml" pull;
-  docker compose -f $"(pwd)/dst.compose.yaml" build;
+  docker compose -f $fp pull;
+  docker compose -f $fp build;
 }
 
 # 设置dedicated_server_mods_setup.lua, dst启动自动更新模组会需要这个配置
@@ -46,19 +53,10 @@ def "main override" [path = "c:/.dst/save/Cluster_1"] {
   cp --force caves/leveldataoverride.lua $"($path)/Caves/leveldataoverride.lua"
 }
 
-# 删除备份, 删除存档, 删除日志, 重新开局
 def "main reset" [path = "c:/.dst/save/Cluster_1"] {
   main override $path
-  # rm --recursive --force --verbose $"($path)/Master/backup" $"($path)/Caves/backup" $"($path)/Master/save" $"($path)/Caves/save" | print --stderr
+  # 删除备份, 删除存档
+  rm --recursive --force --verbose $"($path)/Master/backup" $"($path)/Caves/backup" $"($path)/Master/save" $"($path)/Caves/save" | print --stderr
+  # 删除日志
   rm --force --verbose $"($path)/Master/server_chat_log.txt" $"($path)/Caves/server_chat_log.txt" $"($path)/Master/server_log.txt" $"($path)/Caves/server_log.txt" | print --stderr
-}
-
-def "main route" [] {
-  route add -p 172.25.0.3 mask 255.255.255.255 192.168.123.7
-  # route add -p 172.25.0.3 mask 255.255.255.255 172.25.64.1
-  # route add -p 172.25.0.3 mask 255.255.255.255 172.25.64.1
-  # route print | find 172.25.0.3
-  # route delete 172.25.0.3
-  #管理员PowerShell执行，修改注册表，重启电脑生效
-  # Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" -Name "IPEnableRouter" -Value 1
 }

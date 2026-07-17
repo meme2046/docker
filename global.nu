@@ -91,3 +91,8 @@ def appendline [fp: string line: string] {
 def npp [file: path] {
   ^start "" ^notepad++ $file
 }
+
+# wsl network模式
+def wslnet [] {
+  open $"($env.USERPROFILE)/.wslconfig"
+}
