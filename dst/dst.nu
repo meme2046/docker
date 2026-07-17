@@ -13,8 +13,8 @@ def "main compose" [] {
 
 def "main single" [] {
   let fp = $"(pwd)/dst.single.compose.yaml"
-  main prepare $fp;
-  docker compose -p dst-single -f $fp up -d;
+  main prepare $fp
+  docker compose -p dst-single -f $fp up -d
 }
 
 # 只启动森林(地面)

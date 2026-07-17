@@ -1,6 +1,27 @@
-# 脚本地址
+# ClashParty
 
-https://github.com/IvanSolis1989/Smart-Config-Kit/tree/main/Clash%20Party
+1. mihomo-party路径: `echo $"($env.APPDATA | path join mihomo-party)"`
+2. 我的常用基础配置: `./mihomo.yaml` , 关闭ClashParty, 复制配置文件到 `%APPDATA%\mihomo-party\mihomo.yaml`, 重启ClashParty即可.
+
+# 脚本仓库
+
+> https://github.com/IvanSolis1989/Smart-Config-Kit/tree/main/Clash%20Party
+
+# 规则数据库
+
+如果需要手动下载, 下载后放 `%APPDATA%\mihomo-party\work` 目录下.
+
+1. geoip: https://fastly.jsdelivr.net/gh/Loyalsoldier/geoip@release/geoip.dat
+2. mmdb: https://fastly.jsdelivr.net/gh/Loyalsoldier/geoip@release/Country.mmdb
+3. asn: https://fastly.jsdelivr.net/gh/Loyalsoldier/geoip@release/GeoLite2-ASN.mmdb
+4. geosite: https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat
+
+# LightGBM 模型
+
+如果ClashParty要使用LightGBM模型, 默认会下载文件, 如果下载失败, 可以手动下载(文件大小5MB左右):  
+windows默认模型路径: `%APPDATA%\mihomo-party\work`
+
+> https://github.com/vernesong/mihomo/releases/download/LightGBM-Model/Model.bin
 
 # 我的配置
 
@@ -30,66 +51,4 @@ https://github.com/IvanSolis1989/Smart-Config-Kit/tree/main/Clash%20Party
 ```shell
 nu clash.nu config                          # 生成配置自定义配置文件
 nu clash.nu config --type clash-party-smart # smart版
-```
-
-# UI补充配置
-
-## 操作说明
-
-1. 默认配置文件地址: `%APPDATA%\mihomo-party\mihomo.yaml`
-2. 打开配置文件, 将下方配置粘贴**覆盖** `%APPDATA%\mihomo-party\mihomo.yaml` 中的内容
-
-```yaml
-mixed-port: 7897
-socks-port: 7898
-port: 7899
-geodata-mode: true
-geox-url:
-  geoip: https://fastly.jsdelivr.net/gh/Loyalsoldier/geoip@release/geoip.dat
-  geosite: https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat
-  mmdb: https://fastly.jsdelivr.net/gh/Loyalsoldier/geoip@release/GeoLite2-ASN.mmdb
-  asn: https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/GeoLite2-ASN.mmdb
-geo-auto-update: true
-geo-update-interval: 24
-sniffer:
-  enable: true
-  parse-pure-ip: true
-  force-dns-mapping: true
-  override-destination: true
-  sniff:
-    HTTP:
-      ports:
-        - "80"
-        - 8080-8880
-      override-destination: true
-    TLS:
-      ports:
-        - "443"
-        - "8443"
-    QUIC:
-      ports:
-        - "443"
-        - "8443"
-        - "4433"
-  skip-domain:
-    - +.push.apple.com
-    - +.binance.com
-    - +.binancefuture.com
-    - +.binance.vision
-    - MIjia Cloud
-  skip-dst-address:
-    - 91.105.192.0/23
-    - 91.108.4.0/22
-    - 91.108.8.0/21
-    - 91.108.16.0/21
-    - 91.108.56.0/22
-    - 95.161.64.0/20
-    - 149.154.160.0/20
-    - 185.76.151.0/24
-    - 2001:67c:4e8::/48
-    - 2001:b28:f23c::/47
-    - 2001:b28:f23f::/48
-    - 2a0a:f280:203::/48
-  force-domain: []
-  skip-src-address: []
 ```
