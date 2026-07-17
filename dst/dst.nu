@@ -4,13 +4,14 @@ def main [] {
   print 'dst script'
 }
 
-# 启动饥荒专服, 包含森林和洞穴
-def "main compose" [] {
+# 启动饥荒专服, 多容器, 包含森林和洞穴
+def "main multi" [] {
   let fp = $"(pwd)/dst.compose.yaml"
   main prepare $fp;
   docker compose -p dst -f $"(pwd)/dst.compose.yaml" up -d;
 }
 
+# 启动饥荒专服, 单容器, 包含森林和洞穴
 def "main single" [] {
   let fp = $"(pwd)/dst.single.compose.yaml"
   main prepare $fp
