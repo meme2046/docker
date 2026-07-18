@@ -32,7 +32,7 @@ def "main set-lang-cfg" [] {
   $content | save --force --progress $"($TOPIARY_PATH)/languages.ncl"
 }
 
-def "main env" [] {
+def "main envset" [] {
 
   pwsh -Command '
   [Environment]::SetEnvironmentVariable("TOPIARY_LANGUAGE_DIR", "c:/.topiary/queries", "User")
@@ -62,7 +62,7 @@ def "main ts-nu" [] {
 def "main setup" [] {
   main cfg-pull
   main set-lang-cfg
-  main env
+  main envset
   main ts-nu
   print '✔ done'
 }
