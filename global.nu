@@ -47,7 +47,10 @@ def nullorempty [input?: any] {
   }
 }
 # fp 传入 python 脚本路径
-def uvpy [fp: string] {
+def uvpy [
+  fp: string
+  --version (-v)
+] {
   let py = "./.venv/Scripts/python.exe"
   if (not (nullorempty (which $py))) {
     print (which $py)
@@ -99,6 +102,8 @@ def wslnet [] {
 
 def paths [] {
   print $"(ansi p)↓常用路径↓(ansi reset)"
+  print $"$nu.env-path: (ansi gu)($nu.env-path)(ansi reset)"
+  print $"$nu.config-path: (ansi gu)($nu.config-path)(ansi reset)"
   print $"APPDATA: (ansi gu)($env.APPDATA)(ansi reset)"
   print $"LOCALAPPDATA: (ansi gu)($env.LOCALAPPDATA)(ansi reset)"
   print $"USERPROFILE: (ansi gu)($env.USERPROFILE)(ansi reset)"
@@ -110,4 +115,29 @@ def paths [] {
   print $"dotenv: (ansi gu)d:/.env(ansi reset)"
   print $"天翼同步盘: (ansi gu)d:/PC(ansi reset)"
   print $"ssh: (ansi gu)d:/.ssh(ansi reset)"
+}
+
+# show-args $nu.config-path 7 true -v
+def show-args [
+  path: string
+  count: int
+  is_ok: bool # 普通布尔参数，调用必须显式传 true/false
+
+  # 可选参数（带默认值）
+  --prefix: string = "log_"
+  --timeout: float = 2.5
+
+  # 布尔标志参数（简写 -v，不传=false，加-v/--verbose=true）
+  --verbose (-v)
+  --overwrite (-o)
+] {
+  # 打印所有入参
+  print $"(ansi p)===== 函数入参详情 =====(ansi reset)"
+  print $"path: ($path)"
+  print $"count: ($count)"
+  print $"is_ok: ($is_ok)"
+  print $"prefix: ($prefix)"
+  print $"timeout: ($timeout) s"
+  print $"开启详细日志: ($verbose)"
+  print $"允许覆盖文件: ($overwrite)"
 }
