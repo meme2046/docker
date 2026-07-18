@@ -96,3 +96,10 @@ def npp [file: path] {
 def wslnet [] {
   open $"($env.USERPROFILE)/.wslconfig"
 }
+
+def paths [] {
+  print $"APPDATA: ($env.APPDATA)"
+  print $"LOCALAPPDATA: ($env.LOCALAPPDATA)"
+  print $"USERPROFILE: ($env.USERPROFILE)"
+  print $"clash-party: ($env.APPDATA | path join mihomo-party)"
+}

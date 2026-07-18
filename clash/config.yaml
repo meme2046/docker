@@ -1,0 +1,90 @@
+core: mihomo-smart
+enableSmartCore: true
+enableSmartOverride: false
+smartCoreUseLightGBM: true
+smartCoreCollectData: false
+smartCoreStrategy: round-robin
+silentStart: false
+appTheme: system
+useWindowFrame: false
+proxyInTray: true
+showCurrentProxyInTray: false
+enableTrafficLogger: true
+trayProxyGroupStyle: default
+disableTrayIconColor: false
+customTrayIcon: ""
+customTrayIcons: {}
+maxLogDays: 7
+maxLogFileSize: 10
+disableAppLog: false
+proxyCols: auto
+connectionDirection: asc
+connectionOrderBy: time
+useSubStore: true
+autoQuitWithoutCore: false
+autoQuitWithoutCoreDelay: 60
+autoQuitWithoutCoreMode: core
+proxyDisplayMode: simple
+proxyDisplayOrder: delay
+autoCheckUpdate: true
+autoCloseConnection: true
+subscriptionTimeout: 30000
+gistAgeEncrypt: false
+gistAgeRecipient: ""
+gistAgeSecretKey: ""
+networkLatencyTargets: []
+networkInfoCardOrder:
+  - ip
+  - topology
+  - latency
+useNameserverPolicy: false
+controlDns: false
+controlSniff: true
+floatingWindowCompatMode: false
+disableHardwareAcceleration: false
+hideConnectionCardWave: false
+nameserverPolicy: {}
+siderOrder:
+  - sysproxy
+  - tun
+  - profile
+  - proxy
+  - rule
+  - resource
+  - override
+  - connection
+  - mihomo
+  - dns
+  - sniff
+  - log
+  - substore
+  - network
+  - usage
+lastSelectedSiderCard: proxy
+siderWidth: 250
+sysProxy:
+  enable: false
+  mode: manual
+triggerMainWindowBehavior: show
+showMixedPort: 7897
+enableMixedPort: true
+showSocksPort: 7898
+enableSocksPort: false
+showHttpPort: 7899
+enableHttpPort: false
+showRedirPort: 0
+enableRedirPort: false
+showTproxyPort: 0
+enableTproxyPort: false
+testProfileOnStart: true
+coreStartupMode: log
+useHotReloadProfile: false
+hotReloadProfileAutoCloseConnection: false
+language: zh-CN
+hideUnavailableProxies: true
+showFloatingWindow: true
+disableTray: false
+disableAnimations: true
+spinFloatingIcon: false
+customTheme: default.css
+networkIPProvider: ipapi.is

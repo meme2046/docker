@@ -1,7 +1,7 @@
 # ClashParty
 
 1. mihomo-party路径: `echo $"($env.APPDATA | path join mihomo-party)"`
-2. 我的常用基础配置: `./mihomo.yaml` , 关闭ClashParty, 复制配置文件到 `%APPDATA%\mihomo-party\mihomo.yaml`, 重启ClashParty即可.
+2. 我的配置: `./mihomo.yaml`和`./config.yaml`(内核) , 关闭ClashParty, 复制配置文件到 `%APPDATA%\mihomo-party` 覆盖即可.
 
 # 脚本仓库
 
