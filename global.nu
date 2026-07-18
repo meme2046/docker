@@ -98,7 +98,7 @@ def wslnet [] {
 }
 
 def paths [] {
-  print $"(ansi p)↓常用的路径↓(ansi reset)"
+  print $"(ansi p)↓常用路径↓(ansi reset)"
   print $"APPDATA: (ansi gu)($env.APPDATA)(ansi reset)"
   print $"LOCALAPPDATA: (ansi gu)($env.LOCALAPPDATA)(ansi reset)"
   print $"USERPROFILE: (ansi gu)($env.USERPROFILE)(ansi reset)"

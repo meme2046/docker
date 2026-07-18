@@ -11,7 +11,7 @@ def "main config" [
   --type: string # 配置类型: clash-party, clash-party-smart, flclash
 ] {
   # 设置默认类型
-  let config_type = if $type == null { "clash-party" } else { $type };
+  let config_type = if $type == null { "clash-party-smart" } else { $type };
 
   # 根据类型选择目标 URL
   mut target_url = $CLASH_PARTY_SMART_URL;
