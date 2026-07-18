@@ -67,14 +67,14 @@ def "main ips" [] {
   )
 
   # print ($ips | uniq)
-  print $"✔ IPs: ($ips)"
+  print $"✓ IPs: ($ips)"
 }
 
 def "main uvpy" [fp: string] {
   let py = "./venv/Scripts/python.exe"
   if (not (main nullorempty (which $py))) {
     print (which $py)
-    print $"✔ Using (^$py --version)"
+    print $"✓ Using (^$py --version)"
     $env.PYTHONPATH = '.'
     $env.PYTHONIOENCODING = 'utf-8'
     print $env.PYTHONPATH
@@ -82,10 +82,10 @@ def "main uvpy" [fp: string] {
     ^$py $fp
   } else if (not (main nullorempty (which python))) {
     print (which python)
-    print $"✔ Using (^python --version)"
+    print $"✓ Using (^python --version)"
     ^python $fp
   } else {
-    print "✘ Python not found"
+    print "✗ Python not found"
   }
 }
 

@@ -24,7 +24,7 @@ def ips [] {
   )
 
   # print ($ips | uniq)
-  print $"✔ IPs: ($ips)"
+  print $"✓ IPs: ($ips)"
 }
 
 def nullorempty [input?: any] {
@@ -51,7 +51,7 @@ def uvpy [fp: string] {
   let py = "./.venv/Scripts/python.exe"
   if (not (nullorempty (which $py))) {
     print (which $py)
-    print $"✔ Using (^$py --version)"
+    print $"✓ Using (^$py --version)"
     $env.PYTHONIOENCODING = 'utf-8'
     $env.PYTHONPATH = '.'
     # $env.PYTHONIOENCODING | print
@@ -59,21 +59,21 @@ def uvpy [fp: string] {
     ^$py $fp
   } else if (not (nullorempty (which python3.10))) {
     print (which python3.10)
-    print $"✔ Using (^python3.10 --version)"
+    print $"✓ Using (^python3.10 --version)"
     ^python3.10 $fp
   } else if (not (nullorempty (which python))) {
     print (which python)
-    print $"✔ Using (^python --version)"
+    print $"✓ Using (^python --version)"
     ^python $fp
   } else {
-    print "✘ Python not found"
+    print "✗ Python not found"
   }
 }
 
 # 添加一行内容,如果不存在则添加到nushell配置文件中
 def appendline [fp: string line: string] {
   if (not ($fp | path exists)) {
-    print "✘ File not found: $fp"
+    print "✗ File not found: $fp"
     return
   }
 

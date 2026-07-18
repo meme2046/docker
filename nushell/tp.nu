@@ -64,5 +64,5 @@ def "main setup" [] {
   main set-lang-cfg
   main envset
   main ts-nu
-  print '✔ done'
+  print '✓ done'
 }
