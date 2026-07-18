@@ -98,8 +98,16 @@ def wslnet [] {
 }
 
 def paths [] {
-  print $"APPDATA: ($env.APPDATA)"
-  print $"LOCALAPPDATA: ($env.LOCALAPPDATA)"
-  print $"USERPROFILE: ($env.USERPROFILE)"
-  print $"clash-party: ($env.APPDATA | path join mihomo-party)"
+  print $"(ansi p)↓常用的路径↓(ansi reset)"
+  print $"APPDATA: (ansi gu)($env.APPDATA)(ansi reset)"
+  print $"LOCALAPPDATA: (ansi gu)($env.LOCALAPPDATA)(ansi reset)"
+  print $"USERPROFILE: (ansi gu)($env.USERPROFILE)(ansi reset)"
+  print $"clash-party: (ansi gu)($env.APPDATA | path join mihomo-party)(ansi reset)"
+  print $"TOPIARY_LANGUAGE_DIR: (ansi gu)($env.TOPIARY_LANGUAGE_DIR)(ansi reset)"
+  print $"TOPIARY_CONFIG_FILE: (ansi gu)($env.TOPIARY_CONFIG_FILE)(ansi reset)"
+  print $"letsencrypt: (ansi gu)d:/.letsencrypt(ansi reset)"
+  print $"db_data: (ansi gu)d:/.db(ansi reset)"
+  print $"dotenv: (ansi gu)d:/.env(ansi reset)"
+  print $"天翼同步盘: (ansi gu)d:/PC(ansi reset)"
+  print $"ssh: (ansi gu)d:/.ssh(ansi reset)"
 }

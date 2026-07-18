@@ -28,6 +28,7 @@ def "main dstmod" [fp: string] {
 def "main prepare" [fp: string] {
   main convertup
   main modsetup
+  main override
   docker compose -f $fp pull;
   docker compose -f $fp build;
 }
