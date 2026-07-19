@@ -156,11 +156,11 @@ def show-args [
 ] {
   # 打印所有入参
   print $"(ansi p)===== 函数入参详情 =====(ansi reset)"
-  print $"path: ($path)"
-  print $"count: ($count)"
-  print $"is_ok: ($is_ok)"
-  print $"prefix: ($prefix)"
-  print $"timeout: ($timeout) s"
-  print $"开启详细日志: ($verbose)"
-  print $"允许覆盖文件: ($overwrite)"
+  print $"path: (ansi gu)($path)(ansi reset)"
+  print $"count: (ansi gu)($count)(ansi reset)"
+  print $"is_ok: (ansi gu)($is_ok)(ansi reset)"
+  print $"prefix: (ansi gu)($prefix)(ansi reset)"
+  print $"timeout: (ansi gu)($timeout) s(ansi reset)"
+  print $"开启详细日志: (ansi gu)($verbose)(ansi reset)"
+  print $"允许覆盖文件: (ansi gu)($overwrite)(ansi reset)"
 }
