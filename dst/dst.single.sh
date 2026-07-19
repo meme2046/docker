@@ -34,8 +34,35 @@ echo "[启动] 正在启动 Master 分片..."
 MASTER_PID=$!
 echo "[启动] Master 分片已启动 (PID: $MASTER_PID)"
 
-# 等待 Master 初始化完成
-sleep 20
+# 🕔 等待 Master 初始化完成（通过日志检测）
+echo "[启动] 等待 Master 分片初始化..."
+MASTER_LOG="/home/steam/dst/save/Cluster_1/Master/server_log.txt"
+MAX_WAIT=60 # 最大等待60秒
+WAIT_COUNT=0
+
+while true; do
+  # 检查进程是否还存在
+  if ! kill -0 "$MASTER_PID" 2> /dev/null; then
+    echo "[错误] Master 分片进程意外退出"
+    exit 1
+  fi
+
+  # 检查日志中是否出现启动完成标识
+  if grep -q "Server registered via geo DNS" "$MASTER_LOG" 2> /dev/null; then
+    echo "[启动] Master 分片初始化完成"
+    break
+  fi
+
+  # 超时检测
+  if [ "$WAIT_COUNT" -ge "$MAX_WAIT" ]; then
+    echo "[错误] Master 分片启动超时"
+    exit 1
+  fi
+
+  sleep 1
+  WAIT_COUNT=$((WAIT_COUNT + 1))
+done
+# 🕔 END
 
 # 2. 后台启动 Caves 洞穴分片
 echo "[启动] 正在启动 Caves 分片..."
