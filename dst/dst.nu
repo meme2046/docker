@@ -35,6 +35,8 @@ def "main prepare" [fp: string] {
 
 # 更新 modoverrides.lua中(Convert client mod to server mod)中的客户端模组的version
 def "main convertup" [] {
+  mkdir -v $"($DST_CLUSTER_PATH)/Master"
+  mkdir -v $"($DST_CLUSTER_PATH)/Caves"
   dst convert-update $"(pwd)/modoverrides.lua" -o $"($DST_CLUSTER_PATH)/Master/modoverrides.lua" -o $"($DST_CLUSTER_PATH)/Caves/modoverrides.lua"
 }
 
@@ -46,6 +48,8 @@ def "main modsetup" [] {
 # 复制目录中的配置文件到指定主路径下, 开服必须的文件
 def "main override" [] {
   cp --force cluster.ini $"($DST_CLUSTER_PATH)/cluster.ini"
+  cp --force c:/.dst/save/cluster_token.txt $"($DST_CLUSTER_PATH)/cluster_token.txt"
+  cp --force c:/.dst/save/adminlist.txt $"($DST_CLUSTER_PATH)/adminlist.txt"
 
   cp --force master/server.ini $"($DST_CLUSTER_PATH)/Master/server.ini"
   cp --force caves/server.ini $"($DST_CLUSTER_PATH)/Caves/server.ini"
