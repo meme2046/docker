@@ -48,28 +48,51 @@ def nullorempty [input?: any] {
 }
 # fp 传入 python 脚本路径
 def uvpy [
-  fp: string
+  fp?: string
   --version (-v)
 ] {
-  let py = "./.venv/Scripts/python.exe"
-  if (not (nullorempty (which $py))) {
-    print (which $py)
-    print $"✓ Using (^$py --version)"
-    $env.PYTHONIOENCODING = 'utf-8'
-    $env.PYTHONPATH = '.'
-    # $env.PYTHONIOENCODING | print
-    # $env.PYTHONPATH | print
-    ^$py $fp
-  } else if (not (nullorempty (which python3.10))) {
-    print (which python3.10)
-    print $"✓ Using (^python3.10 --version)"
-    ^python3.10 $fp
-  } else if (not (nullorempty (which python))) {
-    print (which python)
-    print $"✓ Using (^python --version)"
-    ^python $fp
-  } else {
+  let candidates = [
+    "./.venv/Scripts/python.exe"
+    "python3.10"
+    "python"
+  ]
+
+  let found = $candidates
+    | each {|cand|
+      let p = which $cand
+      if (not (nullorempty $p)) {
+        {bin: $cand full_path: $p}
+      }
+    }
+    | where $in != null
+    | first
+
+  if $found == null {
     print "✗ Python not found"
+    return
+  }
+
+  let bin = $found.bin
+  let full_path = $found.full_path
+
+  print $full_path
+  print $"✓ Using (^$bin --version)"
+
+  if $version {
+    return
+  }
+
+  with-env {
+    PYTHONIOENCODING: "utf-8"
+    PYTHONPATH: "."
+  } {
+    if $fp == null {
+      ^$bin
+    } else {
+      # 包装成列表再展开，稳定不报错
+      let cmd_args = [$fp]
+      ^$bin ...$cmd_args
+    }
   }
 }
 
