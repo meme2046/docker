@@ -18,6 +18,7 @@ echo "[DEBUG] ======================================="
 DST_ROOT="/home/steam/dst"
 CLUSTER_NAME="Cluster_1"
 UGC_PATH="/home/steam/dst/game/ugc_mods"
+MASTER_LOG="/home/steam/dst/save/Cluster_1/Master/server_log.txt"
 
 # 启动参数（保持与成功配置相同的顺序！）
 START_ARGS=(
@@ -30,13 +31,13 @@ START_ARGS=(
 
 # 1. 后台启动 Master 地面分片
 echo "[启动] 正在启动 Master 分片..."
+rm -f "$MASTER_LOG" 2> /dev/null
 ./dontstarve_dedicated_server_nullrenderer_x64 "${START_ARGS[@]}" -shard Master &
 MASTER_PID=$!
 echo "[启动] Master 分片已启动 (PID: $MASTER_PID)"
 
 # 🕔 等待 Master 初始化完成（通过日志检测）
 echo "[启动] 等待 Master 分片初始化..."
-MASTER_LOG="/home/steam/dst/save/Cluster_1/Master/server_log.txt"
 MAX_WAIT=60 # 最大等待60秒
 WAIT_COUNT=0
 

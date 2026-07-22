@@ -101,7 +101,14 @@ return {
 		["configuration_options"] = 	{
 			["DEBUGPrint"] = true,
 			["client_mods_list"] = 		{
-        ["workshop-2786299410"]={ config={ acidrain=true, meter=true, stage=true }, version="2.16" },
+				["workshop-2786299410"] = 			{
+					["config"] = 				{
+						["acidrain"] = true,
+						["meter"] = true,
+						["stage"] = true
+					},
+					["version"] = "2.16"
+				},
 				["workshop-2873533916"] = 			{
 					["config"] = 				{
 						["Languages"] = "chinese",
@@ -273,7 +280,7 @@ return {
 						["SHOWWORLDTEMP"] = false,
 						["UNIT"] = "T"
 					},
-					["version"] = "1.9.3"
+					["version"] = "1.9.4"
 				}
 			},
 			["language"] = "auto"
