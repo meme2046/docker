@@ -246,7 +246,7 @@ return {
 						["OffsetX"] = 0,
 						["OffsetXFine"] = 0,
 						["OffsetXMult"] = 1,
-						["OffsetY"] = 20,
+						["OffsetY"] = 15,
 						["OffsetYFine"] = 0,
 						["OffsetYMult"] = 1,
 						["SEPARATOR_BADGE_COLORS"] = 1,
