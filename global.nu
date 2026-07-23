@@ -123,8 +123,8 @@ def wslnet [] {
   open $"($env.USERPROFILE)/.wslconfig"
 }
 
-def paths [] {
-  print $"(ansi p)↓常用路径↓(ansi reset)"
+def show-path [] {
+  print $"(ansi p)===== COMM: 常用路径 =====(ansi reset)"
   print $"$nu.env-path: (ansi gu)($nu.env-path)(ansi reset)"
   print $"$nu.config-path: (ansi gu)($nu.config-path)(ansi reset)"
   print $"APPDATA: (ansi gu)($env.APPDATA)(ansi reset)"
@@ -140,11 +140,11 @@ def paths [] {
   print $"ssh: (ansi gu)d:/.ssh(ansi reset)"
 }
 
-# show-args $nu.config-path 7 true -v
+# show-args $nu.config-path 7 --prefix prefix_ --timeout 5 true -v
 def show-args [
-  path: string
-  count: int
-  is_ok: bool # 普通布尔参数，调用必须显式传 true/false
+  path: string = $nu.config-path
+  count: int = 7
+  is_ok: bool = false # 普通布尔参数，调用必须显式传 true/false
 
   # 可选参数（带默认值）
   --prefix: string = "log_"
@@ -155,7 +155,8 @@ def show-args [
   --overwrite (-o)
 ] {
   # 打印所有入参
-  print $"(ansi p)===== 函数入参详情 =====(ansi reset)"
+  print $"(ansi p)===== DEMO: 打印函数传入参数 =====(ansi reset)"
+  print $"示例命令: (ansi b)show-args $nu.config-path 7 false --prefix log_ --timeout 2.5 -v(ansi reset)"
   print $"path: (ansi gu)($path)(ansi reset)"
   print $"count: (ansi gu)($count)(ansi reset)"
   print $"is_ok: (ansi gu)($is_ok)(ansi reset)"
@@ -163,4 +164,24 @@ def show-args [
   print $"timeout: (ansi gu)($timeout) s(ansi reset)"
   print $"开启详细日志: (ansi gu)($verbose)(ansi reset)"
   print $"允许覆盖文件: (ansi gu)($overwrite)(ansi reset)"
+}
+
+def show-cmd [] {
+  print $"(ansi p)===== COMM: 常用命令 =====(ansi reset)"
+  print $'DEMO函数传参: (ansi gu)show-args(ansi reset)'
+  print $'常用路径: (ansi gu)show-path(ansi reset)'
+print ''
+  print $'etcd查询: (ansi gu)etcdctl --endpoints="192.168.123.7:2379" get --prefix "/cron/jobs"(ansi reset)'
+  print $'etcd写入: (ansi gu)etcdctl --endpoints="192.168.123.7:2379" put "<your_key>" "<your_value>"(ansi reset)'
+print ''
+  print $'(ansi bb)需安装`pnpm install -g meocli`↓(ansi reset):
+将dotenv文件转为apifox环境变量: (ansi gu)me env apifox d:/.env(ansi reset)
+prettier: (ansi gu)me prettier d:/.tmp/test.svg(ansi reset)
+clash规则合并: (ansi gu)me js clash <原始js脚本> <我的自定义json规则>(ansi reset)'
+print ''
+  print $'(ansi bb)需安装`uv tool install pymecli`↓(ansi reset):
+bitget现货: (ansi gu)bitget spot "FARTCOIN"(ansi reset)
+bitget合约: (ansi gu)bitget mix "BTCUSDT"(ansi reset)
+本机IPv6地址("(非临时)"): (ansi gu)util ipv6(ansi reset)
+打印时间: (ansi gu)util st(ansi reset)'
 }
