@@ -124,7 +124,7 @@ def wslnet [] {
 }
 
 def show-path [] {
-  print $"(ansi p)===== COMM: 常用路径 =====(ansi reset)"
+  print $"(ansi pb)===== COMM: 常用路径 =====(ansi reset)"
   print $"$nu.env-path: (ansi gu)($nu.env-path)(ansi reset)"
   print $"$nu.config-path: (ansi gu)($nu.config-path)(ansi reset)"
   print $"APPDATA: (ansi gu)($env.APPDATA)(ansi reset)"
@@ -155,7 +155,7 @@ def show-args [
   --overwrite (-o)
 ] {
   # 打印所有入参
-  print $"(ansi p)===== DEMO: 打印函数传入参数 =====(ansi reset)"
+  print $"(ansi pb)===== DEMO: 打印函数传入参数 =====(ansi reset)"
   print $"示例命令: (ansi b)show-args $nu.config-path 7 false --prefix log_ --timeout 2.5 -v(ansi reset)"
   print $"path: (ansi gu)($path)(ansi reset)"
   print $"count: (ansi gu)($count)(ansi reset)"
@@ -167,21 +167,57 @@ def show-args [
 }
 
 def show-cmd [] {
-  print $"(ansi p)===== COMM: 常用命令 =====(ansi reset)"
+  print $"(ansi pb)===== COMM: 常用命令 =====(ansi reset)"
   print $'DEMO函数传参: (ansi gu)show-args(ansi reset)'
   print $'常用路径: (ansi gu)show-path(ansi reset)'
-print ''
+  print ''
   print $'etcd查询: (ansi gu)etcdctl --endpoints="192.168.123.7:2379" get --prefix "/cron/jobs"(ansi reset)'
   print $'etcd写入: (ansi gu)etcdctl --endpoints="192.168.123.7:2379" put "<your_key>" "<your_value>"(ansi reset)'
-print ''
-  print $'(ansi bb)需安装`pnpm install -g meocli`↓(ansi reset):
+  print ''
+  print $'(ansi b)需安装`pnpm install -g meocli`↓(ansi reset)
 将dotenv文件转为apifox环境变量: (ansi gu)me env apifox d:/.env(ansi reset)
 prettier: (ansi gu)me prettier d:/.tmp/test.svg(ansi reset)
 clash规则合并: (ansi gu)me js clash <原始js脚本> <我的自定义json规则>(ansi reset)'
-print ''
-  print $'(ansi bb)需安装`uv tool install pymecli`↓(ansi reset):
+  print ''
+  print $'(ansi b)需安装`uv tool install pymecli`↓(ansi reset)
 bitget现货: (ansi gu)bitget spot "FARTCOIN"(ansi reset)
 bitget合约: (ansi gu)bitget mix "BTCUSDT"(ansi reset)
 本机IPv6地址("(非临时)"): (ansi gu)util ipv6(ansi reset)
 打印时间: (ansi gu)util st(ansi reset)'
+  print ''
+  print $'(ansi b)docker饥荒联机版↓(ansi reset)
+(ansi p)开服:(ansi reset) (ansi gu)dst(ansi reset)
+1. 查询升级mod版本信息
+2. 生成自动安装mod配置
+3. 覆盖文件使用最新配置
+4. 拉去构建所需镜像
+5. 通过docker-compose启动dedicated server
+(ansi p)重置:(ansi reset) (ansi gu)dstreset(ansi reset)
+1. 删除存档和日志, 以便使用`dst`命令重新开局'
+}
+
+def env-set [] {
+  # 设置项目目录到环境变量方便调用
+  # let base_dir = "d:/github/meme2046/docker"
+  pwsh -Command '
+  [Environment]::SetEnvironmentVariable("PROJECT_CLASH_DIR", "d:/github/meme2046/docker/clash", "User")
+  [Environment]::SetEnvironmentVariable("PROJECT_CRON_DIR", "d:/github/meme2046/docker/cron", "User")
+  [Environment]::SetEnvironmentVariable("PROJECT_DST_DIR", "d:/github/meme2046/docker/dst", "User")
+  [Environment]::SetEnvironmentVariable("PROJECT_NUSHELL_DIR", "d:/github/meme2046/docker/nushell", "User")
+  [Environment]::SetEnvironmentVariable("PROJECT_PYMECLI_DIR", "d:/github/meme2046/docker/pymecli", "User")
+  [Environment]::SetEnvironmentVariable("PROJECT_TERMINAL_DIR", "d:/github/meme2046/docker/terminal", "User")
+  '
+  # 删除用户变量，值设为$null
+  # [Environment]::SetEnvironmentVariable("PROJECT_DST_DIR", $null, "User")
+}
+# 饥荒联机版, 启动dedicated server
+def dst [] {
+  cd $env.PROJECT_DST_DIR
+  # 1. 查询升级mod版本信息 2. 生成自动安装mod配置 3. 覆盖文件使最新配置生效 4. 拉去构建所需镜像 5. 通过docker-compose启动dedicated server
+  nu dst.nu single
+}
+# 饥荒联机版, 删除存档和日志, 使用dst命令重新开局
+def dstreset [] {
+  cd $env.PROJECT_DST_DIR
+  nu dst.nu reset
 }
