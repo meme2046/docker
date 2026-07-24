@@ -7,9 +7,10 @@
 
 [terminal]
   # 默认终端程序
-  shell = { program = "nu" }
+  shell = { program = "nu", args = [""] }
 
 [general]
+  import = ["D:/github/meme2046/docker/terminal/alacritty-theme/catppuccin_mocha.toml"]
   # 实时配置热重载
   live_config_reload = true
   working_directory = "d:/.tmp"
@@ -26,7 +27,7 @@
   # 字体族
   bold = { family = "FiraCode Nerd Font Mono", style = "Bold" }
   bold_italic = { family = "FiraCode Nerd Font Mono", style = "SemiBold" }
-  italic = { family = "FiraCode Nerd Font Mono", style = "Regular" }
+  italic = { family = "FiraCode Nerd Font Mono", style = "Light" }
   normal = { family = "FiraCode Nerd Font Mono", style = "Regular" }
-  # 字体大小
+  # 字体大小, Default: 11.25
   size = 11.25
