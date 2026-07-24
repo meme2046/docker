@@ -138,9 +138,11 @@ def show-path [] {
   print $"dotenv: (ansi gu)d:/.env(ansi reset)"
   print $"天翼同步盘: (ansi gu)d:/PC(ansi reset)"
   print $"ssh: (ansi gu)d:/.ssh(ansi reset)"
+  print $"PROJECT_DOCKER_DIR: (ansi gu)($env.PROJECT_DOCKER_DIR)(ansi reset)"
+  print $"PROJECT_PYMECLI_DIR: (ansi gu)($env.PROJECT_PYMECLI_DIR)(ansi reset)"
+  print $"PROJECT_MEOCLI_DIR: (ansi gu)($env.PROJECT_MEOCLI_DIR)(ansi reset)"
 }
 
-# show-args $nu.config-path 7 --prefix prefix_ --timeout 5 true -v
 def show-args [
   path: string = $nu.config-path
   count: int = 7
@@ -200,24 +202,21 @@ def env-set [] {
   # 设置项目目录到环境变量方便调用
   # let base_dir = "d:/github/meme2046/docker"
   pwsh -Command '
-  [Environment]::SetEnvironmentVariable("PROJECT_CLASH_DIR", "d:/github/meme2046/docker/clash", "User")
-  [Environment]::SetEnvironmentVariable("PROJECT_CRON_DIR", "d:/github/meme2046/docker/cron", "User")
-  [Environment]::SetEnvironmentVariable("PROJECT_DST_DIR", "d:/github/meme2046/docker/dst", "User")
-  [Environment]::SetEnvironmentVariable("PROJECT_NUSHELL_DIR", "d:/github/meme2046/docker/nushell", "User")
-  [Environment]::SetEnvironmentVariable("PROJECT_PYMECLI_DIR", "d:/github/meme2046/docker/pymecli", "User")
-  [Environment]::SetEnvironmentVariable("PROJECT_TERMINAL_DIR", "d:/github/meme2046/docker/terminal", "User")
+  [Environment]::SetEnvironmentVariable("PROJECT_DOCKER_DIR", "d:/github/meme2046/docker", "User")
+  [Environment]::SetEnvironmentVariable("PROJECT_PYMECLI_DIR", "d:/github/meme2046/pymecli", "User")
+  [Environment]::SetEnvironmentVariable("PROJECT_MEOCLI_DIR", "d:/github/meme2046/meocli", "User")
   '
   # 删除用户变量，值设为$null
-  # [Environment]::SetEnvironmentVariable("PROJECT_DST_DIR", $null, "User")
+  # [Environment]::SetEnvironmentVariable("PROJECT_DOCKER_DIR", $null, "User")
 }
 # 饥荒联机版, 启动dedicated server
 def dst [] {
-  cd $env.PROJECT_DST_DIR
+  cd $"($env.PROJECT_DOCKER_DIR)/dst"
   # 1. 查询升级mod版本信息 2. 生成自动安装mod配置 3. 覆盖文件使最新配置生效 4. 拉去构建所需镜像 5. 通过docker-compose启动dedicated server
   nu dst.nu single
 }
 # 饥荒联机版, 删除存档和日志, 使用dst命令重新开局
 def dstreset [] {
-  cd $env.PROJECT_DST_DIR
+  cd $"($env.PROJECT_DOCKER_DIR)/dst"
   nu dst.nu reset
 }

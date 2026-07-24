@@ -3,6 +3,7 @@
 1. 配置文件在 `./alacritty.toml`
 2. 运行配置脚本即可 `nu alc.nu setup`
 3. 更改 `./alacritty.toml` 后, 也需要运行 `nu alc.nu setup` 来更新配置
+4. 字体配置依赖 `scoop install -g FiraCode-NF-Mono`
 
 # starship
 

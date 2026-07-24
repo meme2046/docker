@@ -1,9 +1,9 @@
 [window]
   # 窗口尺寸
-  dimensions = { columns = 160, lines = 50 }
+  dimensions = { columns = 140, lines = 40 }
   padding = { x = 4, y = 0 }
   # 窗口位置
-  # position = { x = 800, y = 200 }
+  position = "None"
 
 [terminal]
   # 默认终端程序
@@ -21,3 +21,12 @@
 [selection]
   # 选中复制
   save_to_clipboard = true
+
+[font]
+  # 字体族
+  bold = { family = "FiraCode Nerd Font Mono", style = "Bold" }
+  bold_italic = { family = "FiraCode Nerd Font Mono", style = "SemiBold" }
+  italic = { family = "FiraCode Nerd Font Mono", style = "Regular" }
+  normal = { family = "FiraCode Nerd Font Mono", style = "Regular" }
+  # 字体大小
+  size = 11.25

@@ -10,3 +10,7 @@ def "main setup" [] {
   open --raw $fp
   # alacritty migrate
 }
+
+def "main migrate" [] {
+  alacritty migrate
+}
