@@ -172,6 +172,7 @@ def show-cmd [] {
   print $"(ansi pb)===== COMM: 常用命令 =====(ansi reset)"
   print $'DEMO函数传参: (ansi gu)show-args(ansi reset)'
   print $'常用路径: (ansi gu)show-path(ansi reset)'
+  print $'打印colors: (ansi gu)show-colors(ansi reset)'
   print ''
   print $'etcd查询: (ansi gu)etcdctl --endpoints="192.168.123.7:2379" get --prefix "/cron/jobs"(ansi reset)'
   print $'etcd写入: (ansi gu)etcdctl --endpoints="192.168.123.7:2379" put "<your_key>" "<your_value>"(ansi reset)'
@@ -219,4 +220,15 @@ def dst [] {
 def dstreset [] {
   cd $"($env.PROJECT_DOCKER_DIR)/dst"
   nu dst.nu reset
+}
+
+def show-colors [] {
+  print $'|039| (ansi default)Default(ansi rst)  |049| (ansi bg_default)Default(ansi rst)  |037| (ansi w)Light gray(ansi rst)     |047| (ansi bg_w)Light gray(ansi rst)'
+  print $'|030| (ansi k)Black(ansi rst)    |040| (ansi bg_k)Black(ansi rst)    |090| (ansi dgr)Dark gray(ansi rst)      |100| (ansi bg_dgr)Dark gray(ansi rst)'
+  print $'|031| (ansi r)Red(ansi rst)      |041| (ansi bg_r)Red(ansi rst)      |091| (ansi lr)Light red(ansi rst)      |101| (ansi bg_lr)Light red(ansi rst)'
+  print $'|032| (ansi g)Green(ansi rst)    |042| (ansi bg_g)Green(ansi rst)    |092| (ansi lg)Light green(ansi rst)    |102| (ansi bg_lg)Light green(ansi rst)'
+  print $'|033| (ansi y)Yellow(ansi rst)   |043| (ansi bg_y)Yellow(ansi rst)   |093| (ansi ly)Light yellow(ansi rst)   |103| (ansi bg_ly)Light yellow(ansi rst)'
+  print $'|034| (ansi b)Blue(ansi rst)     |044| (ansi bg_b)Blue(ansi rst)     |094| (ansi lu)Light blue(ansi rst)     |104| (ansi bg_lu)Light blue(ansi rst)'
+  print $'|035| (ansi m)Magenta(ansi rst)  |045| (ansi bg_m)Magenta(ansi rst)  |095| (ansi lm)Light magenta(ansi rst)  |105| (ansi bg_lm)Light magenta(ansi rst)'
+  print $'|036| (ansi c)Cyan(ansi rst)     |046| (ansi bg_c)Cyan(ansi rst)     |096| (ansi lc)Light cyan(ansi rst)     |106| (ansi bg_lc)Light cyan(ansi rst)'
 }

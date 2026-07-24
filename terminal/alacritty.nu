@@ -6,7 +6,7 @@ def "main setup" [] {
   let fp = ($env.APPDATA | path join "alacritty" "alacritty.toml")
   mkdir ($fp | path dirname)
   touch $fp
-  cp --force --progress ./alacritty.toml $fp
+  cp --force ./alacritty.toml $fp
   # open --raw $fp
   # alacritty migrate
 }
@@ -14,25 +14,24 @@ def "main setup" [] {
 def "main migrate" [] {
   alacritty migrate
 }
+
+# nord (首选)
+# baitong
 # dracula
-# nord
 # catppuccin_mocha
-def "main theme" [theme_name: string = "catppuccin_mocha"] {
+# zenburn
+def "main theme" [theme_name: string = "nord"] {
   let target_url = $"https://fastly.jsdelivr.net/gh/alacritty/alacritty-theme@master/themes/($theme_name).toml"
   let url_data = $target_url | url parse
   let basename = $"($url_data.path | path basename)";
   let download_path = $env.PROJECT_DOCKER_DIR | path join "terminal" "alacritty-theme" $basename
   print ($"Downloading from: ($target_url)")
-  print ($"Downloading to: ($download_path)")
 
-  rm -f $download_path
-
-  http get $target_url | save --force $download_path
   if ($download_path | path exists) {
-    print ($"✓ Successfully downloaded to: ($download_path)")
+    print "! File already exists, skipping download..."
   } else {
-    print "✗ Download failed!"
-    return
+    http get $target_url | save --force $download_path
+    print ($"✓ Successfully downloaded to: ($download_path)")
   }
 
   let config_path = ($env.PROJECT_DOCKER_DIR | path join "terminal" "alacritty.toml")
