@@ -37,12 +37,12 @@ def "main prepare" [fp: string] {
 def "main convertup" [] {
   mkdir -v $"($DST_CLUSTER_PATH)/Master"
   mkdir -v $"($DST_CLUSTER_PATH)/Caves"
-  dst convert-update $"(pwd)/modoverrides.lua" -o $"($DST_CLUSTER_PATH)/Master/modoverrides.lua" -o $"($DST_CLUSTER_PATH)/Caves/modoverrides.lua"
+  ^dst convert-update $"(pwd)/modoverrides.lua" -o $"($DST_CLUSTER_PATH)/Master/modoverrides.lua" -o $"($DST_CLUSTER_PATH)/Caves/modoverrides.lua"
 }
 
 # 设置dedicated_server_mods_setup.lua, dst启动自动更新模组会需要这个配置
 def "main modsetup" [] {
-  dst mod-setup $"(pwd)/modoverrides.lua" -o $"($DST_MODS_PATH)/dedicated_server_mods_setup.lua" -o ./dedicated_server_mods_setup.lua
+  ^dst mod-setup $"(pwd)/modoverrides.lua" -o $"($DST_MODS_PATH)/dedicated_server_mods_setup.lua" -o ./dedicated_server_mods_setup.lua
 }
 
 # 复制目录中的配置文件到指定主路径下, 开服必须的文件
