@@ -25,13 +25,13 @@ def "main theme" [theme_name: string = "nord"] {
   let url_data = $target_url | url parse
   let basename = $"($url_data.path | path basename)";
   let download_path = $env.PROJECT_DOCKER_DIR | path join "terminal" "alacritty-theme" $basename
-  print ($"Downloading from: ($target_url)")
 
   if ($download_path | path exists) {
     print "! File already exists, skipping download..."
   } else {
+    print ($"Downloading from: ($target_url)")
     http get $target_url | save --force $download_path
-    print ($"✓ Successfully downloaded to: ($download_path)")
+    # print ($"✓ Successfully downloaded to: ($download_path)")
   }
 
   let config_path = ($env.PROJECT_DOCKER_DIR | path join "terminal" "alacritty.toml")

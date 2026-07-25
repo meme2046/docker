@@ -10,7 +10,7 @@
   shell = { program = "nu", args = [""] }
 
 [general]
-  import = ["D:/github/meme2046/docker/terminal/alacritty-theme/nord.toml"]
+  import = ["D:/github/meme2046/docker/terminal/alacritty-theme/catppuccin_mocha.toml"]
   # 实时配置热重载
   live_config_reload = true
   working_directory = "d:/.tmp"

@@ -8,16 +8,14 @@ def main [] {
 
 # 获取ClashParty(mihomo).js脚本, 添加自定义配置, 并输出_update文件
 def "main config" [
-  --type: string # 配置类型: clash-party, clash-party-smart, flclash
+  type: string = "clash-party-smart" # 配置类型: clash-party, clash-party-smart, flclash
 ] {
-  # 设置默认类型
-  let config_type = if $type == null { "clash-party-smart" } else { $type };
 
   # 根据类型选择目标 URL
   mut target_url = $CLASH_PARTY_SMART_URL;
   mut output_suffix = "";
 
-  match $config_type {
+  match $type {
     "clash-party" => {
       $target_url = $CLASH_PARTY_URL;
       $output_suffix = "";
@@ -31,7 +29,7 @@ def "main config" [
       $output_suffix = "-flclash";
     }
     _ => {
-      print ($"✗ Unknown type: ($config_type). Available types: clash-party, clash-party-smart, flclash")
+      print ($"✗ Unknown type: ($type). Available types: clash-party, clash-party-smart, flclash")
       return
     }
   }
@@ -58,9 +56,9 @@ def "main config" [
   ^me js clash $download_path ./custom.clash.config.json
 
   # 根据类型选择输出文件
-  if $config_type == "clash-party-smart" {
+  if $type == "clash-party-smart" {
     cp --force --verbose "ClashParty(mihomo-smart)_update.js" $"d:/github/meme2046/data/clash/($basename)"
-  } else if $config_type == "flclash" {
+  } else if $type == "flclash" {
     cp --force --verbose "FlClash(mihomo)_update.js" $"d:/github/meme2046/data/clash/($basename)"
   } else {
     cp --force --verbose "ClashParty(mihomo)_update.js" $"d:/github/meme2046/data/clash/($basename)"

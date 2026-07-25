@@ -125,22 +125,22 @@ def wslnet [] {
 
 def show-path [] {
   print $"(ansi pb)===== COMM: 常用路径 =====(ansi reset)"
-  print $"$nu.env-path: (ansi gu)($nu.env-path)(ansi reset)"
-  print $"$nu.config-path: (ansi gu)($nu.config-path)(ansi reset)"
-  print $"APPDATA: (ansi gu)($env.APPDATA)(ansi reset)"
-  print $"LOCALAPPDATA: (ansi gu)($env.LOCALAPPDATA)(ansi reset)"
-  print $"USERPROFILE: (ansi gu)($env.USERPROFILE)(ansi reset)"
-  print $"clash-party: (ansi gu)($env.APPDATA | path join mihomo-party)(ansi reset)"
-  print $"TOPIARY_LANGUAGE_DIR: (ansi gu)($env.TOPIARY_LANGUAGE_DIR)(ansi reset)"
-  print $"TOPIARY_CONFIG_FILE: (ansi gu)($env.TOPIARY_CONFIG_FILE)(ansi reset)"
-  print $"letsencrypt: (ansi gu)d:/.letsencrypt(ansi reset)"
-  print $"db_data: (ansi gu)d:/.db(ansi reset)"
-  print $"dotenv: (ansi gu)d:/.env(ansi reset)"
-  print $"天翼同步盘: (ansi gu)d:/PC(ansi reset)"
-  print $"ssh: (ansi gu)d:/.ssh(ansi reset)"
-  print $"PROJECT_DOCKER_DIR: (ansi gu)($env.PROJECT_DOCKER_DIR)(ansi reset)"
-  print $"PROJECT_PYMECLI_DIR: (ansi gu)($env.PROJECT_PYMECLI_DIR)(ansi reset)"
-  print $"PROJECT_MEOCLI_DIR: (ansi gu)($env.PROJECT_MEOCLI_DIR)(ansi reset)"
+  print $"$nu.env-path: (ansi g)($nu.env-path | str replace --all '\' '/')(ansi reset)"
+  print $"$nu.config-path: (ansi g)($nu.config-path | str replace --all '\' '/')(ansi reset)"
+  print $"APPDATA: (ansi g)($env.APPDATA | str replace --all '\' '/')(ansi reset)"
+  print $"LOCALAPPDATA: (ansi g)($env.LOCALAPPDATA | str replace --all '\' '/')(ansi reset)"
+  print $"USERPROFILE: (ansi g)($env.USERPROFILE | str replace --all '\' '/')(ansi reset)"
+  print $"clash-party: (ansi g)($env.APPDATA | path join mihomo-party | str replace --all '\' '/')(ansi reset)"
+  print $"TOPIARY_LANGUAGE_DIR: (ansi g)($env.TOPIARY_LANGUAGE_DIR)(ansi reset)"
+  print $"TOPIARY_CONFIG_FILE: (ansi g)($env.TOPIARY_CONFIG_FILE)(ansi reset)"
+  print $"letsencrypt: (ansi g)d:/.letsencrypt(ansi reset)"
+  print $"db_data: (ansi g)d:/.db(ansi reset)"
+  print $"dotenv: (ansi g)d:/.env(ansi reset)"
+  print $"天翼同步盘: (ansi g)d:/PC(ansi reset)"
+  print $"ssh: (ansi g)d:/.ssh(ansi reset)"
+  print $"PROJECT_DOCKER_DIR: (ansi g)($env.PROJECT_DOCKER_DIR)(ansi reset)"
+  print $"PROJECT_PYMECLI_DIR: (ansi g)($env.PROJECT_PYMECLI_DIR)(ansi reset)"
+  print $"PROJECT_MEOCLI_DIR: (ansi g)($env.PROJECT_MEOCLI_DIR)(ansi reset)"
 }
 
 def show-args [
@@ -158,45 +158,48 @@ def show-args [
 ] {
   # 打印所有入参
   print $"(ansi pb)===== DEMO: 打印函数传入参数 =====(ansi reset)"
-  print $"示例命令: (ansi b)show-args $nu.config-path 7 false --prefix log_ --timeout 2.5 -v(ansi reset)"
-  print $"path: (ansi gu)($path)(ansi reset)"
-  print $"count: (ansi gu)($count)(ansi reset)"
-  print $"is_ok: (ansi gu)($is_ok)(ansi reset)"
-  print $"prefix: (ansi gu)($prefix)(ansi reset)"
-  print $"timeout: (ansi gu)($timeout) s(ansi reset)"
-  print $"开启详细日志: (ansi gu)($verbose)(ansi reset)"
-  print $"允许覆盖文件: (ansi gu)($overwrite)(ansi reset)"
+  print $"示例命令: (ansi gu)show-args $nu.config-path 7 false --prefix log_ --timeout 2.5 -v(ansi reset)"
+  print $"path: (ansi g)($path)(ansi reset)"
+  print $"count: (ansi g)($count)(ansi reset)"
+  print $"is_ok: (ansi g)($is_ok)(ansi reset)"
+  print $"prefix: (ansi g)($prefix)(ansi reset)"
+  print $"timeout: (ansi g)($timeout) s(ansi reset)"
+  print $"开启详细日志: (ansi g)($verbose)(ansi reset)"
+  print $"允许覆盖文件: (ansi g)($overwrite)(ansi reset)"
 }
 
 def show-cmd [] {
-  print $"(ansi pb)===== COMM: 常用命令 =====(ansi reset)"
+  print $"(ansi yb)===== COMM: 常用命令 =====(ansi rst)"
   print $'DEMO函数传参: (ansi gu)show-args(ansi reset)'
   print $'常用路径: (ansi gu)show-path(ansi reset)'
   print $'打印colors: (ansi gu)show-colors(ansi reset)'
   print ''
-  print $'etcd查询: (ansi gu)etcdctl --endpoints="192.168.123.7:2379" get --prefix "/cron/jobs"(ansi reset)'
-  print $'etcd写入: (ansi gu)etcdctl --endpoints="192.168.123.7:2379" put "<your_key>" "<your_value>"(ansi reset)'
+  print $'(ansi m)alacritty皮肤<nord为皮肤名>:(ansi rst) (ansi g)alacritty-theme nord(ansi reset)
+ㆍ皮肤列表: (ansi lu)https://github.com/alacritty/alacritty-theme/tree/master/themes(ansi reset)'
   print ''
-  print $'(ansi b)需安装`pnpm install -g meocli`↓(ansi reset)
-将dotenv文件转为apifox环境变量: (ansi gu)me env apifox d:/.env(ansi reset)
-prettier: (ansi gu)me prettier d:/.tmp/test.svg(ansi reset)
-clash规则合并: (ansi gu)me js clash <原始js脚本> <我的自定义json规则>(ansi reset)'
+  print $'etcd查询: (ansi g)etcdctl --endpoints="192.168.123.7:2379" get --prefix "/cron/jobs"(ansi reset)'
+  print $'etcd写入: (ansi g)etcdctl --endpoints="192.168.123.7:2379" put "<your_key>" "<your_value>"(ansi reset)'
   print ''
-  print $'(ansi b)需安装`uv tool install pymecli`↓(ansi reset)
-bitget现货: (ansi gu)bitget spot "FARTCOIN"(ansi reset)
-bitget合约: (ansi gu)bitget mix "BTCUSDT"(ansi reset)
-本机IPv6地址("(非临时)"): (ansi gu)util ipv6(ansi reset)
-打印时间: (ansi gu)util st(ansi reset)'
+  print $'(ansi m)需安装(ansi rst)(ansi g)`pnpm install -g meocli`(ansi reset)
+将dotenv文件转为apifox环境变量: (ansi g)me env apifox d:/.env(ansi reset)
+prettier: (ansi g)me prettier d:/.tmp/test.svg(ansi reset)
+clash规则合并: (ansi g)me js clash <原始js脚本> <我的自定义json规则>(ansi reset)'
   print ''
-  print $'(ansi b)docker饥荒联机版↓(ansi reset)
-(ansi p)开服:(ansi reset) (ansi gu)dst(ansi reset)
+  print $'(ansi m)需安装(ansi rst)(ansi g)`uv tool install pymecli`(ansi reset)
+bitget现货: (ansi g)bitget spot "FARTCOIN"(ansi reset)
+bitget合约: (ansi g)bitget mix "BTCUSDT"(ansi reset)
+本机IPv6地址("(非临时)"): (ansi g)util ipv6(ansi reset)
+打印时间: (ansi g)util st(ansi reset)'
+  print ''
+  print $'(ansi m)docker饥荒联机版(ansi rst)
+(ansi c)开服:(ansi reset) (ansi g)dst(ansi reset)
 1. 查询升级mod版本信息
 2. 生成自动安装mod配置
 3. 覆盖文件使用最新配置
 4. 拉去构建所需镜像
 5. 通过docker-compose启动dedicated server
-(ansi p)重置:(ansi reset) (ansi gu)dstreset(ansi reset)
-1. 删除存档和日志, 以便使用`dst`命令重新开局'
+(ansi c)重置:(ansi reset) (ansi g)dstreset(ansi reset)
+1. 删除存档和日志, 以便使用(ansi gu)`dst`(ansi rst)命令重新开局'
 }
 
 def env-set [] {
@@ -223,6 +226,15 @@ def dstreset [] {
 }
 
 def show-colors [] {
+    print $'(ansi y)我的颜色分类:(ansi rst)
+1. 链接: (ansi b)Blue <b>(ansi rst) / (ansi lu)Light blue <lu>(ansi reset)
+2. 一级标题: (ansi y)Yellow <y>(ansi rst) / (ansi ly)Light yellow <ly>(ansi rst)
+3. 二级标题: (ansi m)Magenta <m>(ansi rst) / (ansi lm)Light magenta <lm>(ansi rst)
+4. 三级标题: (ansi c)Cyan <c>(ansi rst) / (ansi lc)Light cyan <lc>(ansi rst)
+5. 命令行: (ansi g)Green <g>(ansi rst) / (ansi lg)Light green <lg>(ansi rst)
+6. 错误文本: (ansi r)Red <r>(ansi rst) / (ansi lr)Light red <lr>(ansi rst)
+'
+  print $'(ansi y)颜色展示:(ansi rst)'
   print $'|039| (ansi default)Default(ansi rst)  |049| (ansi bg_default)Default(ansi rst)  |037| (ansi w)Light gray(ansi rst)     |047| (ansi bg_w)Light gray(ansi rst)'
   print $'|030| (ansi k)Black(ansi rst)    |040| (ansi bg_k)Black(ansi rst)    |090| (ansi dgr)Dark gray(ansi rst)      |100| (ansi bg_dgr)Dark gray(ansi rst)'
   print $'|031| (ansi r)Red(ansi rst)      |041| (ansi bg_r)Red(ansi rst)      |091| (ansi lr)Light red(ansi rst)      |101| (ansi bg_lr)Light red(ansi rst)'
@@ -231,4 +243,9 @@ def show-colors [] {
   print $'|034| (ansi b)Blue(ansi rst)     |044| (ansi bg_b)Blue(ansi rst)     |094| (ansi lu)Light blue(ansi rst)     |104| (ansi bg_lu)Light blue(ansi rst)'
   print $'|035| (ansi m)Magenta(ansi rst)  |045| (ansi bg_m)Magenta(ansi rst)  |095| (ansi lm)Light magenta(ansi rst)  |105| (ansi bg_lm)Light magenta(ansi rst)'
   print $'|036| (ansi c)Cyan(ansi rst)     |046| (ansi bg_c)Cyan(ansi rst)     |096| (ansi lc)Light cyan(ansi rst)     |106| (ansi bg_lc)Light cyan(ansi rst)'
+}
+
+def alacritty-theme [theme_name: string = "nord"] {
+  cd ($env.PROJECT_DOCKER_DIR | path join "terminal")
+  nu alacritty.nu theme $theme_name
 }
