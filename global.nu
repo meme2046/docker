@@ -173,7 +173,7 @@ def show-cmd [] {
   print $'DEMO函数传参: (ansi gu)show-args(ansi reset)'
   print $'常用路径: (ansi gu)show-path(ansi reset)'
   print $'打印colors: (ansi gu)show-colors(ansi reset)'
-  print $'创建python的软链接到python3.10: (ansi gu)python-link(ansi reset)'
+  print $'将(ansi u)python/python3(ansi rst)软链接到python目标版本: (ansi gu)python-link 3.10(ansi reset)'
   print ''
   print $'(ansi m)alacritty皮肤<nord为皮肤名>:(ansi rst) (ansi g)alacritty-theme nord(ansi reset)
 ㆍ皮肤列表: (ansi lu)https://github.com/alacritty/alacritty-theme/tree/master/themes(ansi reset)'
@@ -251,11 +251,19 @@ def alacritty-theme [theme_name: string = "nord"] {
   nu alacritty.nu theme $theme_name
 }
 
-# 创建python的软链接到python3.10
-def python-link [] {
-  let py310_path = (which python3.10).path | first
-  let py_path = $py310_path | path dirname | path join "python.exe"
+# 将python和python3软链接到python目标版本
+def python-link [target_version: string = "3.10"] {
+  let target_path = (which $'python($target_version)').path | first
+  if (nullorempty $target_path) {
+    print $'✗ python($target_version) not found'
+    return
+  }
+  let py_path = $target_path | path dirname | path join "python.exe"
+  let py3_path = $target_path | path dirname | path join "python3.exe"
   pwsh -Command $'
-  New-Item -ItemType SymbolicLink -Path ($py_path) -Target ($py310_path)
+  New-Item -ItemType SymbolicLink -Path ($py_path) -Target ($target_path) -Force
+  New-Item -ItemType SymbolicLink -Path ($py3_path) -Target ($target_path) -Force
   '
+  print $'(ansi g)python --version:(ansi rst) (^python --version)'
+  print $'(ansi g)python3 --version:(ansi rst) (^python3 --version)'
 }
