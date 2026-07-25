@@ -186,8 +186,8 @@ prettier: (ansi g)me prettier d:/.tmp/test.svg(ansi reset)
 clash规则合并: (ansi g)me js clash <原始js脚本> <我的自定义json规则>(ansi reset)'
   print ''
   print $'(ansi m)需安装(ansi rst)(ansi g)`uv tool install pymecli`(ansi reset)
-bitget现货: (ansi g)bitget spot "FARTCOIN"(ansi reset)
-bitget合约: (ansi g)bitget mix "BTCUSDT"(ansi reset)
+bitget现货: (ansi g)bitget spot "FARTCOIN,BTCUSDT,ETHUSDT"(ansi reset)
+bitget合约: (ansi g)bitget mix "BTCUSDT,ETHUSDT"(ansi reset)
 本机IPv6地址("(非临时)"): (ansi g)util ipv6(ansi reset)
 打印时间: (ansi g)util st(ansi reset)'
   print ''
