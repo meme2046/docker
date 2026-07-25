@@ -13,7 +13,7 @@ def "main print" [] {
 def "main cfg-pull" [] {
   mkdir $"($TOPIARY_PATH)/queries";
   # http --raw https://raw.githubusercontent.com/blindFS/topiary-nushell/main/format.nu | save --force $"($TOPIARY_PATH)/format.nu";
-  http --raw https://raw.githubusercontent.com/blindFS/topiary-nushell/main/queries/nu.scm | save --force $"($TOPIARY_PATH)/queries/nu.scm";
+  http --raw https://raw.githubusercontent.com/blindFS/topiary-nushell/main/queries/nu.scm | str replace --all @keep_whitespace @do_nothing | save --force $"($TOPIARY_PATH)/queries/nu.scm";
 }
 
 def "main set-lang-cfg" [] {

@@ -173,7 +173,8 @@ def show-cmd [] {
   print $'DEMO函数传参: (ansi gu)show-args(ansi reset)'
   print $'常用路径: (ansi gu)show-path(ansi reset)'
   print $'打印colors: (ansi gu)show-colors(ansi reset)'
-  print $'将(ansi u)python/python3(ansi rst)软链接到python目标版本: (ansi gu)python-link 3.10(ansi reset)'
+  print $'将 (ansi u)python/python3(ansi rst) 软链接到python目标版本: (ansi gu)python-link 3.10(ansi reset)'
+  print $'(ansi gu)docker container ls(ansi rst) 简化命令: (ansi gu)dockerls(ansi reset)'
   print ''
   print $'(ansi m)alacritty皮肤<nord为皮肤名>:(ansi rst) (ansi g)alacritty-theme nord(ansi reset)
 ㆍ皮肤列表: (ansi lu)https://github.com/alacritty/alacritty-theme/tree/master/themes(ansi reset)'
@@ -188,18 +189,16 @@ clash规则合并: (ansi g)me js clash <原始js脚本> <我的自定义json规�
   print ''
   print $'(ansi m)需安装(ansi rst)(ansi g)`uv tool install pymecli`(ansi reset)
 bitget现货: (ansi g)bitget spot "XAUTUSDT,BTCUSDT,ETHUSDT,FARTCOIN"(ansi reset)
-bitget合约: (ansi g)bitget mix "XAUTUSDT,BTCUSDT,ETHUSDT,FARTCOIN"(ansi reset)
+bitget合约: (ansi g)bitget mix "XAUTUSDT,BTCUSDT,ETHUSDT,FARTCOIN"(ansi reset)  
 本机IPv6地址("(非临时)"): (ansi g)util ipv6(ansi reset)
 打印时间: (ansi g)util st(ansi reset)'
   print ''
-  print $'(ansi m)docker饥荒联机版(ansi rst)
-(ansi c)开服:(ansi reset) (ansi g)dst(ansi reset)
+  print $'(ansi m)docker饥荒联机版(ansi rst)(ansi c)开服:(ansi reset) (ansi g)dst(ansi reset)
 1. 查询升级mod版本信息
 2. 生成自动安装mod配置
 3. 覆盖文件使用最新配置
 4. 拉去构建所需镜像
-5. 通过docker-compose启动dedicated server
-(ansi c)重置:(ansi reset) (ansi g)dstreset(ansi reset)
+5. 通过docker-compose启动dedicated server(ansi c)重置:(ansi reset) (ansi g)dstreset(ansi reset)
 1. 删除存档和日志, 以便使用(ansi gu)`dst`(ansi rst)命令重新开局'
 }
 
@@ -227,14 +226,13 @@ def dstreset [] {
 }
 
 def show-colors [] {
-    print $'(ansi y)我的颜色分类:(ansi rst)
+  print $'(ansi y)我的颜色分类:(ansi rst)
 1. 链接: (ansi b)Blue <b>(ansi rst) / (ansi lu)Light blue <lu>(ansi reset)
 2. 一级标题: (ansi y)Yellow <y>(ansi rst) / (ansi ly)Light yellow <ly>(ansi rst)
 3. 二级标题: (ansi m)Magenta <m>(ansi rst) / (ansi lm)Light magenta <lm>(ansi rst)
 4. 三级标题: (ansi c)Cyan <c>(ansi rst) / (ansi lc)Light cyan <lc>(ansi rst)
 5. 命令行: (ansi g)Green <g>(ansi rst) / (ansi lg)Light green <lg>(ansi rst)
-6. 错误文本: (ansi r)Red <r>(ansi rst) / (ansi lr)Light red <lr>(ansi rst)
-'
+6. 错误文本: (ansi r)Red <r>(ansi rst) / (ansi lr)Light red <lr>(ansi rst)'
   print $'(ansi y)颜色展示:(ansi rst)'
   print $'|039| (ansi default)Default(ansi rst)  |049| (ansi bg_default)Default(ansi rst)  |037| (ansi w)Light gray(ansi rst)     |047| (ansi bg_w)Light gray(ansi rst)'
   print $'|030| (ansi k)Black(ansi rst)    |040| (ansi bg_k)Black(ansi rst)    |090| (ansi dgr)Dark gray(ansi rst)      |100| (ansi bg_dgr)Dark gray(ansi rst)'
@@ -266,4 +264,10 @@ def python-link [target_version: string = "3.10"] {
   '
   print $'(ansi g)python --version:(ansi rst) (^python --version)'
   print $'(ansi g)python3 --version:(ansi rst) (^python3 --version)'
+}
+
+# docker container ls 以nushell table显示
+def dockerls [] {
+  # select ID Names State Status Command Image Ports
+  (docker container ls --format json | from json -o | select ID Names State Status Command Image)
 }
