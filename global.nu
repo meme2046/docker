@@ -173,6 +173,7 @@ def show-cmd [] {
   print $'DEMO函数传参: (ansi gu)show-args(ansi reset)'
   print $'常用路径: (ansi gu)show-path(ansi reset)'
   print $'打印colors: (ansi gu)show-colors(ansi reset)'
+  print $'创建python的软链接到python3.10: (ansi gu)python-link(ansi reset)'
   print ''
   print $'(ansi m)alacritty皮肤<nord为皮肤名>:(ansi rst) (ansi g)alacritty-theme nord(ansi reset)
 ㆍ皮肤列表: (ansi lu)https://github.com/alacritty/alacritty-theme/tree/master/themes(ansi reset)'
@@ -244,8 +245,17 @@ def show-colors [] {
   print $'|035| (ansi m)Magenta(ansi rst)  |045| (ansi bg_m)Magenta(ansi rst)  |095| (ansi lm)Light magenta(ansi rst)  |105| (ansi bg_lm)Light magenta(ansi rst)'
   print $'|036| (ansi c)Cyan(ansi rst)     |046| (ansi bg_c)Cyan(ansi rst)     |096| (ansi lc)Light cyan(ansi rst)     |106| (ansi bg_lc)Light cyan(ansi rst)'
 }
-
+# 设置alacritty皮肤
 def alacritty-theme [theme_name: string = "nord"] {
   cd ($env.PROJECT_DOCKER_DIR | path join "terminal")
   nu alacritty.nu theme $theme_name
+}
+
+# 创建python的软链接到python3.10
+def python-link [] {
+  let py310_path = (which python3.10).path | first
+  let py_path = $py310_path | path dirname | path join "python.exe"
+  pwsh -Command $'
+  New-Item -ItemType SymbolicLink -Path ($py_path) -Target ($py310_path)
+  '
 }

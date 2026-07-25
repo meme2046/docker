@@ -42,7 +42,7 @@ def "main convertup" [] {
 
 # 设置dedicated_server_mods_setup.lua, dst启动自动更新模组会需要这个配置
 def "main modsetup" [] {
-  ^dst mod-setup $"(pwd)/modoverrides.lua" -o $"($DST_MODS_PATH)/dedicated_server_mods_setup.lua" -o ./dedicated_server_mods_setup.lua
+  ^dst mod-setup $"(pwd)/modoverrides.lua" -o $"($DST_MODS_PATH)/dedicated_server_mods_setup.lua" -o $"($env.PROJECT_DOCKER_DIR)/dst/dedicated_server_mods_setup.lua"
 }
 
 # 复制目录中的配置文件到指定主路径下, 开服必须的文件
