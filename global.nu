@@ -124,7 +124,7 @@ def wslnet [] {
 }
 
 def show-path [] {
-  print $"(ansi pb)===== COMM: 常用路径 =====(ansi reset)"
+  print $"(ansi yb)===== COMM: 常用路径 =====(ansi reset)"
   print $"$nu.env-path: (ansi g)($nu.env-path | str replace --all '\' '/')(ansi reset)"
   print $"$nu.config-path: (ansi g)($nu.config-path | str replace --all '\' '/')(ansi reset)"
   print $"APPDATA: (ansi g)($env.APPDATA | str replace --all '\' '/')(ansi reset)"
@@ -157,7 +157,7 @@ def show-args [
   --overwrite (-o)
 ] {
   # 打印所有入参
-  print $"(ansi pb)===== DEMO: 打印函数传入参数 =====(ansi reset)"
+  print $"(ansi yb)===== DEMO: 打印函数传入参数 =====(ansi reset)"
   print $"示例命令: (ansi gu)show-args $nu.config-path 7 false --prefix log_ --timeout 2.5 -v(ansi reset)"
   print $"path: (ansi g)($path)(ansi reset)"
   print $"count: (ansi g)($count)(ansi reset)"
@@ -177,29 +177,31 @@ def show-cmd [] {
   print $'(ansi gu)docker container ls(ansi rst) 简化命令: (ansi gu)dockerls(ansi reset)'
   print ''
   print $'(ansi m)alacritty皮肤<nord为皮肤名>:(ansi rst) (ansi g)alacritty-theme nord(ansi reset)
-ㆍ皮肤列表: (ansi lu)https://github.com/alacritty/alacritty-theme/tree/master/themes(ansi reset)'
+  ㆍ皮肤列表: (ansi lu)https://github.com/alacritty/alacritty-theme/tree/master/themes(ansi reset)'
   print ''
   print $'etcd查询: (ansi g)etcdctl --endpoints="192.168.123.7:2379" get --prefix "/cron/jobs"(ansi reset)'
   print $'etcd写入: (ansi g)etcdctl --endpoints="192.168.123.7:2379" put "<your_key>" "<your_value>"(ansi reset)'
   print ''
   print $'(ansi m)需安装(ansi rst)(ansi g)`pnpm install -g meocli`(ansi reset)
-将dotenv文件转为apifox环境变量: (ansi g)me env apifox d:/.env(ansi reset)
-prettier: (ansi g)me prettier d:/.tmp/test.svg(ansi reset)
-clash规则合并: (ansi g)me js clash <原始js脚本> <我的自定义json规则>(ansi reset)'
+  将dotenv文件转为apifox环境变量: (ansi g)me env apifox d:/.env(ansi reset)
+  prettier: (ansi g)me prettier d:/.tmp/test.svg(ansi reset)
+  clash规则合并: (ansi g)me js clash <原始js脚本> <我的自定义json规则>(ansi reset)'
   print ''
   print $'(ansi m)需安装(ansi rst)(ansi g)`uv tool install pymecli`(ansi reset)
-bitget现货: (ansi g)bitget spot "XAUTUSDT,BTCUSDT,ETHUSDT,FARTCOIN"(ansi reset)
-bitget合约: (ansi g)bitget mix "XAUTUSDT,BTCUSDT,ETHUSDT,FARTCOIN"(ansi reset)  
-本机IPv6地址("(非临时)"): (ansi g)util ipv6(ansi reset)
-打印时间: (ansi g)util st(ansi reset)'
+  bitget现货: (ansi g)bitget spot "XAUTUSDT,BTCUSDT,ETHUSDT,FARTCOIN"(ansi reset)
+  bitget合约: (ansi g)bitget mix "XAUTUSDT,BTCUSDT,ETHUSDT,FARTCOIN"(ansi reset)  
+  本机IPv6地址("(非临时)"): (ansi g)util ipv6(ansi reset)
+  打印时间: (ansi g)util st(ansi reset)'
   print ''
-  print $'(ansi m)docker饥荒联机版(ansi rst)(ansi c)开服:(ansi reset) (ansi g)dst(ansi reset)
-1. 查询升级mod版本信息
-2. 生成自动安装mod配置
-3. 覆盖文件使用最新配置
-4. 拉去构建所需镜像
-5. 通过docker-compose启动dedicated server(ansi c)重置:(ansi reset) (ansi g)dstreset(ansi reset)
-1. 删除存档和日志, 以便使用(ansi gu)`dst`(ansi rst)命令重新开局'
+  print $'(ansi m)docker饥荒联机版(ansi rst)
+  (ansi c)开服:(ansi rst) (ansi g)dst(ansi reset)
+    1. 查询升级mod版本信息
+    2. 生成自动安装mod配置
+    3. 覆盖文件使用最新配置
+    4. 拉去构建所需镜像
+    5. 通过docker-compose启动dedicated server
+  (ansi c)重置:(ansi rst) (ansi g)dstreset(ansi reset)
+    1. 删除存档和日志, 以便使用(ansi gu)`dst`(ansi rst)命令重新开局'
 }
 
 def env-set [] {
@@ -269,5 +271,5 @@ def python-link [target_version: string = "3.10"] {
 # docker container ls 以nushell table显示
 def dockerls [] {
   # select ID Names State Status Command Image Ports
-  (docker container ls --all --format json | from json -o | select ID Names State Status Image)
+  (docker container ls --all --format json | from json -o | select ID Names State Status)
 }
