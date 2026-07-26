@@ -269,5 +269,5 @@ def python-link [target_version: string = "3.10"] {
 # docker container ls 以nushell table显示
 def dockerls [] {
   # select ID Names State Status Command Image Ports
-  (docker container ls --format json | from json -o | select ID Names State Status Command Image)
+  (docker container ls --all --format json | from json -o | select ID Names State Status Image)
 }
