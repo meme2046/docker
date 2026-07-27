@@ -280,7 +280,7 @@ return {
 						["SHOWWORLDTEMP"] = false,
 						["UNIT"] = "T"
 					},
-					["version"] = "1.9.4"
+					["version"] = "1.9.6"
 				}
 			},
 			["language"] = "auto"
