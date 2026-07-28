@@ -4,12 +4,13 @@ def main [] {
 
 def "main to-opus" [
   dp: string = "d:/天翼PC备份/AudioBooks/诡秘之主_8082Audio_2059集完"
+  cover_path: string = "d:/天翼PC备份/AudioBooks/opus/诡秘之主_8082Audio_2059集完/cover720.jpg"
   album: string = "诡秘之主"
   artist: string = "喜马拉雅"
   --force
 ] {
 
-  let files = glob $"($dp)/**/*.{mp3,m4a}" | take 3
+  let files = glob $"($dp)/**/*.{mp3,m4a}" | skip 2068 | take 1000
   let total = $files | length
   mut count = 0
 
@@ -37,7 +38,10 @@ def "main to-opus" [
       -hide_banner # 隐藏版权信息
       -loglevel error # 只显示错误信息
       -i $source_file_path # 音频路径
-      -c:a libopus # 使用 Opus 编码器
+      # -i $cover_path # 封面路径 🏷️
+      # -map 0:a # 音频流映射 🏷️
+      # -map 1:v -disposition:v attached_pic # 指定视频编码器为 MJPEG 🏷️
+      -c:a libopus # 编码器: libopus
       -ac 1 # 单声道（人声不需要立体声）
       -b:a 28k # 目标码率 28kbps
       -vbr on # 启用可变比特率
@@ -51,49 +55,14 @@ def "main to-opus" [
       $out_file_path
     )
 
-    # (
-    #   ^ffmpeg -y
-    #   -hide_banner
-    #   -loglevel error
-    #   -i $source_file_path
-    #   -ac 1
-    #   -f wav - | ^opusenc
-    #   --bitrate 28
-    #   --vbr
-    #   --speech
-    #   --comp 10
-    #   --downmix-mono
-    #   --picture $cover_path
-    #   --title ""
-    #   --artist $artist
-    #   --album $album
-    #   -
-    #   $out_file_path
-    # )
-
-    # (
-    #   ^opusenc
-    #   --bitrate 28
-    #   --vbr
-    #   --speech
-    #   --comp 10
-    #   --downmix-mono
-    #   --picture $cover_path
-    #   --title ""
-    #   --artist $artist
-    #   --album $album
-    #   $source_file_path
-    #   $out_file_path
-    # )
-
-    print $'(ansi r)➜ ($count)/($total)(ansi rst) (ansi bu)($file)(ansi rst) to (ansi bu)($out_file_path)(ansi rst)'
+    print $'(ansi m)➜ ($count)/($total)(ansi rst) (ansi bu)($source_file_path)(ansi rst) > (ansi bu)($out_file_path)(ansi rst)'
   }
 }
 
-# 添加封面
-def "main cover" [
+# 使用tageditor-cli设置封面
+def "main te-cover" [
   dp: string = "d:/天翼PC备份/AudioBooks/opus/诡秘之主_8082Audio_2059集完"
-  cover_path: string = "d:/天翼PC备份/AudioBooks/opus/诡秘之主_8082Audio_2059集完/cover.jpg"
+  cover_path: string = "d:/天翼PC备份/AudioBooks/opus/诡秘之主_8082Audio_2059集完/cover720.jpg"
 ] {
 
   if not ($cover_path | path exists) {
@@ -101,14 +70,17 @@ def "main cover" [
     return
   }
 
-  let files = glob $"($dp)/**/*.{opus}"
+  let files = glob $"($dp)/**/*.{opus}" | skip 300 | take 100
   let total = $files | length
   mut count = 0
 
   if $total == 0 {
-    print "✗ 未找到任何 mp3/m4a 文件"
+    print "✗ 未找到任何 opus 文件"
     return
   }
+
+  let temp_dir = "d:/.cache/tageditor"
+  mkdir $temp_dir
 
   for file in $files {
     $count = $count + 1
@@ -116,11 +88,75 @@ def "main cover" [
 
     (
       ^tageditor-cli set
-      --values $"cover=($cover_path):front-cover"
+      --values $"cover=($cover_path):front-cover:"
       -f $source_file_path
+      --temp-dir $temp_dir
       --quiet
     )
 
-    print $'(ansi r)➜ ($count)/($total)(ansi rst) (ansi bu)($file)(ansi rst)'
+    print $'(ansi m)➜ ($count)/($total)(ansi rst) (ansi bu)($source_file_path)(ansi rst)'
+  }
+}
+# 使用kid3-cli设置封面
+def "main k3-cover" [
+  dp: string = "d:/天翼PC备份/AudioBooks/opus/诡秘之主_8082Audio_2059集完"
+  cover_path: string = "d:/天翼PC备份/AudioBooks/opus/诡秘之主_8082Audio_2059集完/cover720.jpg"
+  album: string = "诡秘之主"
+  artist: string = "有声读物"
+] {
+  # 检查封面文件
+  if not ($cover_path | path exists) {
+    print $"✗ 封面文件不存在: ($cover_path)"
+    return
+  }
+
+  # 获取文件列表
+  let files = glob $"($dp)/**/*.opus" | take 2
+  let total = $files | length
+
+  if $total == 0 {
+    print "✗ 未找到任何 opus 文件"
+    return
+  }
+
+  mut count = 0
+
+  for file in $files {
+    $count = $count + 1
+    let source_file_path = ($file | str replace --all '\' '/')
+
+    # 使用 kid3-cli 设置标签和封面
+    (
+      ^kid3-cli
+      -c $"set picture ($cover_path)"
+      $source_file_path
+    )
+
+    print $'(ansi m)➜ ($count)/($total)(ansi rst) (ansi bu)($source_file_path)(ansi rst)'
+  }
+}
+
+# 使用kid3-cli获取tags
+def "main k3-tag" [
+  dp: string = "d:/天翼PC备份/AudioBooks/opus/诡秘之主_8082Audio_2059集完"
+] {
+
+  # 获取文件列表
+  let files = glob $"($dp)/**/*.opus" | take 3
+  let total = $files | length
+
+  if $total == 0 {
+    print "✗ 未找到任何 opus 文件"
+    return
+  }
+
+  mut count = 0
+
+  for file in $files {
+    $count = $count + 1
+    let source_file_path = ($file | str replace --all '\' '/')
+
+    print $'(ansi m)➜ ($count)/($total)(ansi rst) (ansi bu)($source_file_path)(ansi rst)'
+    kid3-cli -c "get all" $source_file_path
   }
 }
