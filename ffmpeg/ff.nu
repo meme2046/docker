@@ -70,7 +70,7 @@ def "main te-cover" [
     return
   }
 
-  let files = glob $"($dp)/**/*.{opus}" | skip 300 | take 100
+  let files = glob $"($dp)/**/*.{opus}" | skip 0 | take 2
   let total = $files | length
   mut count = 0
 
@@ -88,7 +88,7 @@ def "main te-cover" [
 
     (
       ^tageditor-cli set
-      --values $"cover=($cover_path):front-cover:"
+      --values $"cover=($cover_path):front-cover:3"
       -f $source_file_path
       --temp-dir $temp_dir
       --quiet
@@ -97,66 +97,32 @@ def "main te-cover" [
     print $'(ansi m)➜ ($count)/($total)(ansi rst) (ansi bu)($source_file_path)(ansi rst)'
   }
 }
-# 使用kid3-cli设置封面
-def "main k3-cover" [
-  dp: string = "d:/天翼PC备份/AudioBooks/opus/诡秘之主_8082Audio_2059集完"
-  cover_path: string = "d:/天翼PC备份/AudioBooks/opus/诡秘之主_8082Audio_2059集完/cover720.jpg"
-  album: string = "诡秘之主"
-  artist: string = "有声读物"
-] {
-  # 检查封面文件
-  if not ($cover_path | path exists) {
-    print $"✗ 封面文件不存在: ($cover_path)"
-    return
-  }
 
-  # 获取文件列表
-  let files = glob $"($dp)/**/*.opus" | take 2
+def "main te-info" [
+  dp: string = "d:/天翼PC备份/AudioBooks/opus/诡秘之主_8082Audio_2059集完"
+] {
+  let files = glob $"($dp)/**/*.{opus}" | skip 0 | take 2
   let total = $files | length
+  mut count = 0
 
   if $total == 0 {
     print "✗ 未找到任何 opus 文件"
     return
   }
 
-  mut count = 0
-
   for file in $files {
     $count = $count + 1
     let source_file_path = ($file | str replace --all '\' '/')
 
-    # 使用 kid3-cli 设置标签和封面
+    print $'(ansi m)➜ ($count)/($total)(ansi rst) (ansi bu)($source_file_path)(ansi rst)'
+
     (
-      ^kid3-cli
-      -c $"set picture ($cover_path)"
-      $source_file_path
+      ^tageditor-cli info --verbose
+      -f $source_file_path
     )
 
-    print $'(ansi m)➜ ($count)/($total)(ansi rst) (ansi bu)($source_file_path)(ansi rst)'
-  }
-}
-
-# 使用kid3-cli获取tags
-def "main k3-tag" [
-  dp: string = "d:/天翼PC备份/AudioBooks/opus/诡秘之主_8082Audio_2059集完"
-] {
-
-  # 获取文件列表
-  let files = glob $"($dp)/**/*.opus" | take 3
-  let total = $files | length
-
-  if $total == 0 {
-    print "✗ 未找到任何 opus 文件"
-    return
-  }
-
-  mut count = 0
-
-  for file in $files {
-    $count = $count + 1
-    let source_file_path = ($file | str replace --all '\' '/')
-
-    print $'(ansi m)➜ ($count)/($total)(ansi rst) (ansi bu)($source_file_path)(ansi rst)'
-    kid3-cli -c "get all" $source_file_path
+    (
+      ^tageditor-cli get title artist album cover -f $source_file_path
+    )
   }
 }
