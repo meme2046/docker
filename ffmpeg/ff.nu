@@ -8,20 +8,27 @@ def "main to-opus" [
   --force
 ] {
 
+  print $cover_path
+
   if not ($cover_path | path exists) {
     print $"✗ 封面文件不存在: ($cover_path)"
     return
   }
 
-  let files = glob $"($dp)/**/*.{mp3,m4a}" | take 1
+  let files = glob $"($dp)/**/*.{mp3,m4a}" | take 600
   let total = $files | length
   mut count = 0
+
+  if $total == 0 {
+    print "✗ 未找到任何 mp3/m4a 文件"
+    return
+  }
 
   for file in $files {
     $count = $count + 1
     let source_file_path = ($file | str replace --all '\' '/')
     let source_dirname = $dp | path basename
-    let out_file_path = $source_file_path | str replace $source_dirname $"opus/($source_dirname)" | path basename --replace ($in | $"($in | split column '.' | first | get column0).opus")
+    let out_file_path = $source_file_path | str replace $source_dirname $"opus/($source_dirname)" | path basename --replace ($in | $"($in | split column '.' | first | get column0).ogg")
 
     if (($out_file_path | path exists) and not $force) {
       print $"⚠️ (ansi bu)($out_file_path)(ansi rst) (ansi r)已存在, 跳过转换(ansi rst)"
@@ -51,6 +58,6 @@ def "main to-opus" [
       $out_file_path
     )
 
-    print $'(ansi r)✓ ($count)/($total)(ansi rst) (ansi bu)($file)(ansi rst) to (ansi bu)($out_file_path)(ansi rst)'
+    print $'(ansi r)➜ ($count)/($total)(ansi rst) (ansi bu)($file)(ansi rst) to (ansi bu)($out_file_path)(ansi rst)'
   }
 }
