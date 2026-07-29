@@ -30,8 +30,8 @@ def kl [pid: int] {
 }
 
 def "main bkcp" [] {
-  cp --progress --force d:/.backups/mysql/*.sql c:/.backups/mysql
-  cp --progress --force d:/.backups/bruno/*.json c:/.backups/bruno
+  cp --progress --force d:/.backup/mysql/*.sql c:/.backup/mysql
+  cp --progress --force d:/.backup/bruno/*.json c:/.backup/bruno
 }
 
 def "main pp" [num: int = 5173] {
