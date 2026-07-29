@@ -3,11 +3,13 @@ def main [] {
 }
 
 def "main to-ogg" [
-  dir_path: string = "d:/AudioBooks/大奉打更人_头陀渊_1750集完"
-  cover_path: string = "d:/AudioBooks/大奉打更人_头陀渊_1750集完/cover720.jpg"
-  album: string = "大奉打更人"
+  dir_path: string = "d:/AudioBooks/诡秘之主_8082Audio_2059集完"
+  cover_path: string = "d:/AudioBooks/诡秘之主_8082Audio_2059集完/cover720.jpg"
+  album: string = "诡秘之主"
   artist: string = "喜马拉雅"
   --threads: int = 16
+  --skip: int = 0
+  --take: int = 10000
   --parse-episode
   --force
 ] {
@@ -15,7 +17,7 @@ def "main to-ogg" [
   let source_exts_comma = $source_exts | str join ","
   let out_ext = "ogg"
 
-  let files = glob $"($dir_path)/**/*.{($source_exts_comma)}"
+  let files = glob $"($dir_path)/**/*.{($source_exts_comma)}" | skip $skip | take $take
   let total = $files | length
 
   if $total == 0 {
@@ -96,8 +98,10 @@ def "main to-ogg" [
 
 # 使用tageditor-cli设置封面
 def "main te-cover" [
-  dir_path: string = "d:/AudioBooks/ogg/大奉打更人_头陀渊_1750集完"
-  cover_path: string = "d:/AudioBooks/大奉打更人_头陀渊_1750集完/cover720.jpg"
+  dir_path: string = "d:/AudioBooks/ogg/诡秘之主_8082Audio_2059集完"
+  cover_path: string = "d:/AudioBooks/诡秘之主_8082Audio_2059集完/cover720.jpg"
+  --skip: int = 0
+  --take: int = 10000
 ] {
 
   if not ($cover_path | path exists) {
@@ -106,7 +110,7 @@ def "main te-cover" [
   }
 
   let ext = "ogg"
-  let files = glob $"($dir_path)/**/*.{($ext)}" | skip 10
+  let files = glob $"($dir_path)/**/*.{($ext)}" | skip $skip | take $take
   let total = $files | length
   mut count = 0
 
@@ -137,12 +141,14 @@ def "main te-cover" [
 }
 
 def "main te-info" [
-  dir_path: string = "d:/AudioBooks/ogg/大奉打更人_头陀渊_1750集完"
+  dir_path: string = "d:/AudioBooks/ogg/诡秘之主_8082Audio_2059集完"
+  --skip: int = 0
+  --take: int = 3
   --base
   --info
 ] {
   let ext = "ogg"
-  let files = glob $"($dir_path)/**/*.{($ext)}" | take 3
+  let files = glob $"($dir_path)/**/*.{($ext)}" | skip $skip | take $take
   let total = $files | length
   mut count = 0
 
@@ -198,10 +204,12 @@ def "main parse-episode" [
 }
 
 def "main test-episode" [
-  dir_path: string = "d:/AudioBooks/大奉打更人_头陀渊_1750集完"
+  dir_path: string = "d:/AudioBooks/诡秘之主_8082Audio_2059集完"
+  --skip: int = 0
+  --take: int = 5
 ] {
   let ext = "mp3,m4a"
-  let files = glob $"($dir_path)/**/*.{($ext)}" | take 3
+  let files = glob $"($dir_path)/**/*.{($ext)}" | skip $skip | take $take
   let total = $files | length
   mut count = 0
 
