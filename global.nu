@@ -136,7 +136,7 @@ def show-path [] {
   print $"letsencrypt: (ansi g)d:/.letsencrypt(ansi reset)"
   print $"db_data: (ansi g)d:/.db(ansi reset)"
   print $"dotenv: (ansi g)d:/.env(ansi reset)"
-  print $"天翼网盘: (ansi g)d:/天翼PC备份(ansi reset)"
+  print $"天翼网盘: (ansi g)d:/.eCloud/backup(ansi reset)"
   print $"ssh: (ansi g)d:/.ssh(ansi reset)"
   print $"PROJECT_DOCKER_DIR: (ansi g)($env.PROJECT_DOCKER_DIR)(ansi reset)"
   print $"PROJECT_PYMECLI_DIR: (ansi g)($env.PROJECT_PYMECLI_DIR)(ansi reset)"
