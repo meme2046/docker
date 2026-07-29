@@ -7,6 +7,7 @@ def "main to-ogg" [
   cover_path: string = "d:/AudioBooks/大奉打更人_头陀渊_1754集完/cover720.jpg"
   album: string = "大奉打更人"
   artist: string = "喜马拉雅"
+  --threads: int = 4
   --parse-episode
   --force
 ] {
@@ -20,6 +21,10 @@ def "main to-ogg" [
   if $total == 0 {
     print $"✗ 未找到任何 ($ext) 文件"
     return
+  }
+
+  $files | par-each --threads $threads {|file|
+    print $file
   }
 
   for file in $files {
@@ -114,7 +119,7 @@ def "main te-info" [
   --info
 ] {
   let ext = "ogg"
-  let files = glob $"($dir_path)/**/*.{($ext)}" | take 1
+  let files = glob $"($dir_path)/**/*.{($ext)}" | take 3
   let total = $files | length
   mut count = 0
 
@@ -173,7 +178,7 @@ def "main test-episode" [
   dir_path: string = "d:/AudioBooks/大奉打更人_头陀渊_1754集完"
 ] {
   let ext = "mp3,m4a"
-  let files = glob $"($dir_path)/**/*.{($ext)}" | take 10
+  let files = glob $"($dir_path)/**/*.{($ext)}" | take 3
   let total = $files | length
   mut count = 0
 
