@@ -3,55 +3,62 @@ def main [] {
 }
 
 def "main to-ogg" [
-  dir_path: string = "d:/AudioBooks/大奉打更人_头陀渊_1754集完"
-  cover_path: string = "d:/AudioBooks/大奉打更人_头陀渊_1754集完/cover720.jpg"
+  dir_path: string = "d:/AudioBooks/大奉打更人_头陀渊_1750集完"
+  cover_path: string = "d:/AudioBooks/大奉打更人_头陀渊_1750集完/cover720.jpg"
   album: string = "大奉打更人"
   artist: string = "喜马拉雅"
-  --threads: int = 4
+  --threads: int = 16
   --parse-episode
   --force
 ] {
-  let ext = "mp3,m4a"
+  let source_exts = ["mp3" "m4a"]
+  let source_exts_comma = $source_exts | str join ","
   let out_ext = "ogg"
-  let files = glob $"($dir_path)/**/*.{($ext)}" | skip 95
+
+  let files = glob $"($dir_path)/**/*.{($source_exts_comma)}"
   let total = $files | length
-  mut count = 0
-  mut title = ""
 
   if $total == 0 {
-    print $"✗ 未找到任何 ($ext) 文件"
+    print $"✗ 未找到任何 ($source_exts_comma) 文件"
     return
   }
 
-  $files | par-each --threads $threads {|file|
-    print $file
-  }
+  print $"✓ 共读取 ($total) 个待转换文件，并发线程：($threads)，强制覆盖：($force)"
 
-  for file in $files {
-    $count = $count + 1
-    let source_file_path = ($file | str replace --all '\' '/')
+  $files | enumerate | par-each --threads $threads --keep-order {|entry|
+    let file_idx = $entry.index + 1
+    let source_file = ($entry.item | str replace --all '\' '/')
     let source_dirname = $dir_path | path basename
-    # let out_file_path = $source_file_path | str replace $source_dirname $"ogg/($source_dirname)" | path basename --replace ($in | $"($in | split column '.' | first | get column0).ogg")
-    mut out_file_path = ($source_file_path | str replace $source_dirname $"ogg/($source_dirname)" | str replace -r $"\(.+\).\(('mp3,m4a' | str replace ',' '|')\)" $'$1.($out_ext)')
-    if ($parse_episode) {
-      let info = main parse-episode $out_file_path
-      $title = $info.title
-      $out_file_path = $out_file_path | path basename --replace $"($info.episode).($out_ext)" | str replace --all '\' '/'
+
+    # 生成输出路径（逻辑和原代码完全一致）
+    let p = $source_file | str replace $source_dirname $"ogg/($source_dirname)" | path parse
+    mut out_file = ($p.parent | path join $"($p.stem).($out_ext)") | str replace --all '\' '/'
+
+    # 解析集数,title（如果开启）
+    let title = if $parse_episode {
+      let ep_info = main parse-episode $out_file
+      $out_file = $out_file | path basename --replace $"($ep_info.episode).($out_ext)" | str replace --all '\' '/'
+      $ep_info.title
+    } else { "" }
+
+    # 跳过已存在文件
+    if (($out_file | path exists) and not $force) {
+      return {
+        idx: $file_idx
+        status: "skip"
+        msg: $"⚠️ (ansi bu)($out_file)(ansi rst) (ansi r)已存在, 跳过转换(ansi rst)"
+      }
     }
 
-    if (($out_file_path | path exists) and not $force) {
-      print $"(ansi r)⚠️ ($count)/($total)(ansi rst) (ansi bu)($out_file_path)(ansi rst) (ansi r)已存在, 跳过转换(ansi rst)"
-      continue
-    }
-
-    let out_dir = $out_file_path | path dirname
+    let out_dir = $out_file | path dirname
     mkdir $out_dir
 
-    (
+    # 执行ffmpeg
+    let ffmpeg_ret = (
       ^ffmpeg -y # 覆盖
       -hide_banner # 隐藏版权信息
       -loglevel error # 只显示错误信息
-      -i $source_file_path # 音频路径
+      -i $source_file # 音频路径
       # -i $cover_path # 封面路径 🏷️ogg
       # -map 0:a # 音频流映射 🏷️ogg
       # -map 1:v -disposition:v attached_pic # 指定视频编码器为 MJPEG 🏷️ogg
@@ -66,17 +73,31 @@ def "main to-ogg" [
       -metadata album=($album)
       -metadata artist=($artist)
       -metadata title=($title)
-      $out_file_path
-    )
+      $out_file
+    ) | complete
 
-    print $'(ansi m)➜ ($count)/($total)(ansi rst) (ansi bu)($source_file_path)(ansi rst) > (ansi bu)($out_file_path)(ansi rst)'
-  }
+    if $ffmpeg_ret.exit_code == 0 {
+      return {
+        idx: $file_idx
+        status: "ok"
+        msg: $"✓ (ansi bu)($source_file)(ansi rst) > (ansi bu)($out_file)(ansi rst)"
+      }
+    } else {
+      return {
+        idx: $file_idx
+        status: "fail"
+        msg: $"✗ (ansi bu)($source_file)(ansi rst) (ansi r)ffmpeg异常, 退出码: $ffmpeg_ret.exit_code(ansi rst)"
+      }
+    }
+  } | each {|res|
+    print $'➜ [($res.idx)/($total)] ($res.msg) ($res.status)'
+  } | ignore
 }
 
 # 使用tageditor-cli设置封面
 def "main te-cover" [
-  dir_path: string = "d:/AudioBooks/ogg/大奉打更人_头陀渊_1754集完"
-  cover_path: string = "d:/AudioBooks/大奉打更人_头陀渊_1754集完/cover720.jpg"
+  dir_path: string = "d:/AudioBooks/ogg/大奉打更人_头陀渊_1750集完"
+  cover_path: string = "d:/AudioBooks/大奉打更人_头陀渊_1750集完/cover720.jpg"
 ] {
 
   if not ($cover_path | path exists) {
@@ -85,7 +106,7 @@ def "main te-cover" [
   }
 
   let ext = "ogg"
-  let files = glob $"($dir_path)/**/*.{($ext)}"
+  let files = glob $"($dir_path)/**/*.{($ext)}" | skip 10
   let total = $files | length
   mut count = 0
 
@@ -111,10 +132,12 @@ def "main te-cover" [
 
     print $'(ansi m)➜ ($count)/($total)(ansi rst) (ansi bu)($source_file_path)(ansi rst)'
   }
+
+  rm --force $"($temp_dir)/**/*"
 }
 
 def "main te-info" [
-  dir_path: string = "d:/AudioBooks/ogg/大奉打更人_头陀渊_1754集完"
+  dir_path: string = "d:/AudioBooks/ogg/大奉打更人_头陀渊_1750集完"
   --base
   --info
 ] {
@@ -175,7 +198,7 @@ def "main parse-episode" [
 }
 
 def "main test-episode" [
-  dir_path: string = "d:/AudioBooks/大奉打更人_头陀渊_1754集完"
+  dir_path: string = "d:/AudioBooks/大奉打更人_头陀渊_1750集完"
 ] {
   let ext = "mp3,m4a"
   let files = glob $"($dir_path)/**/*.{($ext)}" | take 3
