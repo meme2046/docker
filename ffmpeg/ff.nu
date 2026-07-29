@@ -2,10 +2,9 @@ def main [] {
   print 'ffmpeg script'
 }
 
-def "main to-ogg" [
-  dir_path: string = "d:/AudioBooks/诡秘之主_8082Audio_2059集完"
-  cover_path: string = "d:/AudioBooks/诡秘之主_8082Audio_2059集完/cover720.jpg"
-  album: string = "诡秘之主"
+def "main to-opus" [
+  dir_path: string = "d:/AudioBooks/大奉打更人_头陀渊_1750集完"
+  cover_path: string = "d:/AudioBooks/大奉打更人_头陀渊_1750集完/cover720.jpg"
   artist: string = "喜马拉雅"
   --threads: int = 16
   --skip: int = 0
@@ -13,9 +12,11 @@ def "main to-ogg" [
   --parse-episode
   --force
 ] {
+  let album = $dir_path | path basename | split words | first
+
   let source_exts = ["mp3" "m4a"]
   let source_exts_comma = $source_exts | str join ","
-  let out_ext = "ogg"
+  let out_ext = "opus"
 
   let files = glob $"($dir_path)/**/*.{($source_exts_comma)}" | skip $skip | take $take
   let total = $files | length
@@ -33,7 +34,7 @@ def "main to-ogg" [
     let source_dirname = $dir_path | path basename
 
     # 生成输出路径（逻辑和原代码完全一致）
-    let p = $source_file | str replace $source_dirname $"ogg/($source_dirname)" | path parse
+    let p = $source_file | str replace $source_dirname $"($out_ext)/($source_dirname)" | path parse
     mut out_file = ($p.parent | path join $"($p.stem).($out_ext)") | str replace --all '\' '/'
 
     # 解析集数,title（如果开启）
@@ -61,9 +62,9 @@ def "main to-ogg" [
       -hide_banner # 隐藏版权信息
       -loglevel error # 只显示错误信息
       -i $source_file # 音频路径
-      # -i $cover_path # 封面路径 🏷️ogg
-      # -map 0:a # 音频流映射 🏷️ogg
-      # -map 1:v -disposition:v attached_pic # 指定视频编码器为 MJPEG 🏷️ogg
+      # -i $cover_path # 封面路径 🏷️
+      # -map 0:a # 音频流映射 🏷️
+      # -map 1:v -disposition:v attached_pic # 指定视频编码器为 MJPEG 🏷️
       -c:a libopus # 编码器: libopus
       -ac 1 # 单声道（人声不需要立体声）
       -b:a 28k # 目标码率 28kbps
@@ -98,8 +99,8 @@ def "main to-ogg" [
 
 # 使用tageditor-cli设置封面
 def "main te-cover" [
-  dir_path: string = "d:/AudioBooks/ogg/诡秘之主_8082Audio_2059集完"
-  cover_path: string = "d:/AudioBooks/诡秘之主_8082Audio_2059集完/cover720.jpg"
+  dir_path: string = "d:/AudioBooks/opus/大奉打更人_头陀渊_1750集完"
+  cover_path: string = "d:/AudioBooks/大奉打更人_头陀渊_1750集完/cover720.jpg"
   --skip: int = 0
   --take: int = 10000
 ] {
@@ -109,7 +110,7 @@ def "main te-cover" [
     return
   }
 
-  let ext = "ogg"
+  let ext = "opus"
   let files = glob $"($dir_path)/**/*.{($ext)}" | skip $skip | take $take
   let total = $files | length
   mut count = 0
@@ -141,13 +142,13 @@ def "main te-cover" [
 }
 
 def "main te-info" [
-  dir_path: string = "d:/AudioBooks/ogg/诡秘之主_8082Audio_2059集完"
+  dir_path: string = "d:/AudioBooks/opus/大奉打更人_头陀渊_1750集完"
   --skip: int = 0
   --take: int = 3
   --base
   --info
 ] {
-  let ext = "ogg"
+  let ext = "opus"
   let files = glob $"($dir_path)/**/*.{($ext)}" | skip $skip | take $take
   let total = $files | length
   mut count = 0
@@ -204,7 +205,7 @@ def "main parse-episode" [
 }
 
 def "main test-episode" [
-  dir_path: string = "d:/AudioBooks/诡秘之主_8082Audio_2059集完"
+  dir_path: string = "d:/AudioBooks/大奉打更人_头陀渊_1750集完"
   --skip: int = 0
   --take: int = 5
 ] {
@@ -214,7 +215,7 @@ def "main test-episode" [
   mut count = 0
 
   if $total == 0 {
-    print "✗ 未找到任何 mp3/m4a 文件"
+    print $"✗ 未找到任何 ($ext) 文件"
     return
   }
 
