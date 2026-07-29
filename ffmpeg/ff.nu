@@ -2,7 +2,7 @@ def main [] {
   print 'ffmpeg script'
 }
 
-def "main to-opus" [
+def "main to-ogg" [
   dir_path: string = "d:/AudioBooks/大奉打更人_头陀渊_1754集完"
   cover_path: string = "d:/AudioBooks/大奉打更人_头陀渊_1754集完/cover720.jpg"
   album: string = "大奉打更人"
@@ -11,14 +11,14 @@ def "main to-opus" [
   --force
 ] {
   let ext = "mp3,m4a"
-  let out_ext = "opus"
-  let files = glob $"($dir_path)/**/*.{($ext)}"
+  let out_ext = "ogg"
+  let files = glob $"($dir_path)/**/*.{($ext)}" | skip 95
   let total = $files | length
   mut count = 0
   mut title = ""
 
   if $total == 0 {
-    print "✗ 未找到任何 mp3/m4a 文件"
+    print $"✗ 未找到任何 ($ext) 文件"
     return
   }
 
@@ -26,8 +26,8 @@ def "main to-opus" [
     $count = $count + 1
     let source_file_path = ($file | str replace --all '\' '/')
     let source_dirname = $dir_path | path basename
-    # let out_file_path = $source_file_path | str replace $source_dirname $"opus/($source_dirname)" | path basename --replace ($in | $"($in | split column '.' | first | get column0).opus")
-    mut out_file_path = ($source_file_path | str replace $source_dirname $"opus/($source_dirname)" | str replace -r $"\(.+\).\(('mp3,m4a' | str replace ',' '|')\)" $'$1.($out_ext)')
+    # let out_file_path = $source_file_path | str replace $source_dirname $"ogg/($source_dirname)" | path basename --replace ($in | $"($in | split column '.' | first | get column0).ogg")
+    mut out_file_path = ($source_file_path | str replace $source_dirname $"ogg/($source_dirname)" | str replace -r $"\(.+\).\(('mp3,m4a' | str replace ',' '|')\)" $'$1.($out_ext)')
     if ($parse_episode) {
       let info = main parse-episode $out_file_path
       $title = $info.title
@@ -70,7 +70,7 @@ def "main to-opus" [
 
 # 使用tageditor-cli设置封面
 def "main te-cover" [
-  dir_path: string = "d:/AudioBooks/opus/大奉打更人_头陀渊_1754集完"
+  dir_path: string = "d:/AudioBooks/ogg/大奉打更人_头陀渊_1754集完"
   cover_path: string = "d:/AudioBooks/大奉打更人_头陀渊_1754集完/cover720.jpg"
 ] {
 
@@ -79,12 +79,13 @@ def "main te-cover" [
     return
   }
 
-  let files = glob $"($dir_path)/**/*.{opus}"
+  let ext = "ogg"
+  let files = glob $"($dir_path)/**/*.{($ext)}"
   let total = $files | length
   mut count = 0
 
   if $total == 0 {
-    print "✗ 未找到任何 opus 文件"
+    print $"✗ 未找到任何 ($ext) 文件"
     return
   }
 
@@ -108,14 +109,17 @@ def "main te-cover" [
 }
 
 def "main te-info" [
-  dir_path: string = "d:/AudioBooks/opus/大奉打更人_头陀渊_1754集完"
+  dir_path: string = "d:/AudioBooks/ogg/大奉打更人_头陀渊_1754集完"
+  --base
+  --info
 ] {
-  let files = glob $"($dir_path)/**/*.{opus}" | skip 0 | take 2
+  let ext = "ogg"
+  let files = glob $"($dir_path)/**/*.{($ext)}" | take 1
   let total = $files | length
   mut count = 0
 
   if $total == 0 {
-    print "✗ 未找到任何 opus 文件"
+    print $"✗ 未找到任何 ($ext) 文件"
     return
   }
 
@@ -125,14 +129,28 @@ def "main te-info" [
 
     print $'(ansi m)➜ ($count)/($total)(ansi rst) (ansi bu)($source_file_path)(ansi rst)'
 
-    (
-      ^tageditor-cli info --verbose
-      -f $source_file_path
-    )
+    if $base {
+      (
+        ^tageditor-cli get title artist album cover -f $source_file_path
+      )
+    }
+    if $info {
+      (
+        ^tageditor-cli info --verbose
+        -f $source_file_path
+      )
+    }
 
-    (
-      ^tageditor-cli get title artist album cover -f $source_file_path
-    )
+    if not $base and not $info {
+      (
+        ^tageditor-cli get title artist album cover -f $source_file_path
+      )
+
+      (
+        ^tageditor-cli info --verbose
+        -f $source_file_path
+      )
+    }
   }
 }
 # 解析文件名中的集数和标题, 匹配"第"(x)集, 中的(x)为集数, 接下来为标题字段, 必须符合这个这个规则才能解析成功
