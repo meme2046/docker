@@ -3,16 +3,19 @@ def main [] {
 }
 
 def "main to-opus" [
-  dp: string = "d:/天翼PC备份/AudioBooks/诡秘之主_8082Audio_2059集完"
-  cover_path: string = "d:/天翼PC备份/AudioBooks/opus/诡秘之主_8082Audio_2059集完/cover720.jpg"
-  album: string = "诡秘之主"
+  dir_path: string = "d:/AudioBooks/大奉打更人_头陀渊_1754集完"
+  cover_path: string = "d:/AudioBooks/大奉打更人_头陀渊_1754集完/cover720.jpg"
+  album: string = "大奉打更人"
   artist: string = "喜马拉雅"
+  --parse-episode
   --force
 ] {
-
-  let files = glob $"($dp)/**/*.{mp3,m4a}" | skip 2068 | take 1000
+  let ext = "mp3,m4a"
+  let out_ext = "opus"
+  let files = glob $"($dir_path)/**/*.{($ext)}"
   let total = $files | length
   mut count = 0
+  mut title = ""
 
   if $total == 0 {
     print "✗ 未找到任何 mp3/m4a 文件"
@@ -22,8 +25,14 @@ def "main to-opus" [
   for file in $files {
     $count = $count + 1
     let source_file_path = ($file | str replace --all '\' '/')
-    let source_dirname = $dp | path basename
-    let out_file_path = $source_file_path | str replace $source_dirname $"opus/($source_dirname)" | path basename --replace ($in | $"($in | split column '.' | first | get column0).opus")
+    let source_dirname = $dir_path | path basename
+    # let out_file_path = $source_file_path | str replace $source_dirname $"opus/($source_dirname)" | path basename --replace ($in | $"($in | split column '.' | first | get column0).opus")
+    mut out_file_path = ($source_file_path | str replace $source_dirname $"opus/($source_dirname)" | str replace -r $"\(.+\).\(('mp3,m4a' | str replace ',' '|')\)" $'$1.($out_ext)')
+    if ($parse_episode) {
+      let info = main parse-episode $out_file_path
+      $title = $info.title
+      $out_file_path = $out_file_path | path basename --replace $"($info.episode).($out_ext)" | str replace --all '\' '/'
+    }
 
     if (($out_file_path | path exists) and not $force) {
       print $"(ansi r)⚠️ ($count)/($total)(ansi rst) (ansi bu)($out_file_path)(ansi rst) (ansi r)已存在, 跳过转换(ansi rst)"
@@ -38,9 +47,9 @@ def "main to-opus" [
       -hide_banner # 隐藏版权信息
       -loglevel error # 只显示错误信息
       -i $source_file_path # 音频路径
-      # -i $cover_path # 封面路径 🏷️
-      # -map 0:a # 音频流映射 🏷️
-      # -map 1:v -disposition:v attached_pic # 指定视频编码器为 MJPEG 🏷️
+      # -i $cover_path # 封面路径 🏷️ogg
+      # -map 0:a # 音频流映射 🏷️ogg
+      # -map 1:v -disposition:v attached_pic # 指定视频编码器为 MJPEG 🏷️ogg
       -c:a libopus # 编码器: libopus
       -ac 1 # 单声道（人声不需要立体声）
       -b:a 28k # 目标码率 28kbps
@@ -51,7 +60,7 @@ def "main to-opus" [
       -map_metadata:s:a -1 # 音频流内部标签清空
       -metadata album=($album)
       -metadata artist=($artist)
-      -metadata title=
+      -metadata title=($title)
       $out_file_path
     )
 
@@ -61,8 +70,8 @@ def "main to-opus" [
 
 # 使用tageditor-cli设置封面
 def "main te-cover" [
-  dp: string = "d:/天翼PC备份/AudioBooks/opus/诡秘之主_8082Audio_2059集完"
-  cover_path: string = "d:/天翼PC备份/AudioBooks/opus/诡秘之主_8082Audio_2059集完/cover720.jpg"
+  dir_path: string = "d:/AudioBooks/opus/大奉打更人_头陀渊_1754集完"
+  cover_path: string = "d:/AudioBooks/大奉打更人_头陀渊_1754集完/cover720.jpg"
 ] {
 
   if not ($cover_path | path exists) {
@@ -70,7 +79,7 @@ def "main te-cover" [
     return
   }
 
-  let files = glob $"($dp)/**/*.{opus}" | skip 0 | take 2
+  let files = glob $"($dir_path)/**/*.{opus}"
   let total = $files | length
   mut count = 0
 
@@ -99,9 +108,9 @@ def "main te-cover" [
 }
 
 def "main te-info" [
-  dp: string = "d:/天翼PC备份/AudioBooks/opus/诡秘之主_8082Audio_2059集完"
+  dir_path: string = "d:/AudioBooks/opus/大奉打更人_头陀渊_1754集完"
 ] {
-  let files = glob $"($dp)/**/*.{opus}" | skip 0 | take 2
+  let files = glob $"($dir_path)/**/*.{opus}" | skip 0 | take 2
   let total = $files | length
   mut count = 0
 
@@ -124,5 +133,42 @@ def "main te-info" [
     (
       ^tageditor-cli get title artist album cover -f $source_file_path
     )
+  }
+}
+# 解析文件名中的集数和标题, 匹配"第"(x)集, 中的(x)为集数, 接下来为标题字段, 必须符合这个这个规则才能解析成功
+def "main parse-episode" [
+  file_path: string
+] {
+
+  let name = $file_path | path basename | split words
+
+  mut episode = ($name | first 2 | last | str replace -r '.*第(\d+).*' '$1')
+  if ($episode =~ '^\d+$') {
+    $episode = $episode | fill --alignment right --character '0' --width 4
+  }
+  let title = ($name | first 3 | last)
+
+  return {episode: $episode title: $title}
+}
+
+def "main test-episode" [
+  dir_path: string = "d:/AudioBooks/大奉打更人_头陀渊_1754集完"
+] {
+  let ext = "mp3,m4a"
+  let files = glob $"($dir_path)/**/*.{($ext)}" | take 10
+  let total = $files | length
+  mut count = 0
+
+  if $total == 0 {
+    print "✗ 未找到任何 mp3/m4a 文件"
+    return
+  }
+
+  for file in $files {
+    $count = $count + 1
+    let source_file_path = ($file | str replace --all '\' '/')
+    let info = main parse-episode $file
+
+    print $"(ansi m)➜ ($count)/($total)(ansi rst) (ansi bu)($source_file_path)(ansi rst)\n($info | to json)"
   }
 }
