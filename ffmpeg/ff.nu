@@ -93,8 +93,12 @@ def "main to-opus" [
       }
     }
   } | each {|res|
-    print $'➜ [($res.idx)/($total)] ($res.msg) ($res.status)'
+    if $res.status != "ok" {
+      print $'➜ [($res.idx)/($total)] ($res.msg) ($res.status)'
+    }
   } | ignore
+
+  print $"✓ done"
 }
 
 # 使用tageditor-cli设置封面
