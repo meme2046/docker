@@ -1,19 +1,9 @@
 services:
-  # certbot-renew:
-  #   image: certbot/dns-cloudflare:latest
-  #   container_name: certbot-renew
-  #   volumes:
-  #     - ./certbot/conf:/etc/letsencrypt
-  #   environment:
-  #     - CF_API_TOKEN=${CF_TOKEN}
-  #   networks:
-  #     - app-network
-  #   command: >
-  #     renew --dns-cloudflare
-
   acme-dnspod:
     image: neilpang/acme.sh:latest
     container_name: acme-dnspod
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
     volumes:
       - d:/.letsencrypt/dnspod/api.memeniu.xyz:/acme.sh
     environment:
@@ -26,6 +16,8 @@ services:
   acme-dnspod-qiniu:
     image: neilpang/acme.sh:latest
     container_name: acme-dnspod-qiniu
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
     volumes:
       - d:/.letsencrypt/dnspod/memeniu.xyz:/acme.sh
     environment:
@@ -38,6 +30,8 @@ services:
   acme-dnspod-qiniucdn:
     image: neilpang/acme.sh:latest
     container_name: acme-dnspod-qiniucdn
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
     volumes:
       - d:/.letsencrypt/dnspod/cdn.memeniu.xyz:/acme.sh
     environment:
@@ -50,6 +44,8 @@ services:
   acme-cloudflare:
     image: neilpang/acme.sh:latest
     container_name: acme-cloudflare
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
     volumes:
       - d:/.letsencrypt/cloudflare/meme.us.kg:/acme.sh
     environment:
@@ -63,6 +59,8 @@ services:
   fastapi:
     image: registry.cn-chengdu.aliyuncs.com/memeking/pymecli:latest
     container_name: fastapi
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
     expose:
       - "8000"
     # volumes:
@@ -83,9 +81,10 @@ services:
     restart: unless-stopped
 
   nginx:
-    # image: nginx:alpine
     image: openresty/openresty:alpine
     container_name: nginx
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
     ports:
       - "8888:443"
       - "9999:80"

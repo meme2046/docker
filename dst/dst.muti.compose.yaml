@@ -3,6 +3,8 @@ services:
   mod-update:
     image: superjump22/dontstarvetogether:latest
     container_name: mod-update
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
     restart: "no"
     # network_mode: host
     environment:
@@ -24,6 +26,8 @@ services:
       context: .
       dockerfile: dst.Dockerfile
     container_name: dst-master
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
     restart: "no"
     # network_mode: host
     stdin_open: true
@@ -69,6 +73,8 @@ services:
   dst-caves:
     image: superjump22/dontstarvetogether:latest
     container_name: dst-caves
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
     restart: "no"
     # network_mode: host
     stdin_open: true

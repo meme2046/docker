@@ -1,0 +1,13 @@
+services:
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: watchtower
+    environment:
+      DOCKER_API_VERSION: ${DOCKER_API_VERSION:-1.55}
+      WATCHTOWER_CLEANUP: true # -c / --cleanup 自动删除旧的老旧镜像
+      WATCHTOWER_POLL_INTERVAL: 86400 # 24小时检测一次
+      WATCHTOWER_LABEL_ENABLE: true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: ["-R"] # -R / --restart 重启对应服务容器
+

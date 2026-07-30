@@ -1,0 +1,16 @@
+services:
+  quark-auto:
+    image: cp0204/quark-auto-save:latest
+    container_name: quark-auto
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
+    network_mode: bridge
+    ports:
+      - 5005:5005
+    restart: unless-stopped
+    environment:
+      WEBUI_USERNAME: "admin"
+      WEBUI_PASSWORD: "WOxiaode."
+    volumes:
+      - d:/.quark/quark-auto/config:/app/config
+      - d:/.quark/quark-auto/media:/media

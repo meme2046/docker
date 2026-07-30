@@ -2,6 +2,8 @@ services:
   mod-update:
     image: superjump22/dontstarvetogether:latest
     container_name: dst-mod-update
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
     restart: "no"
     environment:
       - TZ=Asia/Shanghai
@@ -18,6 +20,8 @@ services:
   master-caves:
     image: superjump22/dontstarvetogether:latest
     container_name: master-caves
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
     restart: "no"
     stdin_open: true
     tty: true

@@ -207,14 +207,26 @@ def show-cmd [] {
 def env-set [] {
   # 设置项目目录到环境变量方便调用
   # let base_dir = "d:/github/meme2046/docker"
-  pwsh -Command '
-  [Environment]::SetEnvironmentVariable("PROJECT_DOCKER_DIR", "d:/github/meme2046/docker", "User")
-  [Environment]::SetEnvironmentVariable("PROJECT_PYMECLI_DIR", "d:/github/meme2046/pymecli", "User")
-  [Environment]::SetEnvironmentVariable("PROJECT_MEOCLI_DIR", "d:/github/meme2046/meocli", "User")
-  '
-  # 删除用户变量，值设为$null
-  # [Environment]::SetEnvironmentVariable("PROJECT_DOCKER_DIR", $null, "User")
+  let apiversion = (docker version --format json | from json).Client.ApiVersion
+  pwsh -Command $"
+  [Environment]::SetEnvironmentVariable\("PROJECT_DOCKER_DIR", "d:/github/meme2046/docker", "User"\)
+  [Environment]::SetEnvironmentVariable\("PROJECT_PYMECLI_DIR", "d:/github/meme2046/pymecli", "User"\)
+  [Environment]::SetEnvironmentVariable\("PROJECT_MEOCLI_DIR", "d:/github/meme2046/meocli", "User"\)
+  "
+
+  # ^pwsh -Command $"[Environment]::SetEnvironmentVariable\("DOCKER_API_VERSION", ($apiversion), "User"\)"
+
+#   print $"PROJECT_DOCKER_DIR: (ansi g)($env.PROJECT_DOCKER_DIR)(ansi reset)
+# PROJECT_PYMECLI_DIR: (ansi g)($env.PROJECT_PYMECLI_DIR)(ansi reset)
+# PROJECT_MEOCLI_DIR: (ansi g)($env.PROJECT_MEOCLI_DIR)(ansi reset)
+# DOCKER_API_VERSION: (ansi g)($env.DOCKER_API_VERSION)(ansi reset)
+#   "
 }
+
+def env-null [name: string] {
+  pwsh -Command $"[Environment]::SetEnvironmentVariable\("DOCKER_API_VERSION", $null, "User"\)"
+}
+
 # 饥荒联机版, 启动dedicated server
 def dst [] {
   cd $"($env.PROJECT_DOCKER_DIR)/dst"
@@ -272,4 +284,13 @@ def python-link [target_version: string = "3.10"] {
 def dockerls [] {
   # select ID Names State Status Command Image Ports
   (docker container ls --all --format json | from json -o | select ID Names State Status)
+}
+# 更新容器, 需要更新的容器添加以下label
+# labels: [com.centurylinklabs.watchtower.enable: "true"]
+def dockerup [] {
+  let apiversion = (docker version --format json | from json).Client.ApiVersion
+  $env.DOCKER_API_VERSION = $apiversion
+
+  docker compose -f $"($env.PROJECT_DOCKER_DIR)/compose.yaml" pull
+  docker compose -p global -f $"($env.PROJECT_DOCKER_DIR)/compose.yaml" up -d
 }
