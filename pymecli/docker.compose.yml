@@ -71,7 +71,7 @@ services:
     command: >
       fast 0.0.0.0 --port 8000
       --rule https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release
-      --my-rule https://raw.githubusercontent.com/meme2046/data/refs/heads/main/clash
+      --my-rule https://raw.githubusercontent.com/meme2046/data/main/clash
       --proxy socks5://192.168.123.7:7897
       --redis-host 192.168.123.7
     # depends_on:

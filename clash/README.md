@@ -41,8 +41,8 @@ windows默认模型路径: `%APPDATA%\mihomo-party\work`
 
 3. 生成好的脚本
 
-   https://raw.githubusercontent.com/meme2046/data/main/ClashParty(mihomo).js
-   https://raw.githubusercontent.com/meme2046/data/main/ClashParty(mihomo-smart).js
+   https://raw.githubusercontent.com/meme2046/data/main/clash/ClashParty(mihomo).js
+   https://raw.githubusercontent.com/meme2046/data/main/clash/ClashParty(mihomo-smart).js
    https://raw.githubusercontent.com/meme2046/data/main/clash/FlClash(mihomo).js
    https://fastly.jsdelivr.net/gh/meme2046/data@main/clash/FlClash(mihomo).js
 
