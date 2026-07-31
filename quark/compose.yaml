@@ -14,3 +14,17 @@ services:
     volumes:
       - d:/.quark/quark-auto/config:/app/config
       - d:/.quark/quark-auto/media:/media
+
+  cloudsaver:
+    image: jiangrui1994/cloudsaver:latest
+    container_name: cloudsaver
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
+    ports:
+      - "8008:8008"
+    volumes:
+      - d:/.quark/cloudsaver/data:/app/data
+      - d:/.quark/cloudsaver/config:/app/config
+    restart: unless-stopped
+    environment:
+      - TZ=Asia/Shanghai
