@@ -30,10 +30,5 @@
       "url": "https://raw.githubusercontent.com/meme2046/data/main/clash/reject.yaml?_t={{timestamp}}"
     }
   },
-  "v6Domains": [
-    "api.memeniu.xyz",
-    "meme.us.kg",
-    "+.steamserver.net",
-    "+.recaptcha.net"
-  ]
+  "v6Domains": ["api.memeniu.xyz", "meme.us.kg", "+.steamserver.net"]
 }
