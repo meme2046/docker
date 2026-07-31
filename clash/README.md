@@ -25,19 +25,21 @@ windows默认模型路径: `%APPDATA%\mihomo-party\work`
 
 # 我的配置
 
-1. jsdelivr cdn 规则
+1. 模板  
+   https://raw.githubusercontent.com/meme2046/data/main/clash/template.yaml
+
+2. 我的规则  
+   https://raw.githubusercontent.com/meme2046/data/main/clash/direct.yaml  
+   https://raw.githubusercontent.com/meme2046/data/main/clash/proxy.yaml  
+   https://raw.githubusercontent.com/meme2046/data/main/clash/reject.yaml  
+   https://raw.githubusercontent.com/meme2046/data/main/clash/round.yaml
+
+   ***
 
    https://fastly.jsdelivr.net/gh/meme2046/data@main/clash/direct.yaml  
    https://fastly.jsdelivr.net/gh/meme2046/data@main/clash/proxy.yaml  
    https://fastly.jsdelivr.net/gh/meme2046/data@main/clash/reject.yaml  
    https://fastly.jsdelivr.net/gh/meme2046/data@main/clash/round.yaml
-
-2. github 规则
-
-   https://raw.githubusercontent.com/meme2046/data/main/clash/direct.yaml  
-   https://raw.githubusercontent.com/meme2046/data/main/clash/proxy.yaml  
-   https://raw.githubusercontent.com/meme2046/data/main/clash/reject.yaml  
-   https://raw.githubusercontent.com/meme2046/data/main/clash/round.yaml
 
 3. 生成好的脚本
 
