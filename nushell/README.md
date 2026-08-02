@@ -7,7 +7,10 @@
 ## 前置条件
 
 1. 下载: https://visualstudio.microsoft.com/zh-hans/visual-cpp-build-tools/
-2. 选择选项安装(核心名称) `Windows 11 SDK` 和 `MSVC C++ x64/x86 build tool`
+2. 选择选项安装(核心名称)  
+   `Windows 11 SDK`  
+   `MSVC C++ x64/x86 build tool`  
+   `C++ CMake tools for Windows`
 3. 安装**tree-sitter**: `scoop install tree-sitter`
 4. 安装**Tweag.Topiary**: `winget install Tweag.Topiary`
 

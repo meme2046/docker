@@ -1,0 +1,7 @@
+{
+  "push_config": {
+    "QUARK_SIGN_NOTIFY": true,
+    "DD_BOT_SECRET": "DD_BOT_SECRET",
+    "DD_BOT_TOKEN": "DD_BOT_TOKEN"
+  }
+}

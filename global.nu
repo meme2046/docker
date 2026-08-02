@@ -141,6 +141,7 @@ def show-path [] {
   print $"PROJECT_DOCKER_DIR: (ansi g)($env.PROJECT_DOCKER_DIR)(ansi reset)"
   print $"PROJECT_PYMECLI_DIR: (ansi g)($env.PROJECT_PYMECLI_DIR)(ansi reset)"
   print $"PROJECT_MEOCLI_DIR: (ansi g)($env.PROJECT_MEOCLI_DIR)(ansi reset)"
+  print $'Android emulator: (ansi g)($env.LOCALAPPDATA | path join "Android/Sdk/emulator" | str replace --all '\' '/')(ansi reset)'
 }
 
 def show-args [

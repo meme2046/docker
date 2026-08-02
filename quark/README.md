@@ -2,11 +2,9 @@
 
 > https://github.com/Cp0204/quark-auto-save
 
+- 管理员注册码：`230713`
+- 普通用户注册码：`9527`
+
 # CloudSaver
 
 > https://github.com/jiangrui1994/CloudSaver
-
-## 默认注册码
-
-- 管理员：`230713`
-- 普通用户：`9527`
