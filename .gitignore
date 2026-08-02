@@ -24,3 +24,4 @@ logs/
 private.env
 tmp/
 tree-sitter-nu/
+ck_tmp/

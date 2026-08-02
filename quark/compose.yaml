@@ -8,9 +8,6 @@ services:
     ports:
       - 5005:5005
     restart: unless-stopped
-    environment:
-      WEBUI_USERNAME: "admin"
-      WEBUI_PASSWORD: "WOxiaode."
     volumes:
       - d:/.quark/quark-auto/config:/app/config
       - d:/.quark/quark-auto/media:/media
