@@ -296,7 +296,7 @@ def dockerup [] {
   docker compose -p global -f $"($env.PROJECT_DOCKER_DIR)/compose.yaml" up -d
 }
 
-# quark签到, 需设置环境变量:COOKIE_QUARK, DD_BOT_TOKEN, DD_BOT_SECRET
+# quark签到, 需环境变量:COOKIE_QUARK, 钉钉Notify: DD_BOT_TOKEN, DD_BOT_SECRET
 def quark-ck [] {
   nu $"($env.PROJECT_DOCKER_DIR)/quark/quark.nu" ck
 }
