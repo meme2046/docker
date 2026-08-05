@@ -11,6 +11,12 @@ def pp [num: int = 5173] {
 # kill process
 def kl [pid: int] {
   ^taskkill /F /PID $pid
+  
+}
+
+def klname [name: string] {
+  ^taskkill /f /im $name
+  # ^taskkill /f /im java.exe
 }
 
 def ips [] {
@@ -129,6 +135,7 @@ def show-path [] {
   print $"$nu.config-path: (ansi g)($nu.config-path | str replace --all '\' '/')(ansi reset)"
   print $"APPDATA: (ansi g)($env.APPDATA | str replace --all '\' '/')(ansi reset)"
   print $"LOCALAPPDATA: (ansi g)($env.LOCALAPPDATA | str replace --all '\' '/')(ansi reset)"
+  print $"TEMP: (ansi g)($env.TEMP | str replace --all '\' '/')(ansi reset)"
   print $"USERPROFILE: (ansi g)($env.USERPROFILE | str replace --all '\' '/')(ansi reset)"
   print $"clash-party: (ansi g)($env.APPDATA | path join mihomo-party | str replace --all '\' '/')(ansi reset)"
   print $"TOPIARY_LANGUAGE_DIR: (ansi g)($env.TOPIARY_LANGUAGE_DIR)(ansi reset)"
@@ -214,7 +221,7 @@ def env-set [] {
   [Environment]::SetEnvironmentVariable\("PROJECT_PYMECLI_DIR", "d:/github/meme2046/pymecli", "User"\)
   [Environment]::SetEnvironmentVariable\("PROJECT_MEOCLI_DIR", "d:/github/meme2046/meocli", "User"\)
   "
-
+  # ^pwsh -Command $"[Environment]::SetEnvironmentVariable\("JAVA_HOME", "($jbr_path)", "User"\)"
   # ^pwsh -Command $"[Environment]::SetEnvironmentVariable\("DOCKER_API_VERSION", ($apiversion), "User"\)"
 
 #   print $"PROJECT_DOCKER_DIR: (ansi g)($env.PROJECT_DOCKER_DIR)(ansi reset)
@@ -300,3 +307,23 @@ def dockerup [] {
 def quark-ck [] {
   nu $"($env.PROJECT_DOCKER_DIR)/quark/quark.nu" ck
 }
+
+def android-sdk [] {
+  print $'(ansi y)本机安装的Android SDK:(ansi rst)'
+  ls $"($env.LOCALAPPDATA)/Android/Sdk/platforms" | get name
+}
+
+def "flutter-sdk" [] {
+  print $'(ansi y)Flutter默认SDK:(ansi rst)'
+  let fp = $'(which flutter | get 0 | get path | path dirname | path dirname)/packages/flutter_tools/gradle/src/main/kotlin/FlutterExtension.kt'
+  print $'(ansi bu)($fp | str replace --all '\' '/')(ansi rst)'
+  let content = open $fp
+  print ($content | find targetSdkVersion | last)
+  print ($content | find compileSdkVersion | last)
+  print ($content | find minSdkVersion | last)
+}
+
+def "flutter-jbr" [] {
+  flutter doctor -v | parse --regex '.*Java binary at:\s*(.+)' | first | get capture0 | path dirname | path dirname | str replace --all '\' '/'
+}
+

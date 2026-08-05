@@ -99,7 +99,7 @@
       },
       {
         // prettier-plugin-sh
-        "match": "\\.(sh|env|Dockerfile|properties|gitignore|dockerignore|prettierignore)$",
+        "match": "\\.(sh|env|Dockerfile|gitignore|dockerignore|prettierignore)$",
         "notMatch": "\\.(nu)$",
         "isAsync": false,
         "cmd": "me prettier \"${file}\""
@@ -150,7 +150,7 @@
   },
   "json.format.enable": true,
   "workbench.iconTheme": "vscode-icons",
-  "workbench.colorTheme": "Nord",
+  "workbench.colorTheme": "Noctis Minimus",
   "terminal.integrated.enableMultiLinePasteWarning": "auto",
   // 📝vscode自带css规则配置
   "css.validate": true,
@@ -201,5 +201,8 @@
       "match": "^\\s+|\\s+$",
       "replaceWith": ""
     }
-  ]
+  ],
+  "files.exclude": {
+    "**/AppData/Local/Temp/trae‑cn/**": true
+  }
 }
