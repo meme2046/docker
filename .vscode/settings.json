@@ -182,9 +182,6 @@
     "**/deleted/**/*.ts": "plaintext"
   },
   "files.saveConflictResolution": "overwriteFileOnDisk",
-  "QoderCN.DisplayLanguage": "简体中文",
-  "QoderCN.PreferredLanguage for AI Chat": "简体中文",
-  "QoderCN.PreferredLanguage forCommitMessage": "简体中文",
   "git.enableSmartCommit": true,
   "git.confirmSync": false,
   "window.commandCenter": false,
@@ -204,5 +201,8 @@
   ],
   "files.exclude": {
     "**/AppData/Local/Temp/trae‑cn/**": true
-  }
+  },
+  "QoderCN.DisplayLanguage": "简体中文",
+  "QoderCN.PreferredLanguage for AI Chat": "简体中文",
+  "QoderCN.PreferredLanguage forCommitMessage": "简体中文"
 }
