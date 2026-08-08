@@ -3,8 +3,8 @@ def main [] {
 }
 
 def "main to-opus" [
-  dir_path: string = "d:/AudioBooks/凡人修仙传_光合积木"
-  cover_path: string = "d:/AudioBooks/凡人修仙传_光合积木/cover720.jpg"
+  dir_path: string = "d:/AudioBooks/诡秘之主_8082Audio_2059集完"
+  cover_path: string = "d:/AudioBooks/诡秘之主_8082Audio_2059集完/_cover720.jpg"
   artist: string = "喜马拉雅"
   --threads: int = 16
   --skip: int = 0
@@ -103,8 +103,8 @@ def "main to-opus" [
 
 # 使用tageditor-cli设置封面
 def "main te-cover" [
-  dir_path: string = "d:/AudioBooks/opus/凡人修仙传_光合积木"
-  cover_path: string = "d:/AudioBooks/凡人修仙传_光合积木/_cover720.jpg"
+  dir_path: string = "d:/AudioBooks/opus/诡秘之主_8082Audio_2059集完"
+  cover_path: string = "d:/AudioBooks/诡秘之主_8082Audio_2059集完/_cover720.jpg"
   --skip: int = 0
   --take: int = 10000
 ] {
@@ -146,7 +146,7 @@ def "main te-cover" [
 }
 
 def "main te-info" [
-  dir_path: string = "d:/AudioBooks/opus/凡人修仙传_光合积木"
+  dir_path: string = "d:/AudioBooks/opus/诡秘之主_8082Audio_2059集完"
   --skip: int = 0
   --take: int = 3
   --base
@@ -209,7 +209,7 @@ def "main parse-episode" [
 }
 
 def "main test-episode" [
-  dir_path: string = "d:/AudioBooks/凡人修仙传_光合积木"
+  dir_path: string = "d:/AudioBooks/诡秘之主_8082Audio_2059集完"
   --skip: int = 0
   --take: int = 5
 ] {

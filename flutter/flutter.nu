@@ -71,3 +71,10 @@ def "main opts" [project_dir: string = "c:/github/memehjs/x_audiobook_player"] {
 def "main run" [] {
   flutter run -d 
 }
+def "main up" [] {
+  flutter pub outdated
+  flutter pub upgrade
+  # 如果你确认想升级所有包到最新大版本，再执行下面这条
+  # flutter pub upgrade --major-versions
+  flutter pub get
+}

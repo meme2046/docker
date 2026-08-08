@@ -202,6 +202,14 @@
   "files.exclude": {
     "**/AppData/Local/Temp/trae‑cn/**": true
   },
+  "[dart]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false,
+    "editor.suggest.insertMode": "replace",
+    "editor.defaultFormatter": "Dart-Code.dart-code",
+    "editor.inlayHints.enabled": "offUnlessPressed"
+  },
   "QoderCN.DisplayLanguage": "简体中文",
   "QoderCN.PreferredLanguage for AI Chat": "简体中文",
   "QoderCN.PreferredLanguage forCommitMessage": "简体中文"

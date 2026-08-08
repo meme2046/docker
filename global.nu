@@ -327,3 +327,8 @@ def "flutter-jbr" [] {
   flutter doctor -v | parse --regex '.*Java binary at:\s*(.+)' | first | get capture0 | path dirname | path dirname | str replace --all '\' '/'
 }
 
+def "winnat-restart" [] {
+  net stop winnat
+  net start winnat
+}
+
