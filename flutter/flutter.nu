@@ -22,12 +22,11 @@ def "main add" [] {
   flutter pub add uuid
 }
 
-def "main rm" [pkg_name:string] {
+def "main rm" [pkg_name: string] {
   flutter pub remove $pkg_name
 }
 
 # dart run build_runner build
-
 
 def "main reget" [] {
   flutter clean
@@ -43,7 +42,7 @@ def "main jbr-env" [] {
   let jbr_path = flutter doctor -v | parse --regex '.*Java binary at:\s*(.+)' | first | get capture0 | path dirname | path dirname | str replace --all '\' '/'
   print $"JAVA_HOME:($jbr_path)"
 
-  ^pwsh -Command $"[Environment]::SetEnvironmentVariable\("JAVA_HOME", "($jbr_path)", "User"\)"
+  ^pwsh -Command $"[Environment]::SetEnvironmentVariable\('JAVA_HOME', '($jbr_path)', 'User'\)"
 }
 
 def "main clean" [project_dir: string = "c:/github/memehjs/x_audiobook_player"] {
@@ -55,7 +54,6 @@ def "main clean" [project_dir: string = "c:/github/memehjs/x_audiobook_player"] 
   ./gradlew.bat clean
   ./gradlew.bat clean assembleDebug
 }
-
 
 def "main opts" [project_dir: string = "c:/github/memehjs/x_audiobook_player"] {
   let android_dir = $'($project_dir)/android'
@@ -69,7 +67,7 @@ def "main opts" [project_dir: string = "c:/github/memehjs/x_audiobook_player"] {
 }
 
 def "main run" [] {
-  flutter run -d 
+  flutter run -d
 }
 def "main up" [] {
   flutter pub outdated

@@ -11,7 +11,6 @@ def pp [num: int = 5173] {
 # kill process
 def kl [pid: int] {
   ^taskkill /F /PID $pid
-  
 }
 
 def klname [name: string] {
@@ -216,23 +215,23 @@ def env-set [] {
   # 设置项目目录到环境变量方便调用
   # let base_dir = "d:/github/meme2046/docker"
   let apiversion = (docker version --format json | from json).Client.ApiVersion
-  pwsh -Command $"
-  [Environment]::SetEnvironmentVariable\("PROJECT_DOCKER_DIR", "d:/github/meme2046/docker", "User"\)
-  [Environment]::SetEnvironmentVariable\("PROJECT_PYMECLI_DIR", "d:/github/meme2046/pymecli", "User"\)
-  [Environment]::SetEnvironmentVariable\("PROJECT_MEOCLI_DIR", "d:/github/meme2046/meocli", "User"\)
+  ^pwsh -Command $"
+  [Environment]::SetEnvironmentVariable\('PROJECT_DOCKER_DIR', 'd:/github/meme2046/docker', 'User'\)
+  [Environment]::SetEnvironmentVariable\('PROJECT_PYMECLI_DIR', 'd:/github/meme2046/pymecli', 'User'\)
+  [Environment]::SetEnvironmentVariable\('PROJECT_MEOCLI_DIR', 'd:/github/meme2046/meocli', 'User'\)
   "
-  # ^pwsh -Command $"[Environment]::SetEnvironmentVariable\("JAVA_HOME", "($jbr_path)", "User"\)"
-  # ^pwsh -Command $"[Environment]::SetEnvironmentVariable\("DOCKER_API_VERSION", ($apiversion), "User"\)"
+  # ^pwsh -Command $"[Environment]::SetEnvironmentVariable\('JAVA_HOME', '($jbr_path)', 'User'\)"
+  # ^pwsh -Command $"[Environment]::SetEnvironmentVariable\('DOCKER_API_VERSION', '($apiversion)', 'User'\)"
 
-#   print $"PROJECT_DOCKER_DIR: (ansi g)($env.PROJECT_DOCKER_DIR)(ansi reset)
-# PROJECT_PYMECLI_DIR: (ansi g)($env.PROJECT_PYMECLI_DIR)(ansi reset)
-# PROJECT_MEOCLI_DIR: (ansi g)($env.PROJECT_MEOCLI_DIR)(ansi reset)
-# DOCKER_API_VERSION: (ansi g)($env.DOCKER_API_VERSION)(ansi reset)
-#   "
+  #   print $"PROJECT_DOCKER_DIR: (ansi g)($env.PROJECT_DOCKER_DIR)(ansi reset)
+  # PROJECT_PYMECLI_DIR: (ansi g)($env.PROJECT_PYMECLI_DIR)(ansi reset)
+  # PROJECT_MEOCLI_DIR: (ansi g)($env.PROJECT_MEOCLI_DIR)(ansi reset)
+  # DOCKER_API_VERSION: (ansi g)($env.DOCKER_API_VERSION)(ansi reset)
+  #   "
 }
 
 def env-null [name: string] {
-  pwsh -Command $"[Environment]::SetEnvironmentVariable\("DOCKER_API_VERSION", $null, "User"\)"
+  pwsh -Command $"[Environment]::SetEnvironmentVariable\('DOCKER_API_VERSION', $null, 'User'\)"
 }
 
 # 饥荒联机版, 启动dedicated server
@@ -331,4 +330,3 @@ def "winnat-restart" [] {
   net stop winnat
   net start winnat
 }
-
