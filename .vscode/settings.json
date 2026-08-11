@@ -92,8 +92,8 @@
         "cmd": "me prettier \"${file}\""
       },
       {
-        // prettier-plugin-ini
-        "match": "\\.(ini)$",
+        // other
+        "match": "\\.(properties|ps1)$",
         "isAsync": false,
         "cmd": "me prettier \"${file}\""
       },
