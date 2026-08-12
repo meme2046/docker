@@ -1,13 +1,10 @@
-FROM ghcr.io/astral-sh/uv:debian-slim
+FROM ghcr.io/astral-sh/uv:python3.10-alpine
+ENV TZ=Asia/Shanghai
+RUN apk add --no-cache tzdata build-base linux-headers \
+  && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+  && echo "Asia/Shanghai" > /etc/timezone \
+  && rm -rf /var/cache/apk/* /tmp/* /var/tmp/*
 
-RUN apt update
-RUN apt install -y tzdata curl git
-
-RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo "Asia/Shanghai" > /etc/timezone
-
-RUN apt clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-RUN uv python install cpython-3.10.20-linux-x86_64-gnu && uv python pin cpython-3.10.20-linux-x86_64-gnu
 RUN uv tool install pymecli
 RUN uv tool upgrade --all
 RUN uv cache clean

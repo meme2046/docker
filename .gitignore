@@ -25,3 +25,5 @@ private.env
 tmp/
 tree-sitter-nu/
 ck_tmp/
+cron-worker/
+go-job/

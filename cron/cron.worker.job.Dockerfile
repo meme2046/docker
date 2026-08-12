@@ -1,5 +1,5 @@
-FROM golang:1.25-alpine AS builder
-
+FROM golang:alpine AS builder
+ENV TZ=Asia/Shanghai
 RUN apk add --no-cache nushell
 RUN apk cache clean && rm -rf /var/cache/apk/* /tmp/* /var/tmp/*
 
@@ -33,13 +33,16 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -o "$WORKER_OUTPUT_DIR" main.go
 RUN echo "📁$WORKER_OUTPUT_DIR" && ls $WORKER_OUTPUT_DIR
 RUN echo "📁$JOB_OUTPUT_DIR" && ls $JOB_OUTPUT_DIR
 
-# FROM alpine:latest
+FROM ghcr.io/astral-sh/uv:python3.10-alpine
+ENV TZ=Asia/Shanghai
+RUN apk add --no-cache tzdata build-base linux-headers \
+  && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+  && echo "Asia/Shanghai" > /etc/timezone \
+  && rm -rf /var/cache/apk/* /tmp/* /var/tmp/*
 
-# RUN apk add --no-cache tzdata
-# RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo "Asia/Shanghai" > /etc/timezone
-# RUN apk cache clean && rm -rf /var/cache/apk/* /tmp/* /var/tmp/*
-
-FROM registry.cn-chengdu.aliyuncs.com/memeking/uv:debian-slim
+RUN uv tool install pymecli
+RUN uv tool upgrade --all
+RUN uv cache clean
 
 WORKDIR /worker/go/
 COPY --from=builder /go-job-output .

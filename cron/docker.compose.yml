@@ -7,7 +7,6 @@ services:
     environment:
       - TZ=Asia/Shanghai
     image: registry.cn-chengdu.aliyuncs.com/memeking/cron-worker:latest
-    container_name: worker
     labels:
       com.centurylinklabs.watchtower.enable: "true"
     deploy:
