@@ -11,9 +11,9 @@ def "tv-regex" [] {
 
 def "main test-regex" [
   pattern: string = ""
-  dir_path: string = "d:/.filezilla/动画/诡秘之主"
+  # dir_path: string = "d:/.filezilla/动画/诡秘之主"
   # dir_path: string = 'D:\AudioBooks\凡人修仙传_光合积木'
-  # dir_path: string = 'D:\AudioBooks\大奉打更人_头陀渊_1750集完'
+  dir_path: string = 'D:\AudioBooks\大奉打更人_头陀渊_1750集完'
   # dir_path: string = 'D:\AudioBooks\诡秘之主_8082Audio_2059集完'
   --skip: int = 0
   --take: int = 10
