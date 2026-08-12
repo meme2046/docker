@@ -106,7 +106,7 @@ def "main te-cover" [
   dir_path: string = "d:/AudioBooks/opus/诡秘之主_8082Audio_2059集完"
   cover_path: string = "d:/AudioBooks/诡秘之主_8082Audio_2059集完/_cover720.jpg"
   --skip: int = 0
-  --take: int = 10000
+  --take: int = 1
 ] {
 
   if not ($cover_path | path exists) {
