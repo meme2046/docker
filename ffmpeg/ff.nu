@@ -1,11 +1,14 @@
+const DIR_PATH = "d:/AudioBooks/诡秘之主_8082Audio_2059集完"
+const TARGET_DIR_PATH = "d:/AudioBooks/opus/诡秘之主_8082Audio_2059集完"
+const ARTIST = "8082Audio"
+
 def main [] {
   print 'ffmpeg script'
 }
 
 def "main to-opus" [
-  dir_path: string = "d:/AudioBooks/诡秘之主_8082Audio_2059集完"
-  cover_path: string = "d:/AudioBooks/诡秘之主_8082Audio_2059集完/_cover720.jpg"
-  artist: string = "喜马拉雅"
+  dir_path: string = $DIR_PATH
+  artist: string = $ARTIST
   --threads: int = 16
   --skip: int = 0
   --take: int = 10000
@@ -103,11 +106,27 @@ def "main to-opus" [
 
 # 使用tageditor-cli设置封面
 def "main te-cover" [
-  dir_path: string = "d:/AudioBooks/opus/诡秘之主_8082Audio_2059集完"
-  cover_path: string = "d:/AudioBooks/诡秘之主_8082Audio_2059集完/_cover720.jpg"
+  dir_path: string = $TARGET_DIR_PATH
   --skip: int = 0
   --take: int = 1
 ] {
+  # 自动搜索封面图片
+  let images = glob $"($dir_path)/*.{jpg,png,JPG,PNG}" --no-dir
+  let covers = $images | where ($it | path basename | str lowercase | str contains "cover")
+
+  if ($covers | is-empty) {
+    print $"✗ 未找到任何含 cover 的图片"
+    return
+  }
+
+  let preferred = $covers | where ($it | path basename | str lowercase | str contains "_cover720")
+  let cover_path = if ($preferred | is-not-empty) {
+    $preferred | first
+  } else {
+    $covers | first
+  }
+
+  print $"✓ 封面: ($cover_path)"
 
   if not ($cover_path | path exists) {
     print $"✗ 封面文件不存在: ($cover_path)"
@@ -146,7 +165,7 @@ def "main te-cover" [
 }
 
 def "main te-info" [
-  dir_path: string = "d:/AudioBooks/opus/诡秘之主_8082Audio_2059集完"
+  dir_path: string = $DIR_PATH
   --skip: int = 0
   --take: int = 3
   --base
@@ -209,7 +228,7 @@ def "main parse-episode" [
 }
 
 def "main test-episode" [
-  dir_path: string = "d:/AudioBooks/诡秘之主_8082Audio_2059集完"
+  dir_path: string = $DIR_PATH
   --skip: int = 0
   --take: int = 5
 ] {
