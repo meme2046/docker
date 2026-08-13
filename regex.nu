@@ -1,7 +1,7 @@
 # e.g. S01E03.mp4
 const TV_REGEX = '.*?([Ss]\d{1,2})(?:[第EePpXx\.\-\_\( ]{1,2}|^)(\d{1,4})(?!\d).*?\.(mp4|mkv)'
 const AUDIOBOOK_REGEX = '.*?(?:[第EePpXx\.\-\_\( ]{1,2}|^)(\d{1,4})(?!\d).*?\.(opus|m4a|mp3)'
-const AUDIOBOOK_NUM_REGEX = '(\d+)\.(mp4|mkv|opus|m4a|mp3)'
+const NUM_REGEX = '^(\d+)\.(mp4|mkv|opus|m4a|mp3)$'
 
 def main [] {
   print 'regex script'
@@ -13,8 +13,8 @@ def "main test-regex" [
   pattern: string = ""
   # dir_path: string = "d:/.filezilla/动画/诡秘之主"
   # dir_path: string = 'D:\AudioBooks\凡人修仙传_光合积木'
-  dir_path: string = 'D:\AudioBooks\大奉打更人_头陀渊_1750集完'
-  # dir_path: string = 'D:\AudioBooks\诡秘之主_8082Audio_2059集完'
+  # dir_path: string = 'D:\AudioBooks\大奉打更人_头陀渊_1750集完'
+  dir_path: string = 'D:\AudioBooks\诡秘之主_8082Audio_2059集完'
   --skip: int = 0
   --take: int = 10
 ] {
@@ -43,8 +43,8 @@ def "main test-regex" [
       print ($name | str replace -r $TV_REGEX '${1}E${2}.${3}')
     } else if ($name | find --regex $AUDIOBOOK_REGEX | is-not-empty) {
       print ($name | str replace -r $AUDIOBOOK_REGEX 'Pt.${1}.${2}')
-    } else if ($name | find --regex $AUDIOBOOK_NUM_REGEX | is-not-empty) {
-      print ($name | str replace -r $AUDIOBOOK_NUM_REGEX 'Pt.${1}.${2}')
+    } else if ($name | find --regex $NUM_REGEX | is-not-empty) {
+      print ($name | str replace -r $NUM_REGEX 'Pt.${1}.${2}')
     } else {
       print $"✗ 未匹配: ($name)"
     }
