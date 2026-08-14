@@ -1,6 +1,10 @@
-const DIR_PATH = "d:/AudioBooks/诡秘之主_8082Audio_2059集完"
+const AUDIOBOOK_REGEX = '.*?(?:[第EePpXx\.\-\_\( ]{1,2}|^)((\d{1,4})(?!\d).*)\.(opus|m4a|mp3)'
+const TRACK_LEN = 4
+# const DIR_PATH = "d:/AudioBooks/诡秘之主_8082Audio_2059集完"
+const DIR_PATH = "d:/AudioBooks/凡人修仙传_光合积木"
 const TARGET_DIR_PATH = "d:/AudioBooks/opus/诡秘之主_8082Audio_2059集完"
-const ARTIST = "8082Audio"
+# const ARTIST = "8082Audio"
+const ARTIST = "光合积木"
 
 def main [] {
   print 'ffmpeg script'
@@ -12,7 +16,6 @@ def "main to-opus" [
   --threads: int = 16
   --skip: int = 0
   --take: int = 10000
-  --parse-episode
   --force
 ] {
   let album = $dir_path | path basename | split words | first
@@ -40,12 +43,8 @@ def "main to-opus" [
     let p = $source_file | str replace $source_dirname $"($out_ext)/($source_dirname)" | path parse
     mut out_file = ($p.parent | path join $"($p.stem).($out_ext)") | str replace --all '\' '/'
 
-    # 解析集数,title（如果开启）
-    let title = if $parse_episode {
-      let ep_info = main parse-episode $out_file
-      $out_file = $out_file | path basename --replace $"($ep_info.episode).($out_ext)" | str replace --all '\' '/'
-      $ep_info.title
-    } else { "" }
+    let info = main metadata-parse $out_file
+    $out_file = $out_file | path basename --replace $"($info.track).($out_ext)" | str replace --all '\' '/'
 
     # 跳过已存在文件
     if (($out_file | path exists) and not $force) {
@@ -76,9 +75,10 @@ def "main to-opus" [
       -application voip # 优化语音编码(voip:纯人声,audio:音乐播放,lowdelay:低延迟)
       -map_metadata -1 # 全局元数据清空
       -map_metadata:s:a -1 # 音频流内部标签清空
+      -metadata track=($info.track)
       -metadata album=($album)
       -metadata artist=($artist)
-      -metadata title=($title)
+      -metadata title=($info.title)
       $out_file
     ) | complete
 
@@ -212,22 +212,24 @@ def "main te-info" [
   }
 }
 # 解析文件名中的集数和标题, 匹配"第"(x)集, 中的(x)为集数, 接下来为标题字段, 必须符合这个这个规则才能解析成功
-def "main parse-episode" [
+def "main metadata-parse" [
   file_path: string
 ] {
 
-  let name = $file_path | path basename | split words
+  let name = ($file_path | path basename)
 
-  mut episode = ($name | first 2 | last | str replace -r '.*第(\d+).*' '$1')
-  if ($episode =~ '^\d+$') {
-    $episode = $episode | fill --alignment right --character '0' --width 4
+  let ret = ($name | parse --regex $AUDIOBOOK_REGEX)
+
+  mut track = ($ret.capture1 | first)
+  if ($track =~ '^\d+$') {
+    $track = $track | fill --alignment right --character '0' --width $TRACK_LEN
   }
-  let title = ($name | first 3 | last)
+  let title = ($ret.capture0 | first | split words | try { get 1 } | default "")
 
-  return {episode: $episode title: $title}
+  return {track: $track title: $title}
 }
 
-def "main test-episode" [
+def "main test-metadata" [
   dir_path: string = $DIR_PATH
   --skip: int = 0
   --take: int = 5
@@ -245,7 +247,7 @@ def "main test-episode" [
   for file in $files {
     $count = $count + 1
     let source_file_path = ($file | str replace --all '\' '/')
-    let info = main parse-episode $file
+    let info = main metadata-parse $file
 
     print $"(ansi m)➜ ($count)/($total)(ansi rst) (ansi bu)($source_file_path)(ansi rst)\n($info | to json)"
   }

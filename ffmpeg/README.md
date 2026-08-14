@@ -9,3 +9,11 @@
 2. 添加封面(依赖tageditor): `nu ff.nu te-cover`
 3. 打印标签(依赖tageditor): `nu ff.nu te-tag`
 4. 从路径提取episode和title信息: `nu ff.nu parse-episode`
+
+# tmp
+
+```shell
+nu ff.nu metadata-parse 'd:/AudioBooks/大奉打更人_头陀渊_1750集完/大奉打更人 第0005集 解开谜题.mp3'
+nu ff.nu metadata-parse 'd:/AudioBooks/凡人修仙传_光合积木/凡人修仙传 • 第001集 二愣子.m4a'
+nu ff.nu metadata-parse 'd:/AudioBooks/诡秘之主_8082Audio_2059集完/0001-0500/0001.m4a'
+```
