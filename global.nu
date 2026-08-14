@@ -330,3 +330,11 @@ def "winnat-restart" [] {
   net stop winnat
   net start winnat
 }
+
+def "ar-ping" [] {
+  tcping -4 turbo-gateway.com
+  tcping -4 permagate.io
+  tcping -4 ar.4everland.io
+  tcping -4 arweave.net # proxy
+  tcping -4 arweave.org # proxy
+}
