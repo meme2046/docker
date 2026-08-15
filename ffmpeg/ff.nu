@@ -1,10 +1,11 @@
 const AUDIOBOOK_REGEX = '.*?(?:[第EePpXx\.\-\_\( ]{1,2}|^)((\d{1,4})(?!\d).*)\.(opus|m4a|mp3)'
 const TRACK_LEN = 4
-# const DIR_PATH = "d:/AudioBooks/诡秘之主_8082Audio_2059集完"
-const DIR_PATH = "d:/AudioBooks/凡人修仙传_光合积木"
+# const DIR_PATH = "d:/AudioBooks/test"
+const DIR_PATH = "d:/AudioBooks/诡秘之主_8082Audio_2059集完"
+# const DIR_PATH = "d:/AudioBooks/凡人修仙传_光合积木"
 const TARGET_DIR_PATH = "d:/AudioBooks/opus/诡秘之主_8082Audio_2059集完"
-# const ARTIST = "8082Audio"
-const ARTIST = "光合积木"
+const ARTIST = "8082Audio"
+# const ARTIST = "光合积木"
 
 def main [] {
   print 'ffmpeg script'
@@ -43,8 +44,14 @@ def "main to-opus" [
     let p = $source_file | str replace $source_dirname $"($out_ext)/($source_dirname)" | path parse
     mut out_file = ($p.parent | path join $"($p.stem).($out_ext)") | str replace --all '\' '/'
 
+    mut track = ""
+    mut title = ""
     let info = main metadata-parse $out_file
-    $out_file = $out_file | path basename --replace $"($info.track).($out_ext)" | str replace --all '\' '/'
+    if ($info | is-not-empty) {
+      $track = $info.track
+      $title = $info.title
+      $out_file = $out_file | path basename --replace $"($track).($out_ext)" | str replace --all '\' '/'
+    }
 
     # 跳过已存在文件
     if (($out_file | path exists) and not $force) {
@@ -75,10 +82,10 @@ def "main to-opus" [
       -application voip # 优化语音编码(voip:纯人声,audio:音乐播放,lowdelay:低延迟)
       -map_metadata -1 # 全局元数据清空
       -map_metadata:s:a -1 # 音频流内部标签清空
-      -metadata track=($info.track)
+      -metadata track=($track)
       -metadata album=($album)
       -metadata artist=($artist)
-      -metadata title=($info.title)
+      -metadata title=($title)
       $out_file
     ) | complete
 
@@ -219,6 +226,9 @@ def "main metadata-parse" [
   let name = ($file_path | path basename)
 
   let ret = ($name | parse --regex $AUDIOBOOK_REGEX)
+  if ($ret | is-empty) {
+    return null
+  }
 
   mut track = ($ret.capture1 | first)
   if ($track =~ '^\d+$') {

@@ -134,7 +134,7 @@ def "main confline" [line: string] {
 }
 
 # 添加一行内容,如果不存在则添加到nushell配置文件中
-def appendline1 [fp: string line: string] {
+def "main appendline1" [fp: string line: string] {
 
   mut lines = open --raw $fp | split row -r '\n'
   mut matched = false
@@ -150,4 +150,24 @@ def appendline1 [fp: string line: string] {
 
   $lines | str join "\n" | save --force $fp
   open $fp
+}
+
+def "main http-header" [url: string = "https://permagate.io/xzThK4we0BWj8RZa0It0v9zLYkz_zMBE0QdTuZAzDWk"] {
+  let ret = (try { http head $url } | default null)
+  if ($ret | is-empty) {
+    print $"✗ 请求失败: (ansi bu)($url)(ansi rst)"
+    return
+  }
+  let ret_record = $ret | transpose -rd
+  print $"content-length: ($ret_record.content-length | into int)"
+  print $"content-type: ($ret_record.content-type)"
+  print $"accept-ranges: ($ret_record.accept-ranges)"
+}
+
+def "main fsize" [file_path: string = "d:/AudioBooks/opus/诡秘之主_8082Audio_2059集完/0001.opus"] {
+  let size = (ls $file_path | select size | first).size
+  # let size = (du $file_path | select physical | first).physical
+  # let size = (du $file_path | select apparent | first).apparent
+  print $"human: ($size)"
+  print $"bytes: ($size | into int)"
 }
