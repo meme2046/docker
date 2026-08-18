@@ -1,6 +1,6 @@
 # e.g. S01E03.mp4
 const TV_REGEX = '.*?([Ss]\d{1,2})(?:[第EePpXx\.\-\_\( ]{1,2}|^)(\d{1,4})(?!\d).*?\.(mp4|mkv)'
-const AUDIOBOOK_REGEX = '.*?(?:[第EePpXx\.\-\_\( ]{1,2}|^)((\d{1,4})(?!\d).*)\.(opus|m4a|mp3)'
+const AUDIOBOOK_REGEX = '.*?(?:[第EePpXx\.\-\_\( ]{1,2}|^)((\d{1,4})(?!\d).*?)\.(opus|m4a|mp3)'
 
 def main [] {
   print 'regex script'

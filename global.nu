@@ -323,7 +323,7 @@ def "flutter-sdk" [] {
 }
 
 def "flutter-jbr" [] {
-  flutter doctor -v | parse --regex '.*Java binary at:\s*(.+)' | first | get capture0 | path dirname | path dirname | str replace --all '\' '/'
+  flutter doctor -v | parse --regex '.*?Java binary at:\s*(.+)' | first | get capture0 | path dirname | path dirname | str replace --all '\' '/'
 }
 
 def "winnat-restart" [] {
@@ -337,4 +337,16 @@ def "ar-ping" [] {
   tcping -4 ar.4everland.io
   tcping -4 arweave.net # proxy
   tcping -4 arweave.org # proxy
+}
+
+def "genkey" [] {
+  (
+    ^'c:/Program Files/Android/Android Studio/jbr/bin/keytool.exe'
+    -genkey -v
+    -keystore "d:/.google/.secret/keytool/upload-keystore.jks"
+    -keyalg RSA
+    -keysize 2048
+    -validity 10000
+    -alias abplayer
+  )
 }
