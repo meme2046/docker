@@ -22,7 +22,7 @@ def ips [] {
   let ips = (
     [
       (http -H {"user-agent": "curl"} ip.sb | str trim)
-      (http -H {"user-agent": "curl"} ping0.cc | str trim)
+      (http -H {"user-agent": "curl"} ifconfig.co | str trim)
       (http ip.gs | str trim)
       (http ip.3322.net | str trim)
     ] | each {|ip| $ip | str trim | str replace -a "\n" "" }
