@@ -1,10 +1,10 @@
 const AUDIOBOOK_REGEX = '.*?(?:[第EePpXx\.\-\_\( ]{1,2}|^)((\d{1,4})(?!\d).*?)\.(opus|m4a|mp3|ogg)'
 const TRACK_LEN = 4
 # const DIR_PATH = "d:/AudioBooks/test"
-const DIR_PATH = "d:/AudioBooks/凡人修仙传_光合积木"
+const DIR_PATH = "d:/AudioBooks/首席医官"
 # const DIR_PATH = "d:/AudioBooks/凡人修仙传_光合积木"
-const TARGET_DIR_PATH = "d:/AudioBooks/opus/凡人修仙传_光合积木"
-const ARTIST = "光合积木"
+const TARGET_DIR_PATH = "d:/AudioBooks/opus/首席医官"
+const ARTIST = "一种侃侃"
 # const ARTIST = "光合积木"
 
 def main [] {
