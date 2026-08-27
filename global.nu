@@ -347,6 +347,14 @@ def "genkey" [] {
     -keyalg RSA
     -keysize 2048
     -validity 10000
-    -alias abplayer
+    -alias xabplayer
   )
+}
+
+def "ipv6dis" [] {
+  ^pwsh -Command $"
+  Set-NetIPv6Protocol -RandomizeIdentifiers Disabled
+  Get-NetIPv6Protocol | Select RandomizeIdentifiers,UseTemporaryAddresses
+  "
+  # Set-NetIPv6Protocol -RandomizeIdentifiers Enabled
 }
