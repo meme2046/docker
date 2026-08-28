@@ -1,6 +1,4 @@
 const AUDIOBOOK_REGEX = '(?:.*?[第EePpXx\.\-\_\( ]{1,2}|^)((\d{1,4})(?!\d).*?)\.(opus|m4a|mp3|ogg)'
-# '.*?(?:[第EePpXx\.\-\_\( ]{1,2}|^)((\d{1,4})(?!\d).*?)\.(opus|m4a|mp3|ogg)'
-# '(?:.*?[第EePpXx\.\-\_\( ]{1,2}|^)((\d{1,4})(?!\d).*?)\.(opus|m4a|mp3|ogg)'
 const TRACK_LEN = 4
 # const DIR_PATH = "d:/AudioBooks/test"
 const DIR_PATH = "d:/AudioBooks/长夜余火_喜道公子"
