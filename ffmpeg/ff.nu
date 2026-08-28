@@ -1,10 +1,10 @@
 const AUDIOBOOK_REGEX = '.*?(?:[第EePpXx\.\-\_\( ]{1,2}|^)((\d{1,4})(?!\d).*?)\.(opus|m4a|mp3|ogg)'
 const TRACK_LEN = 4
 # const DIR_PATH = "d:/AudioBooks/test"
-const DIR_PATH = "d:/AudioBooks/首席医官"
-# const DIR_PATH = "d:/AudioBooks/凡人修仙传_光合积木"
-const TARGET_DIR_PATH = "d:/AudioBooks/opus/首席医官"
-const ARTIST = "一种侃侃"
+const DIR_PATH = "d:/AudioBooks/大奉打更人_头陀渊"
+const TARGET_DIR_PATH = "d:/AudioBooks/opus/大奉打更人_头陀渊"
+const ARTIST = "头陀渊"
+const NUM_DIR_REGEX = '.*/(\d{3,4}-\d{3,4})(?:完|完结)?$'
 # const ARTIST = "光合积木"
 
 def main [] {
@@ -42,7 +42,11 @@ def "main to-opus" [
 
     # 生成输出路径（逻辑和原代码完全一致）
     let p = $source_file | str replace $source_dirname $"($out_ext)/($source_dirname)" | path parse
-    mut out_file = ($p.parent | path join $"($p.stem).($out_ext)") | str replace --all '\' '/'
+    mut parent = $p.parent
+    if ($parent | find --regex $NUM_DIR_REGEX | is-not-empty) {
+      $parent = ($p.parent | path dirname)
+    }
+    mut out_file = ($parent | path join $"($p.stem).($out_ext)") | str replace --all '\' '/'
 
     mut track = ""
     mut title = ""
@@ -99,7 +103,7 @@ def "main to-opus" [
       return {
         idx: $file_idx
         status: "fail"
-        msg: $"✗ (ansi bu)($source_file)(ansi rst) (ansi r)ffmpeg异常, 退出码: $ffmpeg_ret.exit_code(ansi rst)"
+        msg: $"✗ (ansi bu)($source_file)(ansi rst) (ansi r)ffmpeg异常, 退出码: ($ffmpeg_ret.exit_code)(ansi rst)"
       }
     }
   } | each {|res|
