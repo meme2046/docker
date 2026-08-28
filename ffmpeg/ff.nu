@@ -1,10 +1,12 @@
-const AUDIOBOOK_REGEX = '.*?(?:[第EePpXx\.\-\_\( ]{1,2}|^)((\d{1,4})(?!\d).*?)\.(opus|m4a|mp3|ogg)'
+const AUDIOBOOK_REGEX = '(?:.*?[第EePpXx\.\-\_\( ]{1,2}|^)((\d{1,4})(?!\d).*?)\.(opus|m4a|mp3|ogg)'
+# '.*?(?:[第EePpXx\.\-\_\( ]{1,2}|^)((\d{1,4})(?!\d).*?)\.(opus|m4a|mp3|ogg)'
+# '(?:.*?[第EePpXx\.\-\_\( ]{1,2}|^)((\d{1,4})(?!\d).*?)\.(opus|m4a|mp3|ogg)'
 const TRACK_LEN = 4
 # const DIR_PATH = "d:/AudioBooks/test"
-const DIR_PATH = "d:/AudioBooks/大奉打更人_头陀渊"
-const TARGET_DIR_PATH = "d:/AudioBooks/opus/大奉打更人_头陀渊"
-const ARTIST = "头陀渊"
-const NUM_DIR_REGEX = '.*/(\d{3,4}-\d{3,4})(?:完|完结)?$'
+const DIR_PATH = "d:/AudioBooks/长夜余火_喜道公子"
+const TARGET_DIR_PATH = "d:/AudioBooks/opus/长夜余火_喜道公子"
+const ARTIST = "喜道公子"
+const NUM_DIR_REGEX = '.*/(\d+[-~]\d+)(?:完|完结)?$'
 # const ARTIST = "光合积木"
 
 def main [] {
@@ -50,7 +52,7 @@ def "main to-opus" [
 
     mut track = ""
     mut title = ""
-    let info = main metadata-parse $out_file
+    let info = main metadata-parse $out_file $album
     if ($info | is-not-empty) {
       $track = $info.track
       $title = $info.title
@@ -225,6 +227,7 @@ def "main te-info" [
 # 解析文件名中的集数和标题, 匹配"第"(x)集, 中的(x)为集数, 接下来为标题字段, 必须符合这个这个规则才能解析成功
 def "main metadata-parse" [
   file_path: string
+  album: string
 ] {
 
   let name = ($file_path | path basename)
@@ -238,12 +241,16 @@ def "main metadata-parse" [
   if ($track =~ '^\d+$') {
     $track = $track | fill --alignment right --character '0' --width $TRACK_LEN
   }
-  let title = ($ret.capture0 | first | split words | try { get 1 } | default "")
+  mut title = ($ret.capture0 | first | split words | try { get 1 } | default "")
+  if ($title | str contains $album) {
+    $title = ($ret.capture0 | first | split words | try { get 2 } | default "")
+  }
 
   return {track: $track title: $title}
 }
 
 def "main test-metadata" [
+  album: string
   dir_path: string = $DIR_PATH
   --skip: int = 0
   --take: int = 5
@@ -261,7 +268,7 @@ def "main test-metadata" [
   for file in $files {
     $count = $count + 1
     let source_file_path = ($file | str replace --all '\' '/')
-    let info = main metadata-parse $file
+    let info = main metadata-parse $file $album
 
     print $"(ansi m)➜ ($count)/($total)(ansi rst) (ansi bu)($source_file_path)(ansi rst)\n($info | to json)"
   }
