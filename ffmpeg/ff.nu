@@ -132,7 +132,7 @@ def "main te-cover" [
     return
   }
 
-  let preferred = $covers | where ($it | path basename | str lowercase | str contains "_cover720")
+  let preferred = $covers | where ($it | path basename | str lowercase | str contains "cover720")
   let cover_path = if ($preferred | is-not-empty) {
     $preferred | first
   } else {
