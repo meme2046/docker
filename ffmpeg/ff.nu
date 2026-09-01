@@ -27,7 +27,7 @@ def "main to-opus" [
   let source_exts_comma = $source_exts | str join ","
   let out_ext = "opus"
 
-  let files = glob $"($dir_path)/**/*.{($source_exts_comma)}" | skip $skip | take $take
+  let files = glob $"($dir_path)/**/*.{($source_exts_comma)}" | sort --natural | skip $skip | take $take
   let total = $files | length
 
   if $total == 0 {
