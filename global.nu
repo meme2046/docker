@@ -148,6 +148,7 @@ def show-path [] {
   print $"PROJECT_PYMECLI_DIR: (ansi g)($env.PROJECT_PYMECLI_DIR)(ansi reset)"
   print $"PROJECT_MEOCLI_DIR: (ansi g)($env.PROJECT_MEOCLI_DIR)(ansi reset)"
   print $'Android emulator: (ansi g)($env.LOCALAPPDATA | path join "Android/Sdk/emulator" | str replace --all '\' '/')(ansi reset)'
+  print $'Android cmdline-tools: (ansi g)($"($env.LOCALAPPDATA)/Android/Sdk/cmdline-tools" | str replace --all '\' '/')(ansi reset)'
 }
 
 def show-args [
@@ -357,4 +358,9 @@ def "ipv6dis" [] {
   Get-NetIPv6Protocol | Select RandomizeIdentifiers,UseTemporaryAddresses
   "
   # Set-NetIPv6Protocol -RandomizeIdentifiers Enabled
+}
+
+def "mysqlbk" [] {
+  cd $"($env.PROJECT_DOCKER_DIR)/cron"
+  nu cron.nu mysqlbk bot_tx --cn mysql
 }
