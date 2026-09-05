@@ -3,8 +3,8 @@ def "main github" [] {
 # windows定时任务: 1.本地稳定ip地址同步到redis, 2.gate和bitget交易记录同步到redis,  3.data项目自动同步到github仓库
 def main [dir: string = "d:/github/meme2046/data"] {
   util ipv6
-  gate
-  bitget sync
+  gate --env-path "d:/.env/pymecli.env"
+  bitget sync --env-path "d:/.env/pymecli.env"
   cd $dir
   print $"🗂️ Project dir:(pwd)"
   git pull

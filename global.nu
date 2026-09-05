@@ -360,7 +360,14 @@ def "ipv6dis" [] {
   # Set-NetIPv6Protocol -RandomizeIdentifiers Enabled
 }
 
-def "mysqlbk" [] {
+def "bk" [] {
+  # 将 d:/.env/ 备份到 c:/.backup/ 目录下, 避免丢失
+  let denv = "d:/.env/"
+  let cbk = "c:/.backup/"
+  mkdir $cbk
+  cp -rvf $denv $cbk
+
+  # backup mysql bot_tx 数据库, 需要环境变量:MYSQL_PASSWORD, MYSQL_ROOT_HOST
   cd $"($env.PROJECT_DOCKER_DIR)/cron"
   nu cron.nu mysqlbk bot_tx --cn mysql
 }
