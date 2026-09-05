@@ -1,6 +1,6 @@
 const PROJECT_NAME = "meocli"
-const DIR_PATH = "d:/AudioBooks/opus/诡秘之主_upload"
-const DEFAULT_EXTS = ["mp3" "m4a" "opus" "jpg" "jpeg" "png" "txt" "pdf" "json" "html"]
+const DIR_PATH = "d:/AudioBooks/opus/大奉打更人_头陀渊"
+const DEFAULT_EXTS = ["jpg" "jpeg" "png" "opus" "txt" "pdf" "json" "html"]
 
 def main [] {
   print 'irys script'
@@ -13,22 +13,22 @@ def main [] {
 #   irys ud --dp ./audio --skip 10 --take 20 --threads 4
 def "main ud" [
   dp: string = $DIR_PATH
-  --env-file: string = "d:/irys1.env"
+  --env-file: string = "d:/irys.env"
   --token: string = "pol"
   --network: string = "mainnet"
   --rpc-url: string = ""
   --tags: string = ""
-  --threads: int = 2
-  --skip: int = 2
+  --threads: int = 3
+  --skip: int = 0
   --take: int = 1
   --exts: string = "" # 逗号分隔扩展名，覆盖默认
-  --output-file: string = "./irys_output.json" # 输出 JSON 文件路径
+  --output-file: string = "./tmp/irys_output.json" # 输出 JSON 文件路径
 ] {
 
   let exts = if $exts == "" { $DEFAULT_EXTS } else { ($exts | split column "," | where {|r| $r != "" }) }
   let exts_comma = $exts | str join ","
 
-  let files = glob $"($dp)/**/*.{($exts_comma)}" | sort --natural
+  let files = glob $"($dp)/**/*.{($exts_comma)}" | sort --ignore-case --natural
 
   if ($files | length) == 0 {
     print $"✗ 未找到任何 ($exts_comma) 文件 in ($dp)"
@@ -83,12 +83,12 @@ def "main ud" [
 
       let tx_id = (
         if $success and ($output | str contains "✓") {
-          $output | lines | where {|l| ($l | str trim) | str starts-with "ID:" } | str trim | str replace "ID:" "" | str trim
+          $output | lines | where {|l| ($l | str trim) | str starts-with "ID:" } | first | str trim | str replace "ID:" "" | str trim
         } else { "" }
       )
       let url = (
         if $success and ($output | str contains "✓") {
-          $output | lines | where {|l| ($l | str trim) | str starts-with "URL:" } | str trim | str replace "URL:" "" | str trim
+          $output | lines | where {|l| ($l | str trim) | str starts-with "URL:" } | first | str trim | str replace "URL:" "" | str trim
         } else { "" }
       )
 
@@ -113,7 +113,7 @@ def "main ud" [
     print $"(ansi lg)↓ success count: ($ok_len)/($total)(ansi rst)"
     $results | where {|r| $r.success } | each {|r|
       let name = ($r.file | path basename)
-      print $"idx($r.idx). (ansi lc)($name)(ansi rst) → (ansi g)($r.tx_id)(ansi rst)"
+      print $"($r.idx). (ansi lc)($name)(ansi rst) → (ansi g)($r.tx_id)(ansi rst)"
     }
   }
 
@@ -126,8 +126,8 @@ def "main ud" [
   }
 
   if $output_file != "" {
-    $results | save --append $output_file
-    print $"\nEND. 结果已写入: (ansi bu)($output_file)(ansi rst)"
+    $results | save $output_file
+    print $"\n(ansi y)END. 结果已写入:(ansi rst) (ansi bu)($output_file)(ansi rst)"
   }
 
   $results | select idx file success tx_id url exit_code error | table
